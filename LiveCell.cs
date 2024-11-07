@@ -20,7 +20,7 @@ namespace LiveCell_Gui
     public partial class LiveCell : Form
     {
         /*-----------------------------------------------------------------------------
-        *  시리얼 통신 변수
+        *  Serial Communication Variable
         *---------------------------------------------------------------------------*/
         delegate void SetTextCallBack(string str);      // Callback 함수
 
@@ -28,12 +28,12 @@ namespace LiveCell_Gui
         private byte[] b_disp_buf = new byte[100];
         private int comport_index = 0;
 
-        public static LiveCell livecell;
+        //public static LiveCell livecell;
 
         public LiveCell()
         {
             InitializeComponent();
-            livecell = this;
+            //livecell = this;
         }
 
         private void Connection_display(bool is_connect)
@@ -264,6 +264,21 @@ namespace LiveCell_Gui
         private void btJogYdec_MouseUp(object sender, MouseEventArgs e)
         {
             string senddata = "movestop1";
+            opto_serial_write(senddata, false);
+        }
+
+        /************************************************************************************************
+                                                                Home Position
+        *************************************************************************************************/
+        private void btHomeX_Click(object sender, EventArgs e)
+        {
+            string senddata = "moveorg0";
+            opto_serial_write(senddata, false);
+        }
+
+        private void btHomeY_Click(object sender, EventArgs e)
+        {
+            string senddata = "moveorg1";
             opto_serial_write(senddata, false);
         }
     }

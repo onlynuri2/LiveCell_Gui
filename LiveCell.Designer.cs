@@ -58,6 +58,8 @@
             lbcmdspeedy = new Label();
             lbcmdposy = new Label();
             gbxaxis = new GroupBox();
+            gbHomePosX = new GroupBox();
+            btHomeX = new Button();
             label1 = new Label();
             tbjogspeedx = new TextBox();
             lbjogspeedx = new Label();
@@ -73,13 +75,17 @@
             tbcmdposx = new TextBox();
             lbcmdspeedx = new Label();
             lbcmdposx = new Label();
+            gbHomePosY = new GroupBox();
+            btHomeY = new Button();
             groupBox_comport.SuspendLayout();
             gbTransfer.SuspendLayout();
             gbmotionctrl.SuspendLayout();
             gbyaxis.SuspendLayout();
             gbjogctrly.SuspendLayout();
             gbxaxis.SuspendLayout();
+            gbHomePosX.SuspendLayout();
             gbjogctrlx.SuspendLayout();
+            gbHomePosY.SuspendLayout();
             SuspendLayout();
             // 
             // btconnection
@@ -204,6 +210,7 @@
             // gbyaxis
             // 
             gbyaxis.BackColor = Color.Lavender;
+            gbyaxis.Controls.Add(gbHomePosY);
             gbyaxis.Controls.Add(label3);
             gbyaxis.Controls.Add(tbjogspeedy);
             gbyaxis.Controls.Add(lbjogspeedy);
@@ -220,7 +227,7 @@
             gbyaxis.Font = new Font("맑은 고딕", 14F, FontStyle.Regular, GraphicsUnit.Point, 129);
             gbyaxis.Location = new Point(391, 53);
             gbyaxis.Name = "gbyaxis";
-            gbyaxis.Size = new Size(289, 478);
+            gbyaxis.Size = new Size(289, 610);
             gbyaxis.TabIndex = 13;
             gbyaxis.TabStop = false;
             gbyaxis.Text = "Y-axis";
@@ -300,7 +307,7 @@
             // 
             // btJogYdec
             // 
-            btJogYdec.Location = new Point(7, 100);
+            btJogYdec.Location = new Point(3, 100);
             btJogYdec.Name = "btJogYdec";
             btJogYdec.Size = new Size(102, 41);
             btJogYdec.TabIndex = 0;
@@ -315,7 +322,7 @@
             btMoveYasix.Name = "btMoveYasix";
             btMoveYasix.Size = new Size(260, 54);
             btMoveYasix.TabIndex = 6;
-            btMoveYasix.Text = "위치이동";
+            btMoveYasix.Text = "Move Y";
             btMoveYasix.UseVisualStyleBackColor = true;
             btMoveYasix.Click += btMoveYasix_Click;
             // 
@@ -385,6 +392,7 @@
             // gbxaxis
             // 
             gbxaxis.BackColor = Color.Lavender;
+            gbxaxis.Controls.Add(gbHomePosX);
             gbxaxis.Controls.Add(label1);
             gbxaxis.Controls.Add(tbjogspeedx);
             gbxaxis.Controls.Add(lbjogspeedx);
@@ -401,10 +409,30 @@
             gbxaxis.Font = new Font("맑은 고딕", 14F, FontStyle.Regular, GraphicsUnit.Point, 129);
             gbxaxis.Location = new Point(10, 53);
             gbxaxis.Name = "gbxaxis";
-            gbxaxis.Size = new Size(289, 624);
+            gbxaxis.Size = new Size(289, 610);
             gbxaxis.TabIndex = 0;
             gbxaxis.TabStop = false;
             gbxaxis.Text = "X-axis";
+            // 
+            // gbHomePosX
+            // 
+            gbHomePosX.Controls.Add(btHomeX);
+            gbHomePosX.Location = new Point(15, 495);
+            gbHomePosX.Name = "gbHomePosX";
+            gbHomePosX.Size = new Size(260, 112);
+            gbHomePosX.TabIndex = 13;
+            gbHomePosX.TabStop = false;
+            gbHomePosX.Text = "Home Position";
+            // 
+            // btHomeX
+            // 
+            btHomeX.Location = new Point(0, 50);
+            btHomeX.Name = "btHomeX";
+            btHomeX.Size = new Size(260, 54);
+            btHomeX.TabIndex = 0;
+            btHomeX.Text = "Home X";
+            btHomeX.UseVisualStyleBackColor = true;
+            btHomeX.Click += btHomeX_Click;
             // 
             // label1
             // 
@@ -418,7 +446,7 @@
             // 
             // tbjogspeedx
             // 
-            tbjogspeedx.Location = new Point(123, 373);
+            tbjogspeedx.Location = new Point(125, 373);
             tbjogspeedx.MaxLength = 6;
             tbjogspeedx.Name = "tbjogspeedx";
             tbjogspeedx.Size = new Size(147, 45);
@@ -471,9 +499,9 @@
             // 
             // btJogXinc
             // 
-            btJogXinc.Location = new Point(155, 100);
+            btJogXinc.Location = new Point(157, 100);
             btJogXinc.Name = "btJogXinc";
-            btJogXinc.Size = new Size(102, 41);
+            btJogXinc.Size = new Size(100, 40);
             btJogXinc.TabIndex = 1;
             btJogXinc.Text = "Jog(+)";
             btJogXinc.UseVisualStyleBackColor = true;
@@ -482,9 +510,9 @@
             // 
             // btJogXdec
             // 
-            btJogXdec.Location = new Point(7, 100);
+            btJogXdec.Location = new Point(3, 100);
             btJogXdec.Name = "btJogXdec";
-            btJogXdec.Size = new Size(102, 41);
+            btJogXdec.Size = new Size(100, 40);
             btJogXdec.TabIndex = 0;
             btJogXdec.Text = "Jog(-)";
             btJogXdec.UseVisualStyleBackColor = true;
@@ -497,7 +525,7 @@
             btMoveXasix.Name = "btMoveXasix";
             btMoveXasix.Size = new Size(260, 54);
             btMoveXasix.TabIndex = 6;
-            btMoveXasix.Text = "위치이동";
+            btMoveXasix.Text = "Move X";
             btMoveXasix.UseVisualStyleBackColor = true;
             btMoveXasix.Click += btMoveXasix_Click;
             // 
@@ -566,6 +594,26 @@
             lbcmdposx.TabIndex = 0;
             lbcmdposx.Text = "설정위치";
             // 
+            // gbHomePosY
+            // 
+            gbHomePosY.Controls.Add(btHomeY);
+            gbHomePosY.Location = new Point(15, 495);
+            gbHomePosY.Name = "gbHomePosY";
+            gbHomePosY.Size = new Size(260, 112);
+            gbHomePosY.TabIndex = 14;
+            gbHomePosY.TabStop = false;
+            gbHomePosY.Text = "Home Position";
+            // 
+            // btHomeY
+            // 
+            btHomeY.Location = new Point(0, 50);
+            btHomeY.Name = "btHomeY";
+            btHomeY.Size = new Size(260, 54);
+            btHomeY.TabIndex = 0;
+            btHomeY.Text = "Home Y";
+            btHomeY.UseVisualStyleBackColor = true;
+            btHomeY.Click += btHomeY_Click;
+            // 
             // LiveCell
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -589,7 +637,9 @@
             gbjogctrly.ResumeLayout(false);
             gbxaxis.ResumeLayout(false);
             gbxaxis.PerformLayout();
+            gbHomePosX.ResumeLayout(false);
             gbjogctrlx.ResumeLayout(false);
+            gbHomePosY.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -639,5 +689,9 @@
         private TextBox tbcmdposy;
         private Label lbcmdspeedy;
         private Label lbcmdposy;
+        private GroupBox gbHomePosX;
+        private Button btHomeX;
+        private GroupBox gbHomePosY;
+        private Button btHomeY;
     }
 }

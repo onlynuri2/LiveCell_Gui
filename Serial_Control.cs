@@ -159,7 +159,6 @@ namespace LiveCell_Gui
             return false;
         }
 
-        Thread serial_write_t;
         private void serial_write_thread(string str, bool check)
         {
             if (opto_serial.IsOpen == false) return;
@@ -172,8 +171,6 @@ namespace LiveCell_Gui
             {
                 this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { str + " Serial Transfer Thread Fail" });
             }
-
-            serial_write_t.Abort();
         }
 
         private bool opto_serial_write(string str, bool check)
