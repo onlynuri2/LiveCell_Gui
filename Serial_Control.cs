@@ -205,6 +205,10 @@ namespace LiveCell_Gui
             if (recv.Contains(TRY_CONNECT))
             {
                 //this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "TRY CONNECT Received" });
+
+                if (recv[14] == '1') { gbxaxis.BackColor = Color.Lavender; } else { gbxaxis.BackColor = Color.GhostWhite; }
+                if (recv[15] == '1') { gbyaxis.BackColor = Color.Lavender; } else { gbyaxis.BackColor = Color.GhostWhite; }
+                if (recv[16] == '1') { gbzaxis.BackColor = Color.Lavender; } else { gbzaxis.BackColor = Color.GhostWhite; }
             }
             else if (recv.Contains(MCU_LIVE_TEST))
             {

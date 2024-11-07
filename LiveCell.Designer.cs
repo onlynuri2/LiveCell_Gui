@@ -39,10 +39,29 @@
             button_disp_clear = new Button();
             textBox_TX_data = new TextBox();
             button_tx_send = new Button();
-            backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             gbmotionctrl = new GroupBox();
+            gbzaxis = new GroupBox();
+            gbHomePosZ = new GroupBox();
+            btHomeZ = new Button();
+            lbjogspeedlimitz = new Label();
+            tbjogspeedz = new TextBox();
+            lbjogspeedz = new Label();
+            lbzmaxspeed = new Label();
+            lbzmaxdistance = new Label();
+            gbjogctrlz = new GroupBox();
+            btJogZinc = new Button();
+            btJogZdec = new Button();
+            btMoveZasix = new Button();
+            lbcurposz = new Label();
+            lbcurposzaxis = new Label();
+            tbcmdspeedz = new TextBox();
+            tbcmdposz = new TextBox();
+            lbcmdspeedz = new Label();
+            lbcmdposz = new Label();
             gbyaxis = new GroupBox();
-            label3 = new Label();
+            gbHomePosY = new GroupBox();
+            btHomeY = new Button();
+            lbjogspeedlimity = new Label();
             tbjogspeedy = new TextBox();
             lbjogspeedy = new Label();
             lbymaxspeed = new Label();
@@ -60,7 +79,7 @@
             gbxaxis = new GroupBox();
             gbHomePosX = new GroupBox();
             btHomeX = new Button();
-            label1 = new Label();
+            lbjogspeedlimitx = new Label();
             tbjogspeedx = new TextBox();
             lbjogspeedx = new Label();
             lbxmaxspeed = new Label();
@@ -75,17 +94,18 @@
             tbcmdposx = new TextBox();
             lbcmdspeedx = new Label();
             lbcmdposx = new Label();
-            gbHomePosY = new GroupBox();
-            btHomeY = new Button();
             groupBox_comport.SuspendLayout();
             gbTransfer.SuspendLayout();
             gbmotionctrl.SuspendLayout();
+            gbzaxis.SuspendLayout();
+            gbHomePosZ.SuspendLayout();
+            gbjogctrlz.SuspendLayout();
             gbyaxis.SuspendLayout();
+            gbHomePosY.SuspendLayout();
             gbjogctrly.SuspendLayout();
             gbxaxis.SuspendLayout();
             gbHomePosX.SuspendLayout();
             gbjogctrlx.SuspendLayout();
-            gbHomePosY.SuspendLayout();
             SuspendLayout();
             // 
             // btconnection
@@ -197,21 +217,224 @@
             // gbmotionctrl
             // 
             gbmotionctrl.BackColor = Color.GhostWhite;
+            gbmotionctrl.Controls.Add(gbzaxis);
             gbmotionctrl.Controls.Add(gbyaxis);
             gbmotionctrl.Controls.Add(gbxaxis);
             gbmotionctrl.Font = new Font("맑은 고딕", 16F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            gbmotionctrl.Location = new Point(8, 194);
+            gbmotionctrl.Location = new Point(4, 194);
             gbmotionctrl.Name = "gbmotionctrl";
-            gbmotionctrl.Size = new Size(1055, 756);
+            gbmotionctrl.Size = new Size(1059, 1018);
             gbmotionctrl.TabIndex = 4;
             gbmotionctrl.TabStop = false;
             gbmotionctrl.Text = "Motion Control";
             // 
+            // gbzaxis
+            // 
+            gbzaxis.BackColor = Color.GhostWhite;
+            gbzaxis.Controls.Add(gbHomePosZ);
+            gbzaxis.Controls.Add(lbjogspeedlimitz);
+            gbzaxis.Controls.Add(tbjogspeedz);
+            gbzaxis.Controls.Add(lbjogspeedz);
+            gbzaxis.Controls.Add(lbzmaxspeed);
+            gbzaxis.Controls.Add(lbzmaxdistance);
+            gbzaxis.Controls.Add(gbjogctrlz);
+            gbzaxis.Controls.Add(btMoveZasix);
+            gbzaxis.Controls.Add(lbcurposz);
+            gbzaxis.Controls.Add(lbcurposzaxis);
+            gbzaxis.Controls.Add(tbcmdspeedz);
+            gbzaxis.Controls.Add(tbcmdposz);
+            gbzaxis.Controls.Add(lbcmdspeedz);
+            gbzaxis.Controls.Add(lbcmdposz);
+            gbzaxis.Font = new Font("맑은 고딕", 14F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            gbzaxis.Location = new Point(713, 62);
+            gbzaxis.Name = "gbzaxis";
+            gbzaxis.Size = new Size(289, 610);
+            gbzaxis.TabIndex = 15;
+            gbzaxis.TabStop = false;
+            gbzaxis.Text = "Z-axis";
+            // 
+            // gbHomePosZ
+            // 
+            gbHomePosZ.Controls.Add(btHomeZ);
+            gbHomePosZ.Location = new Point(15, 495);
+            gbHomePosZ.Name = "gbHomePosZ";
+            gbHomePosZ.Size = new Size(260, 112);
+            gbHomePosZ.TabIndex = 14;
+            gbHomePosZ.TabStop = false;
+            gbHomePosZ.Text = "Home Position";
+            // 
+            // btHomeZ
+            // 
+            btHomeZ.Location = new Point(0, 50);
+            btHomeZ.Name = "btHomeZ";
+            btHomeZ.Size = new Size(260, 54);
+            btHomeZ.TabIndex = 0;
+            btHomeZ.Text = "Home Z-axis";
+            btHomeZ.UseVisualStyleBackColor = true;
+            btHomeZ.Click += btHomeZ_Click;
+            // 
+            // lbjogspeedlimitz
+            // 
+            lbjogspeedlimitz.AutoSize = true;
+            lbjogspeedlimitz.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            lbjogspeedlimitz.Location = new Point(16, 396);
+            lbjogspeedlimitz.Name = "lbjogspeedlimitz";
+            lbjogspeedlimitz.Size = new Size(95, 25);
+            lbjogspeedlimitz.TabIndex = 12;
+            lbjogspeedlimitz.Text = "(1~50000)";
+            // 
+            // tbjogspeedz
+            // 
+            tbjogspeedz.Location = new Point(123, 373);
+            tbjogspeedz.MaxLength = 6;
+            tbjogspeedz.Name = "tbjogspeedz";
+            tbjogspeedz.Size = new Size(147, 45);
+            tbjogspeedz.TabIndex = 11;
+            tbjogspeedz.Text = "10000";
+            tbjogspeedz.TextAlign = HorizontalAlignment.Right;
+            // 
+            // lbjogspeedz
+            // 
+            lbjogspeedz.AutoSize = true;
+            lbjogspeedz.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            lbjogspeedz.Location = new Point(55, 366);
+            lbjogspeedz.Name = "lbjogspeedz";
+            lbjogspeedz.Size = new Size(62, 32);
+            lbjogspeedz.TabIndex = 10;
+            lbjogspeedz.Text = "속도";
+            // 
+            // lbzmaxspeed
+            // 
+            lbzmaxspeed.AutoSize = true;
+            lbzmaxspeed.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            lbzmaxspeed.Location = new Point(25, 195);
+            lbzmaxspeed.Name = "lbzmaxspeed";
+            lbzmaxspeed.Size = new Size(105, 25);
+            lbzmaxspeed.TabIndex = 9;
+            lbzmaxspeed.Text = "(0~100000)";
+            // 
+            // lbzmaxdistance
+            // 
+            lbzmaxdistance.AutoSize = true;
+            lbzmaxdistance.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            lbzmaxdistance.Location = new Point(15, 128);
+            lbzmaxdistance.Name = "lbzmaxdistance";
+            lbzmaxdistance.Size = new Size(105, 25);
+            lbzmaxdistance.TabIndex = 8;
+            lbzmaxdistance.Text = "(0~125000)";
+            // 
+            // gbjogctrlz
+            // 
+            gbjogctrlz.Controls.Add(btJogZinc);
+            gbjogctrlz.Controls.Add(btJogZdec);
+            gbjogctrlz.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            gbjogctrlz.Location = new Point(13, 328);
+            gbjogctrlz.Name = "gbjogctrlz";
+            gbjogctrlz.Size = new Size(260, 144);
+            gbjogctrlz.TabIndex = 7;
+            gbjogctrlz.TabStop = false;
+            gbjogctrlz.Text = "Jog Mode";
+            // 
+            // btJogZinc
+            // 
+            btJogZinc.Location = new Point(155, 100);
+            btJogZinc.Name = "btJogZinc";
+            btJogZinc.Size = new Size(102, 41);
+            btJogZinc.TabIndex = 1;
+            btJogZinc.Text = "Jog(+)";
+            btJogZinc.UseVisualStyleBackColor = true;
+            btJogZinc.MouseDown += btJogZinc_MouseDown;
+            btJogZinc.MouseUp += btJogZinc_MouseUp;
+            // 
+            // btJogZdec
+            // 
+            btJogZdec.Location = new Point(3, 100);
+            btJogZdec.Name = "btJogZdec";
+            btJogZdec.Size = new Size(102, 41);
+            btJogZdec.TabIndex = 0;
+            btJogZdec.Text = "Jog(-)";
+            btJogZdec.UseVisualStyleBackColor = true;
+            btJogZdec.MouseDown += btJogZdec_MouseDown;
+            btJogZdec.MouseUp += btJogZdec_MouseUp;
+            // 
+            // btMoveZasix
+            // 
+            btMoveZasix.Location = new Point(16, 243);
+            btMoveZasix.Name = "btMoveZasix";
+            btMoveZasix.Size = new Size(260, 54);
+            btMoveZasix.TabIndex = 6;
+            btMoveZasix.Text = "Move Z-axis";
+            btMoveZasix.UseVisualStyleBackColor = true;
+            btMoveZasix.Click += btMoveZasix_Click;
+            // 
+            // lbcurposz
+            // 
+            lbcurposz.AutoSize = true;
+            lbcurposz.BackColor = Color.Transparent;
+            lbcurposz.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            lbcurposz.Location = new Point(170, 53);
+            lbcurposz.Name = "lbcurposz";
+            lbcurposz.RightToLeft = RightToLeft.No;
+            lbcurposz.Size = new Size(117, 32);
+            lbcurposz.TabIndex = 5;
+            lbcurposz.Text = "Unknown";
+            lbcurposz.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // lbcurposzaxis
+            // 
+            lbcurposzaxis.AutoSize = true;
+            lbcurposzaxis.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            lbcurposzaxis.Location = new Point(15, 53);
+            lbcurposzaxis.Name = "lbcurposzaxis";
+            lbcurposzaxis.Size = new Size(110, 32);
+            lbcurposzaxis.TabIndex = 4;
+            lbcurposzaxis.Text = "현재위치";
+            // 
+            // tbcmdspeedz
+            // 
+            tbcmdspeedz.Location = new Point(131, 172);
+            tbcmdspeedz.MaxLength = 6;
+            tbcmdspeedz.Name = "tbcmdspeedz";
+            tbcmdspeedz.Size = new Size(147, 45);
+            tbcmdspeedz.TabIndex = 3;
+            tbcmdspeedz.Text = "10000";
+            tbcmdspeedz.TextAlign = HorizontalAlignment.Right;
+            // 
+            // tbcmdposz
+            // 
+            tbcmdposz.Location = new Point(131, 103);
+            tbcmdposz.MaxLength = 7;
+            tbcmdposz.Name = "tbcmdposz";
+            tbcmdposz.Size = new Size(147, 45);
+            tbcmdposz.TabIndex = 2;
+            tbcmdposz.Text = "0";
+            tbcmdposz.TextAlign = HorizontalAlignment.Right;
+            // 
+            // lbcmdspeedz
+            // 
+            lbcmdspeedz.AutoSize = true;
+            lbcmdspeedz.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            lbcmdspeedz.Location = new Point(63, 165);
+            lbcmdspeedz.Name = "lbcmdspeedz";
+            lbcmdspeedz.Size = new Size(62, 32);
+            lbcmdspeedz.TabIndex = 1;
+            lbcmdspeedz.Text = "속도";
+            // 
+            // lbcmdposz
+            // 
+            lbcmdposz.AutoSize = true;
+            lbcmdposz.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            lbcmdposz.Location = new Point(15, 98);
+            lbcmdposz.Name = "lbcmdposz";
+            lbcmdposz.Size = new Size(110, 32);
+            lbcmdposz.TabIndex = 0;
+            lbcmdposz.Text = "설정위치";
+            // 
             // gbyaxis
             // 
-            gbyaxis.BackColor = Color.Lavender;
+            gbyaxis.BackColor = Color.GhostWhite;
             gbyaxis.Controls.Add(gbHomePosY);
-            gbyaxis.Controls.Add(label3);
+            gbyaxis.Controls.Add(lbjogspeedlimity);
             gbyaxis.Controls.Add(tbjogspeedy);
             gbyaxis.Controls.Add(lbjogspeedy);
             gbyaxis.Controls.Add(lbymaxspeed);
@@ -225,22 +448,42 @@
             gbyaxis.Controls.Add(lbcmdspeedy);
             gbyaxis.Controls.Add(lbcmdposy);
             gbyaxis.Font = new Font("맑은 고딕", 14F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            gbyaxis.Location = new Point(391, 53);
+            gbyaxis.Location = new Point(380, 62);
             gbyaxis.Name = "gbyaxis";
             gbyaxis.Size = new Size(289, 610);
             gbyaxis.TabIndex = 13;
             gbyaxis.TabStop = false;
             gbyaxis.Text = "Y-axis";
             // 
-            // label3
+            // gbHomePosY
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            label3.Location = new Point(16, 396);
-            label3.Name = "label3";
-            label3.Size = new Size(105, 25);
-            label3.TabIndex = 12;
-            label3.Text = "(0~300000)";
+            gbHomePosY.Controls.Add(btHomeY);
+            gbHomePosY.Location = new Point(15, 495);
+            gbHomePosY.Name = "gbHomePosY";
+            gbHomePosY.Size = new Size(260, 112);
+            gbHomePosY.TabIndex = 14;
+            gbHomePosY.TabStop = false;
+            gbHomePosY.Text = "Home Position";
+            // 
+            // btHomeY
+            // 
+            btHomeY.Location = new Point(0, 50);
+            btHomeY.Name = "btHomeY";
+            btHomeY.Size = new Size(260, 54);
+            btHomeY.TabIndex = 0;
+            btHomeY.Text = "Home Y-axis";
+            btHomeY.UseVisualStyleBackColor = true;
+            btHomeY.Click += btHomeY_Click;
+            // 
+            // lbjogspeedlimity
+            // 
+            lbjogspeedlimity.AutoSize = true;
+            lbjogspeedlimity.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            lbjogspeedlimity.Location = new Point(16, 396);
+            lbjogspeedlimity.Name = "lbjogspeedlimity";
+            lbjogspeedlimity.Size = new Size(105, 25);
+            lbjogspeedlimity.TabIndex = 12;
+            lbjogspeedlimity.Text = "(0~300000)";
             // 
             // tbjogspeedy
             // 
@@ -322,7 +565,7 @@
             btMoveYasix.Name = "btMoveYasix";
             btMoveYasix.Size = new Size(260, 54);
             btMoveYasix.TabIndex = 6;
-            btMoveYasix.Text = "Move Y";
+            btMoveYasix.Text = "Move Y-axis";
             btMoveYasix.UseVisualStyleBackColor = true;
             btMoveYasix.Click += btMoveYasix_Click;
             // 
@@ -391,9 +634,9 @@
             // 
             // gbxaxis
             // 
-            gbxaxis.BackColor = Color.Lavender;
+            gbxaxis.BackColor = Color.GhostWhite;
             gbxaxis.Controls.Add(gbHomePosX);
-            gbxaxis.Controls.Add(label1);
+            gbxaxis.Controls.Add(lbjogspeedlimitx);
             gbxaxis.Controls.Add(tbjogspeedx);
             gbxaxis.Controls.Add(lbjogspeedx);
             gbxaxis.Controls.Add(lbxmaxspeed);
@@ -407,7 +650,7 @@
             gbxaxis.Controls.Add(lbcmdspeedx);
             gbxaxis.Controls.Add(lbcmdposx);
             gbxaxis.Font = new Font("맑은 고딕", 14F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            gbxaxis.Location = new Point(10, 53);
+            gbxaxis.Location = new Point(46, 62);
             gbxaxis.Name = "gbxaxis";
             gbxaxis.Size = new Size(289, 610);
             gbxaxis.TabIndex = 0;
@@ -430,19 +673,19 @@
             btHomeX.Name = "btHomeX";
             btHomeX.Size = new Size(260, 54);
             btHomeX.TabIndex = 0;
-            btHomeX.Text = "Home X";
+            btHomeX.Text = "Home X-axis";
             btHomeX.UseVisualStyleBackColor = true;
             btHomeX.Click += btHomeX_Click;
             // 
-            // label1
+            // lbjogspeedlimitx
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            label1.Location = new Point(16, 396);
-            label1.Name = "label1";
-            label1.Size = new Size(105, 25);
-            label1.TabIndex = 12;
-            label1.Text = "(0~300000)";
+            lbjogspeedlimitx.AutoSize = true;
+            lbjogspeedlimitx.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            lbjogspeedlimitx.Location = new Point(16, 396);
+            lbjogspeedlimitx.Name = "lbjogspeedlimitx";
+            lbjogspeedlimitx.Size = new Size(105, 25);
+            lbjogspeedlimitx.TabIndex = 12;
+            lbjogspeedlimitx.Text = "(0~300000)";
             // 
             // tbjogspeedx
             // 
@@ -525,7 +768,7 @@
             btMoveXasix.Name = "btMoveXasix";
             btMoveXasix.Size = new Size(260, 54);
             btMoveXasix.TabIndex = 6;
-            btMoveXasix.Text = "Move X";
+            btMoveXasix.Text = "Move X-axis";
             btMoveXasix.UseVisualStyleBackColor = true;
             btMoveXasix.Click += btMoveXasix_Click;
             // 
@@ -594,31 +837,11 @@
             lbcmdposx.TabIndex = 0;
             lbcmdposx.Text = "설정위치";
             // 
-            // gbHomePosY
-            // 
-            gbHomePosY.Controls.Add(btHomeY);
-            gbHomePosY.Location = new Point(15, 495);
-            gbHomePosY.Name = "gbHomePosY";
-            gbHomePosY.Size = new Size(260, 112);
-            gbHomePosY.TabIndex = 14;
-            gbHomePosY.TabStop = false;
-            gbHomePosY.Text = "Home Position";
-            // 
-            // btHomeY
-            // 
-            btHomeY.Location = new Point(0, 50);
-            btHomeY.Name = "btHomeY";
-            btHomeY.Size = new Size(260, 54);
-            btHomeY.TabIndex = 0;
-            btHomeY.Text = "Home Y";
-            btHomeY.UseVisualStyleBackColor = true;
-            btHomeY.Click += btHomeY_Click;
-            // 
             // LiveCell
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1065, 949);
+            ClientSize = new Size(1065, 1213);
             Controls.Add(gbmotionctrl);
             Controls.Add(gbTransfer);
             Controls.Add(groupBox_comport);
@@ -632,14 +855,18 @@
             gbTransfer.ResumeLayout(false);
             gbTransfer.PerformLayout();
             gbmotionctrl.ResumeLayout(false);
+            gbzaxis.ResumeLayout(false);
+            gbzaxis.PerformLayout();
+            gbHomePosZ.ResumeLayout(false);
+            gbjogctrlz.ResumeLayout(false);
             gbyaxis.ResumeLayout(false);
             gbyaxis.PerformLayout();
+            gbHomePosY.ResumeLayout(false);
             gbjogctrly.ResumeLayout(false);
             gbxaxis.ResumeLayout(false);
             gbxaxis.PerformLayout();
             gbHomePosX.ResumeLayout(false);
             gbjogctrlx.ResumeLayout(false);
-            gbHomePosY.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -655,7 +882,6 @@
         private Button button_tx_send;
         private Button button_disp_clear;
         private TextBox textBox_TX_data;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private GroupBox gbmotionctrl;
         private GroupBox gbxaxis;
         private TextBox tbcmdposx;
@@ -670,11 +896,11 @@
         private Button btJogXdec;
         private Label lbxmaxdistance;
         private Label lbxmaxspeed;
-        private Label label1;
+        private Label lbjogspeedlimitx;
         private TextBox tbjogspeedx;
         private Label lbjogspeedx;
         private GroupBox gbyaxis;
-        private Label label3;
+        private Label lbjogspeedlimity;
         private TextBox tbjogspeedy;
         private Label lbjogspeedy;
         private Label lbymaxspeed;
@@ -693,5 +919,23 @@
         private Button btHomeX;
         private GroupBox gbHomePosY;
         private Button btHomeY;
+        private GroupBox gbzaxis;
+        private GroupBox gbHomePosZ;
+        private Button btHomeZ;
+        private Label lbjogspeedlimitz;
+        private TextBox tbjogspeedz;
+        private Label lbjogspeedz;
+        private Label lbzmaxspeed;
+        private Label lbzmaxdistance;
+        private GroupBox gbjogctrlz;
+        private Button btJogZinc;
+        private Button btJogZdec;
+        private Button btMoveZasix;
+        private Label lbcurposz;
+        private Label lbcurposzaxis;
+        private TextBox tbcmdspeedz;
+        private TextBox tbcmdposz;
+        private Label lbcmdspeedz;
+        private Label lbcmdposz;
     }
 }

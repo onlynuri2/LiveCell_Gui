@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.IO.Ports;
 
-using System.Threading; //스레드 클래스 사용
+using System.Threading; //Thread Class Using
 using System.Diagnostics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 //using System.Reflection;
@@ -22,7 +22,7 @@ namespace LiveCell_Gui
         /*-----------------------------------------------------------------------------
         *  Serial Communication Variable
         *---------------------------------------------------------------------------*/
-        delegate void SetTextCallBack(string str);      // Callback 함수
+        delegate void SetTextCallBack(string str);      // Callback 占쌉쇽옙
 
         private string disp_str = string.Empty;
         private byte[] b_disp_buf = new byte[100];
@@ -58,6 +58,10 @@ namespace LiveCell_Gui
                     btconnection.BackColor = Color.LightBlue;
                     btdisconnection.BackColor = Color.Transparent;
                     groupBox_comport.BackColor = Color.Transparent;
+
+                    gbxaxis.BackColor = Color.GhostWhite;
+                    gbyaxis.BackColor = Color.GhostWhite;
+                    gbzaxis.BackColor = Color.GhostWhite;
                 }));
             }
         }
@@ -91,7 +95,7 @@ namespace LiveCell_Gui
         }
 
         /*-----------------------------------------------------------------------------
-        *  디스플레이 함수
+        *  Display Function
         *---------------------------------------------------------------------------*/
         private void display_data_textbox(string str)
         {
@@ -103,7 +107,7 @@ namespace LiveCell_Gui
             string[] port = SerialPort.GetPortNames();
             comboBox_available_port.Items.Clear();
 
-            comboBox_available_port.Items.Add("선택");
+            comboBox_available_port.Items.Add("Select");
 
             foreach (string portName in port)
             {
@@ -171,18 +175,36 @@ namespace LiveCell_Gui
             {
                 if (pos > Y_MAX_DIST) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed Y-axis!" }); return; }
             }
-            else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : X Positon Value Something Wrong !" }); return; }
+            else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Y Positon Value Something Wrong !" }); return; }
 
             if (int.TryParse(tbcmdspeedy.Text, out speed))
             {
                 if (speed > MAX_SPEED_Y) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed Y-axis!!" }); return; }
             }
-            else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : X Speed Value Something Wrong !" }); return; }
+            else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Y Speed Value Something Wrong !" }); return; }
 
             string senddata = "movesabs1" + ',' + tbcmdposy.Text + ',' + tbcmdspeedy.Text;
             opto_serial_write(senddata, false);
         }
 
+        private void btMoveZasix_Click(object sender, EventArgs e)
+        {
+            int pos, speed;
+            if (int.TryParse(tbcmdposz.Text, out pos))
+            {
+                if (pos > Z_MAX_DIST) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed Z-axis!" }); return; }
+            }
+            else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Z Positon Value Something Wrong !" }); return; }
+
+            if (int.TryParse(tbcmdspeedz.Text, out speed))
+            {
+                if (speed > MAX_SPEED_Z) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed Z-axis!!" }); return; }
+            }
+            else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Z Speed Value Something Wrong !" }); return; }
+
+            string senddata = "movesabs2" + ',' + tbcmdposz.Text + ',' + tbcmdspeedz.Text;
+            opto_serial_write(senddata, false);
+        }
         /************************************************************************************************
                                                                         Jog Control +
         *************************************************************************************************/
@@ -193,7 +215,7 @@ namespace LiveCell_Gui
             int speed;
             if (int.TryParse(tbjogspeedx.Text, out speed))
             {
-                if (speed > MAX_SPEED_X) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed X-axis!" }); }
+                if (speed > MAX_SPEED_X) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed X-axis!" }); return; }
                 if (speed > 0) senddata += ',' + tbjogspeedx.Text;
             }
 
@@ -213,8 +235,8 @@ namespace LiveCell_Gui
             int speed;
             if (int.TryParse(tbjogspeedy.Text, out speed))
             {
-                if (speed > MAX_SPEED_Y) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Y-axis!" }); }
-                if (speed > 0) senddata += ',' + tbjogspeedx.Text;
+                if (speed > MAX_SPEED_Y) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Y-axis!" }); return;  }
+                if (speed > 0) senddata += ',' + tbjogspeedy.Text;
             }
 
             opto_serial_write(senddata, false);
@@ -223,6 +245,26 @@ namespace LiveCell_Gui
         private void btJogYinc_MouseUp(object sender, MouseEventArgs e)
         {
             string senddata = "movestop1";
+            opto_serial_write(senddata, false);
+        }
+
+        private void btJogZinc_MouseDown(object sender, MouseEventArgs e)           /************************************* Jog Z-axis inc ***************************************/
+        {
+            string senddata = "movejog2,1";
+
+            int speed;
+            if (int.TryParse(tbjogspeedz.Text, out speed))
+            {
+                if (speed > MAX_SPEED_Z) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Z-axis!" }); return;  }
+                if (speed > 0) senddata += ',' + tbjogspeedz.Text;
+            }
+
+            opto_serial_write(senddata, false);
+        }
+
+        private void btJogZinc_MouseUp(object sender, MouseEventArgs e)
+        {
+            string senddata = "movestop2";
             opto_serial_write(senddata, false);
         }
         /************************************************************************************************
@@ -235,7 +277,7 @@ namespace LiveCell_Gui
             int speed = 0;
             if (int.TryParse(tbjogspeedx.Text, out speed))
             {
-                if (speed > MAX_SPEED_X) { speed = MAX_SPEED_X; this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  X-axis!" }); }
+                if (speed > MAX_SPEED_X) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  X-axis!" }); return; }
                 if (speed > 0) senddata += ',' + tbjogspeedx.Text;
             }
 
@@ -254,7 +296,7 @@ namespace LiveCell_Gui
             int speed = 0;
             if (int.TryParse(tbjogspeedy.Text, out speed))
             {
-                if (speed > MAX_SPEED_Y) { speed = MAX_SPEED_Y; this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Y-axis!" }); }
+                if (speed > MAX_SPEED_Y) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Y-axis!" }); return; }
                 if (speed > 0) senddata += ',' + tbjogspeedy.Text;
             }
 
@@ -267,6 +309,25 @@ namespace LiveCell_Gui
             opto_serial_write(senddata, false);
         }
 
+        private void btJogZdec_MouseDown(object sender, MouseEventArgs e)       /************************************* Jog Z-axis dec ***************************************/
+        {
+            string senddata = "movejog2,0";
+
+            int speed = 0;
+            if (int.TryParse(tbjogspeedz.Text, out speed))
+            {
+                if (speed > MAX_SPEED_Z) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Z-axis!" }); return;  }
+                if (speed > 0) senddata += ',' + tbjogspeedz.Text;
+            }
+
+            opto_serial_write(senddata, false);
+        }
+
+        private void btJogZdec_MouseUp(object sender, MouseEventArgs e)
+        {
+            string senddata = "movestop2";
+            opto_serial_write(senddata, false);
+        }
         /************************************************************************************************
                                                                 Home Position
         *************************************************************************************************/
@@ -279,6 +340,12 @@ namespace LiveCell_Gui
         private void btHomeY_Click(object sender, EventArgs e)
         {
             string senddata = "moveorg1";
+            opto_serial_write(senddata, false);
+        }
+
+        private void btHomeZ_Click(object sender, EventArgs e)
+        {
+            string senddata = "moveorg2";
             opto_serial_write(senddata, false);
         }
     }
