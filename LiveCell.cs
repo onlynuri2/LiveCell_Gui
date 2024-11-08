@@ -28,6 +28,8 @@ namespace LiveCell_Gui
         private byte[] b_disp_buf = new byte[100];
         private int comport_index = 0;
 
+        private byte[] MotorLive = {  0, 0, 0 };
+
         //public static LiveCell livecell;
 
         public LiveCell()
@@ -235,7 +237,7 @@ namespace LiveCell_Gui
             int speed;
             if (int.TryParse(tbjogspeedy.Text, out speed))
             {
-                if (speed > MAX_SPEED_Y) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Y-axis!" }); return;  }
+                if (speed > MAX_SPEED_Y) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Y-axis!" }); return; }
                 if (speed > 0) senddata += ',' + tbjogspeedy.Text;
             }
 
@@ -255,7 +257,7 @@ namespace LiveCell_Gui
             int speed;
             if (int.TryParse(tbjogspeedz.Text, out speed))
             {
-                if (speed > MAX_SPEED_Z) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Z-axis!" }); return;  }
+                if (speed > MAX_SPEED_Z) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Z-axis!" }); return; }
                 if (speed > 0) senddata += ',' + tbjogspeedz.Text;
             }
 
@@ -316,7 +318,7 @@ namespace LiveCell_Gui
             int speed = 0;
             if (int.TryParse(tbjogspeedz.Text, out speed))
             {
-                if (speed > MAX_SPEED_Z) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Z-axis!" }); return;  }
+                if (speed > MAX_SPEED_Z) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Z-axis!" }); return; }
                 if (speed > 0) senddata += ',' + tbjogspeedz.Text;
             }
 
@@ -347,6 +349,98 @@ namespace LiveCell_Gui
         {
             string senddata = "moveorg2";
             opto_serial_write(senddata, false);
+        }
+
+        /************************************************************************************************
+                                                                XYZ Control
+        *************************************************************************************************/
+        private void btMoveXYZasix_Click(object sender, EventArgs e)
+        {
+            int pos, speed;
+
+            /******************************************** X-axis Move Singal Abs *******************************************************/
+            if (MotorLive[0] == 1)
+            {
+                if (int.TryParse(tbcmdposx.Text, out pos))
+                {
+                    if (pos > X_MAX_DIST) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed X-axis!" }); return; }
+                }
+                else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : X Positon Value Something Wrong !" }); return; }
+
+                if (int.TryParse(tbcmdspeedx.Text, out speed))
+                {
+                    if (speed > MAX_SPEED_X) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed X-axis!" }); return; }
+                }
+                else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : X Speed Value Something Wrong !" }); return; }
+            }
+            /******************************************** Y-axis Move Singal Abs *******************************************************/
+            if (MotorLive[1] == 1)
+            {
+                if (int.TryParse(tbcmdposy.Text, out pos))
+                {
+                    if (pos > Y_MAX_DIST) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed Y-axis!" }); return; }
+                }
+                else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Y Positon Value Something Wrong !" }); return; }
+
+                if (int.TryParse(tbcmdspeedy.Text, out speed))
+                {
+                    if (speed > MAX_SPEED_Y) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed Y-axis!!" }); return; }
+                }
+                else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Y Speed Value Something Wrong !" }); return; }
+            }
+            /******************************************** Z-axis Move Singal Abs *******************************************************/
+            if (MotorLive[2] == 1)
+            {
+                if (int.TryParse(tbcmdposz.Text, out pos))
+                {
+                    if (pos > Z_MAX_DIST) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed Z-axis!" }); return; }
+                }
+                else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Z Positon Value Something Wrong !" }); return; }
+
+                if (int.TryParse(tbcmdspeedz.Text, out speed))
+                {
+                    if (speed > MAX_SPEED_Z) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed Z-axis!!" }); return; }
+                }
+                else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Z Speed Value Something Wrong !" }); return; }
+            }
+
+            string senddata = "movetabs";
+
+            if (MotorLive[0] == 1) senddata += ",0," + tbcmdposx.Text + ',' + tbcmdspeedx.Text;
+            if (MotorLive[1] == 1) senddata += ",1," + tbcmdposy.Text + ',' + tbcmdspeedy.Text;
+            if (MotorLive[2] == 1) senddata += ",2," + tbcmdposz.Text + ',' + tbcmdspeedz.Text;
+
+            opto_serial_write(senddata, false);
+        }
+
+        private void btHomeXYZ_Click(object sender, EventArgs e)
+        {
+            string senddata;
+
+            senddata = "moveallorg";
+            opto_serial_write(senddata, false);
+
+#if false
+            if (MotorLive[0] == 1)
+            {
+                senddata = "moveorg0";
+                opto_serial_write(senddata, false);
+                Thread.Sleep(DLEAY_10);
+            }
+
+            if (MotorLive[1] == 1)
+            {
+                senddata = "moveorg1";
+                opto_serial_write(senddata, false);
+                Thread.Sleep(DLEAY_10);
+            }
+
+            if (MotorLive[2] == 1)
+            {
+                senddata = "moveorg2";
+                opto_serial_write(senddata, false);
+            }
+#endif
         }
     }
 }

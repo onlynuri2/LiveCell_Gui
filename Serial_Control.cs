@@ -17,7 +17,6 @@ namespace LiveCell_Gui
     partial class LiveCell
     {
         /* Receive  */
-        const string WIN_LIVE_TEST = "winlivetest";
 
         /* Send */
         const string MCU_LIVE_TEST = "mculivetest";
@@ -183,6 +182,8 @@ namespace LiveCell_Gui
 
             opto_serial.Write('#' + str + '*');
 
+            this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "#" + str + "*" });
+
             if (check == false) return true;
 
             if (serial_sleep_wait(str) == false)
@@ -206,9 +207,9 @@ namespace LiveCell_Gui
             {
                 //this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "TRY CONNECT Received" });
 
-                if (recv[14] == '1') { gbxaxis.BackColor = Color.Lavender; } else { gbxaxis.BackColor = Color.GhostWhite; }
-                if (recv[15] == '1') { gbyaxis.BackColor = Color.Lavender; } else { gbyaxis.BackColor = Color.GhostWhite; }
-                if (recv[16] == '1') { gbzaxis.BackColor = Color.Lavender; } else { gbzaxis.BackColor = Color.GhostWhite; }
+                if (recv[14] == '1') { gbxaxis.BackColor = Color.Lavender; MotorLive[0] = 1; } else { gbxaxis.BackColor = Color.GhostWhite; }
+                if (recv[15] == '1') { gbyaxis.BackColor = Color.Lavender; MotorLive[1] = 1; } else { gbyaxis.BackColor = Color.GhostWhite; }
+                if (recv[16] == '1') { gbzaxis.BackColor = Color.Lavender; MotorLive[2] = 1; } else { gbzaxis.BackColor = Color.GhostWhite; }
             }
             else if (recv.Contains(MCU_LIVE_TEST))
             {

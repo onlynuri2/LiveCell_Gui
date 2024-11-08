@@ -40,6 +40,9 @@
             textBox_TX_data = new TextBox();
             button_tx_send = new Button();
             gbmotionctrl = new GroupBox();
+            gbxyzaxis = new GroupBox();
+            btHomeXYZ = new Button();
+            btMoveXYZasix = new Button();
             gbzaxis = new GroupBox();
             gbHomePosZ = new GroupBox();
             btHomeZ = new Button();
@@ -97,6 +100,7 @@
             groupBox_comport.SuspendLayout();
             gbTransfer.SuspendLayout();
             gbmotionctrl.SuspendLayout();
+            gbxyzaxis.SuspendLayout();
             gbzaxis.SuspendLayout();
             gbHomePosZ.SuspendLayout();
             gbjogctrlz.SuspendLayout();
@@ -217,16 +221,49 @@
             // gbmotionctrl
             // 
             gbmotionctrl.BackColor = Color.GhostWhite;
+            gbmotionctrl.Controls.Add(gbxyzaxis);
             gbmotionctrl.Controls.Add(gbzaxis);
             gbmotionctrl.Controls.Add(gbyaxis);
             gbmotionctrl.Controls.Add(gbxaxis);
             gbmotionctrl.Font = new Font("맑은 고딕", 16F, FontStyle.Regular, GraphicsUnit.Point, 129);
             gbmotionctrl.Location = new Point(4, 194);
             gbmotionctrl.Name = "gbmotionctrl";
-            gbmotionctrl.Size = new Size(1059, 1018);
+            gbmotionctrl.Size = new Size(1059, 838);
             gbmotionctrl.TabIndex = 4;
             gbmotionctrl.TabStop = false;
             gbmotionctrl.Text = "Motion Control";
+            // 
+            // gbxyzaxis
+            // 
+            gbxyzaxis.Controls.Add(btHomeXYZ);
+            gbxyzaxis.Controls.Add(btMoveXYZasix);
+            gbxyzaxis.Font = new Font("맑은 고딕", 14F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            gbxyzaxis.Location = new Point(46, 695);
+            gbxyzaxis.Name = "gbxyzaxis";
+            gbxyzaxis.Size = new Size(956, 134);
+            gbxyzaxis.TabIndex = 16;
+            gbxyzaxis.TabStop = false;
+            gbxyzaxis.Text = "XYZ-axis";
+            // 
+            // btHomeXYZ
+            // 
+            btHomeXYZ.Location = new Point(349, 49);
+            btHomeXYZ.Name = "btHomeXYZ";
+            btHomeXYZ.Size = new Size(260, 54);
+            btHomeXYZ.TabIndex = 18;
+            btHomeXYZ.Text = "Home XYZ-axis";
+            btHomeXYZ.UseVisualStyleBackColor = true;
+            btHomeXYZ.Click += btHomeXYZ_Click;
+            // 
+            // btMoveXYZasix
+            // 
+            btMoveXYZasix.Location = new Point(16, 49);
+            btMoveXYZasix.Name = "btMoveXYZasix";
+            btMoveXYZasix.Size = new Size(260, 54);
+            btMoveXYZasix.TabIndex = 17;
+            btMoveXYZasix.Text = "Move XYZ-axis";
+            btMoveXYZasix.UseVisualStyleBackColor = true;
+            btMoveXYZasix.Click += btMoveXYZasix_Click;
             // 
             // gbzaxis
             // 
@@ -309,9 +346,9 @@
             lbzmaxspeed.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
             lbzmaxspeed.Location = new Point(25, 195);
             lbzmaxspeed.Name = "lbzmaxspeed";
-            lbzmaxspeed.Size = new Size(105, 25);
+            lbzmaxspeed.Size = new Size(95, 25);
             lbzmaxspeed.TabIndex = 9;
-            lbzmaxspeed.Text = "(0~100000)";
+            lbzmaxspeed.Text = "(0~50000)";
             // 
             // lbzmaxdistance
             // 
@@ -483,7 +520,7 @@
             lbjogspeedlimity.Name = "lbjogspeedlimity";
             lbjogspeedlimity.Size = new Size(105, 25);
             lbjogspeedlimity.TabIndex = 12;
-            lbjogspeedlimity.Text = "(0~300000)";
+            lbjogspeedlimity.Text = "(0~100000)";
             // 
             // tbjogspeedy
             // 
@@ -841,7 +878,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1065, 1213);
+            ClientSize = new Size(1065, 1035);
             Controls.Add(gbmotionctrl);
             Controls.Add(gbTransfer);
             Controls.Add(groupBox_comport);
@@ -855,6 +892,7 @@
             gbTransfer.ResumeLayout(false);
             gbTransfer.PerformLayout();
             gbmotionctrl.ResumeLayout(false);
+            gbxyzaxis.ResumeLayout(false);
             gbzaxis.ResumeLayout(false);
             gbzaxis.PerformLayout();
             gbHomePosZ.ResumeLayout(false);
@@ -937,5 +975,8 @@
         private TextBox tbcmdposz;
         private Label lbcmdspeedz;
         private Label lbcmdposz;
+        private GroupBox gbxyzaxis;
+        private Button btHomeXYZ;
+        private Button btMoveXYZasix;
     }
 }
