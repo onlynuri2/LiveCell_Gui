@@ -28,7 +28,7 @@ namespace LiveCell_Gui
         private byte[] b_disp_buf = new byte[100];
         private int comport_index = 0;
 
-        private byte[] MotorLive = {  0, 0, 0 };
+        private byte[] MotorLive = { 0, 0, 0 };
 
         //public static LiveCell livecell;
 
@@ -441,6 +441,91 @@ namespace LiveCell_Gui
                 opto_serial_write(senddata, false);
             }
 #endif
+        }
+
+        /************************************************************************************************
+                                                                        Number Input Control
+        *************************************************************************************************/
+
+        private void tbcmdposx_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //숫자와 백스페이스를 제외한 나머지를 바로 처리
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))
+            {
+                e.Handled = true; return;
+            }
+        }
+
+        private void tbcmdspeedx_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //숫자와 백스페이스를 제외한 나머지를 바로 처리
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void tbjogspeedx_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //숫자와 백스페이스를 제외한 나머지를 바로 처리
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void tbcmdposy_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //숫자와 백스페이스를 제외한 나머지를 바로 처리
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void tbcmdspeedy_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //숫자와 백스페이스를 제외한 나머지를 바로 처리
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void tbjogspeedy_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //숫자와 백스페이스를 제외한 나머지를 바로 처리
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void tbcmdposz_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //숫자와 백스페이스를 제외한 나머지를 바로 처리
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void tbcmdspeedz_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //숫자와 백스페이스를 제외한 나머지를 바로 처리
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void tbjogspeedz_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //숫자와 백스페이스를 제외한 나머지를 바로 처리
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))
+            {
+                e.Handled = true;
+            }
         }
     }
 }
