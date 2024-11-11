@@ -13,6 +13,7 @@ using System.IO.Ports;
 using System.Threading; //Thread Class Using
 using System.Diagnostics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 //using System.Reflection;
 
 namespace LiveCell_Gui
@@ -73,6 +74,19 @@ namespace LiveCell_Gui
             comport_info_update();
 
             this.Text = "LiveCell - " + "V1.0";
+
+            lbxmaxdistance.Text = "(0" + "~" + X_MAX_DIST.ToString() + ")";
+            lbxmaxspeed.Text = "(0" + "~" + MAX_SPEED_X.ToString() + ")";
+
+            lbymaxdistance.Text = "(0" + "~" + Y_MAX_DIST.ToString() + ")";
+            lbymaxspeed.Text = "(0" + "~" + MAX_SPEED_Y.ToString() + ")";
+
+            lbzmaxdistance.Text = "(0" + "~" + Z_MAX_DIST.ToString() + ")";
+            lbzmaxspeed.Text = "(0" + "~" + MAX_SPEED_Z.ToString() + ")";
+
+            lbjogspeedlimitx.Text = "(0" + "~" + MAX_SPEED_X.ToString() + ")";
+            lbjogspeedlimity.Text = "(0" + "~" + MAX_SPEED_Y.ToString() + ")";
+            lbjogspeedlimitz.Text = "(0" + "~" + MAX_SPEED_Z.ToString() + ")";
 
             opto_serial.DataReceived += new SerialDataReceivedEventHandler(serial_DataReceived);
         }
@@ -156,13 +170,22 @@ namespace LiveCell_Gui
             int pos, speed;
             if (int.TryParse(tbcmdposx.Text, out pos))
             {
-                if (pos > X_MAX_DIST) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed X-axis!" }); return; }
+                if (pos > X_MAX_DIST)
+                {
+                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed X-axis!" });
+                    MessageBox.Show(Form.ActiveForm, "Max Postiton Exceed X-axis!", "Error");
+                    return;
+                }
             }
             else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : X Positon Value Something Wrong !" }); return; }
 
             if (int.TryParse(tbcmdspeedx.Text, out speed))
             {
-                if (speed > MAX_SPEED_X) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed X-axis!" }); return; }
+                if (speed > MAX_SPEED_X) {
+                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed X-axis!" }); 
+                    MessageBox.Show(Form.ActiveForm, "Max Speed Exceed X-axis!", "Error");
+                    return;
+                }
             }
             else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : X Speed Value Something Wrong !" }); return; }
 
@@ -175,13 +198,21 @@ namespace LiveCell_Gui
             int pos, speed;
             if (int.TryParse(tbcmdposy.Text, out pos))
             {
-                if (pos > Y_MAX_DIST) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed Y-axis!" }); return; }
+                if (pos > Y_MAX_DIST) {
+                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed Y-axis!" });
+                    MessageBox.Show(Form.ActiveForm, "Max Postiton Exceed Y-axis!", "Error");
+                    return;
+                }
             }
             else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Y Positon Value Something Wrong !" }); return; }
 
             if (int.TryParse(tbcmdspeedy.Text, out speed))
             {
-                if (speed > MAX_SPEED_Y) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed Y-axis!!" }); return; }
+                if (speed > MAX_SPEED_Y) {
+                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed Y-axis!" });
+                    MessageBox.Show(Form.ActiveForm, "Max Speed Exceed Y-axis!", "Error");
+                    return;
+                }
             }
             else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Y Speed Value Something Wrong !" }); return; }
 
@@ -194,13 +225,20 @@ namespace LiveCell_Gui
             int pos, speed;
             if (int.TryParse(tbcmdposz.Text, out pos))
             {
-                if (pos > Z_MAX_DIST) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed Z-axis!" }); return; }
+                if (pos > Z_MAX_DIST) {
+                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed Z-axis!" });
+                    MessageBox.Show(Form.ActiveForm, "Max Postiton Exceed Z-axis!", "Error");
+                    return;
+                }
             }
             else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Z Positon Value Something Wrong !" }); return; }
 
             if (int.TryParse(tbcmdspeedz.Text, out speed))
             {
-                if (speed > MAX_SPEED_Z) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed Z-axis!!" }); return; }
+                if (speed > MAX_SPEED_Z) {
+                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed Z-axis!" });
+                    MessageBox.Show(Form.ActiveForm, "Max Speed Exceed Z-axis!", "Error");
+                    return; }
             }
             else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Z Speed Value Something Wrong !" }); return; }
 
@@ -217,7 +255,12 @@ namespace LiveCell_Gui
             int speed;
             if (int.TryParse(tbjogspeedx.Text, out speed))
             {
-                if (speed > MAX_SPEED_X) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed X-axis!" }); return; }
+                if (speed > MAX_SPEED_X)
+                {
+                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed X-axis!" });
+                    MessageBox.Show(Form.ActiveForm, "Max Speed Exceed X-axis!", "Error");
+                    return; 
+                }
                 if (speed > 0) senddata += ',' + tbjogspeedx.Text;
             }
 
@@ -237,7 +280,12 @@ namespace LiveCell_Gui
             int speed;
             if (int.TryParse(tbjogspeedy.Text, out speed))
             {
-                if (speed > MAX_SPEED_Y) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Y-axis!" }); return; }
+                if (speed > MAX_SPEED_Y)
+                {
+                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Y-axis!" });
+                    MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  Y-axis!", "Error");
+                    return;
+                }
                 if (speed > 0) senddata += ',' + tbjogspeedy.Text;
             }
 
@@ -257,7 +305,11 @@ namespace LiveCell_Gui
             int speed;
             if (int.TryParse(tbjogspeedz.Text, out speed))
             {
-                if (speed > MAX_SPEED_Z) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Z-axis!" }); return; }
+                if (speed > MAX_SPEED_Z){
+                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Z-axis!" });
+                    MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  Z-axis!", "Error");
+                    return;
+                }
                 if (speed > 0) senddata += ',' + tbjogspeedz.Text;
             }
 
@@ -279,7 +331,12 @@ namespace LiveCell_Gui
             int speed = 0;
             if (int.TryParse(tbjogspeedx.Text, out speed))
             {
-                if (speed > MAX_SPEED_X) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  X-axis!" }); return; }
+                if (speed > MAX_SPEED_X)
+                {
+                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  X-axis!" });
+                    MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  X-axis!", "Error");
+                    return;
+                }
                 if (speed > 0) senddata += ',' + tbjogspeedx.Text;
             }
 
@@ -298,7 +355,12 @@ namespace LiveCell_Gui
             int speed = 0;
             if (int.TryParse(tbjogspeedy.Text, out speed))
             {
-                if (speed > MAX_SPEED_Y) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Y-axis!" }); return; }
+                if (speed > MAX_SPEED_Y)
+                {
+                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Y-axis!" });
+                    MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  Y-axis!", "Error");
+                    return;
+                }
                 if (speed > 0) senddata += ',' + tbjogspeedy.Text;
             }
 
@@ -318,7 +380,12 @@ namespace LiveCell_Gui
             int speed = 0;
             if (int.TryParse(tbjogspeedz.Text, out speed))
             {
-                if (speed > MAX_SPEED_Z) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Z-axis!" }); return; }
+                if (speed > MAX_SPEED_Z)
+                {
+                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Z-axis!" });
+                    MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  Z-axis!", "Error");
+                    return;
+                }
                 if (speed > 0) senddata += ',' + tbjogspeedz.Text;
             }
 
@@ -363,13 +430,23 @@ namespace LiveCell_Gui
             {
                 if (int.TryParse(tbcmdposx.Text, out pos))
                 {
-                    if (pos > X_MAX_DIST) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed X-axis!" }); return; }
+                    if (pos > X_MAX_DIST)
+                    {
+                        this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed X-axis!" });
+                        MessageBox.Show(Form.ActiveForm, "Max Postiton Exceed X-axis!", "Error");
+                        return;
+                    }
                 }
                 else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : X Positon Value Something Wrong !" }); return; }
 
                 if (int.TryParse(tbcmdspeedx.Text, out speed))
                 {
-                    if (speed > MAX_SPEED_X) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed X-axis!" }); return; }
+                    if (speed > MAX_SPEED_X)
+                    {
+                        this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed X-axis!" });
+                        MessageBox.Show(Form.ActiveForm, "Max Speed Exceed X-axis!", "Error");
+                        return;
+                    }
                 }
                 else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : X Speed Value Something Wrong !" }); return; }
             }
@@ -378,13 +455,23 @@ namespace LiveCell_Gui
             {
                 if (int.TryParse(tbcmdposy.Text, out pos))
                 {
-                    if (pos > Y_MAX_DIST) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed Y-axis!" }); return; }
+                    if (pos > Y_MAX_DIST)
+                    {
+                        this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed Y-axis!" });
+                        MessageBox.Show(Form.ActiveForm, "Error : Max Postiton Exceed Y-axis!", "Error");
+                        return;
+                    }
                 }
                 else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Y Positon Value Something Wrong !" }); return; }
 
                 if (int.TryParse(tbcmdspeedy.Text, out speed))
                 {
-                    if (speed > MAX_SPEED_Y) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed Y-axis!!" }); return; }
+                    if (speed > MAX_SPEED_Y)
+                    {
+                        this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed Y-axis!!" });
+                        MessageBox.Show(Form.ActiveForm, "Max Speed Exceed Y-axis!", "Error");
+                        return;
+                    }
                 }
                 else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Y Speed Value Something Wrong !" }); return; }
             }
@@ -393,13 +480,23 @@ namespace LiveCell_Gui
             {
                 if (int.TryParse(tbcmdposz.Text, out pos))
                 {
-                    if (pos > Z_MAX_DIST) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed Z-axis!" }); return; }
+                    if (pos > Z_MAX_DIST)
+                    {
+                        this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed Z-axis!" });
+                        MessageBox.Show(Form.ActiveForm, "Error : Max Postiton Exceed Z-axis!", "Error");
+                        return;
+                    }
                 }
                 else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Z Positon Value Something Wrong !" }); return; }
 
                 if (int.TryParse(tbcmdspeedz.Text, out speed))
                 {
-                    if (speed > MAX_SPEED_Z) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed Z-axis!!" }); return; }
+                    if (speed > MAX_SPEED_Z)
+                    {
+                        this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed Z-axis!!" });
+                        MessageBox.Show(Form.ActiveForm, "Max Speed Exceed Z-axis!", "Error");
+                        return;
+                    }
                 }
                 else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Z Speed Value Something Wrong !" }); return; }
             }
@@ -446,7 +543,6 @@ namespace LiveCell_Gui
         /************************************************************************************************
                                                                         Number Input Control
         *************************************************************************************************/
-
         private void tbcmdposx_KeyPress(object sender, KeyPressEventArgs e)
         {
             //숫자와 백스페이스를 제외한 나머지를 바로 처리
@@ -526,6 +622,25 @@ namespace LiveCell_Gui
             {
                 e.Handled = true;
             }
+        }
+
+        private void tbcmdposx_TextChanged(object sender, EventArgs e)
+        {
+            int pos;
+            if (int.TryParse(tbcmdposx.Text, out pos))
+            {
+                if (pos > X_MAX_DIST)
+                {
+                    //this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : X Positon Limit !" });
+                    //tbcmdposx.Text = tbcmdposx.Text.Substring(0, tbcmdposx.Text.Length - 1);
+                    //tbcmdposx.SelectionStart = tbcmdposx.Text.Length;
+                }
+            }
+        }
+
+        private void tbcmdspeedx_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

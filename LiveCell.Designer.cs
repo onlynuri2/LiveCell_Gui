@@ -847,6 +847,7 @@
             tbcmdspeedx.TabIndex = 3;
             tbcmdspeedx.Text = "100000";
             tbcmdspeedx.TextAlign = HorizontalAlignment.Right;
+            tbcmdspeedx.TextChanged += tbcmdspeedx_TextChanged;
             tbcmdspeedx.KeyPress += tbcmdspeedx_KeyPress;
             // 
             // tbcmdposx
@@ -858,6 +859,7 @@
             tbcmdposx.TabIndex = 2;
             tbcmdposx.Text = "0";
             tbcmdposx.TextAlign = HorizontalAlignment.Right;
+            tbcmdposx.TextChanged += tbcmdposx_TextChanged;
             tbcmdposx.KeyPress += tbcmdposx_KeyPress;
             // 
             // lbcmdspeedx
