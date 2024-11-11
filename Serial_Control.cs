@@ -29,9 +29,9 @@ namespace LiveCell_Gui
         private const int DLEAY_10 = 10;
         private const int DLEAY_20 = 20;
 
-        private const int X_MAX_DIST = 1350000;
-        private const int Y_MAX_DIST = 200000;
-        private const int Z_MAX_DIST = 125000;
+        private const int X_MAX_DIST = 135000;//real 1350000;
+        private const int Y_MAX_DIST = 20000;//real 200000;
+        private const int Z_MAX_DIST = 12500;//real 125000;
 
         private const int DEFAULT_SPEED_X = 100000;
         private const int MAX_SPEED_X = 300000;

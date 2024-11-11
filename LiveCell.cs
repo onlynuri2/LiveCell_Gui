@@ -159,7 +159,14 @@ namespace LiveCell_Gui
 
         private void button_tx_send_Click(object sender, EventArgs e)
         {
+#if false
             opto_serial_write(textBox_TX_data.Text, false);
+#else
+            if (opto_serial.IsOpen == false) this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "통신연결을 확인해주세요" });
+
+            this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { textBox_TX_data.Text });
+            opto_serial.Write(textBox_TX_data.Text);
+#endif
         }
 
         /************************************************************************************************
@@ -189,7 +196,7 @@ namespace LiveCell_Gui
             }
             else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : X Speed Value Something Wrong !" }); return; }
 
-            string senddata = "movesabs0" + ',' + tbcmdposx.Text + ',' + tbcmdspeedx.Text;
+            string senddata = "movesabs" + ',' + "0" + ',' + tbcmdposx.Text + ',' + tbcmdspeedx.Text;
             opto_serial_write(senddata, false);
         }
 
@@ -216,7 +223,7 @@ namespace LiveCell_Gui
             }
             else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Y Speed Value Something Wrong !" }); return; }
 
-            string senddata = "movesabs1" + ',' + tbcmdposy.Text + ',' + tbcmdspeedy.Text;
+            string senddata = "movesabs" + ',' + '1'  + ',' + tbcmdposy.Text + ',' + tbcmdspeedy.Text;
             opto_serial_write(senddata, false);
         }
 
@@ -242,7 +249,7 @@ namespace LiveCell_Gui
             }
             else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Z Speed Value Something Wrong !" }); return; }
 
-            string senddata = "movesabs2" + ',' + tbcmdposz.Text + ',' + tbcmdspeedz.Text;
+            string senddata = "movesabs" + ',' + '2'  + ',' + tbcmdposz.Text + ',' + tbcmdspeedz.Text;
             opto_serial_write(senddata, false);
         }
         /************************************************************************************************
@@ -250,7 +257,7 @@ namespace LiveCell_Gui
         *************************************************************************************************/
         private void btJogXinc_MouseDown(object sender, MouseEventArgs e)           /************************************* Jog X-axis inc ***************************************/
         {
-            string senddata = "movejog0,1";
+            string senddata = "movejog,0,1";
 
             int speed;
             if (int.TryParse(tbjogspeedx.Text, out speed))
@@ -269,13 +276,13 @@ namespace LiveCell_Gui
 
         private void btJogXinc_MouseUp(object sender, MouseEventArgs e)
         {
-            string senddata = "movestop0";
+            string senddata = "movestop,0";
             opto_serial_write(senddata, false);
         }
 
         private void btJogYinc_MouseDown(object sender, MouseEventArgs e)           /************************************* Jog Y-axis inc ***************************************/
         {
-            string senddata = "movejog1,1";
+            string senddata = "movejog,1,1";
 
             int speed;
             if (int.TryParse(tbjogspeedy.Text, out speed))
@@ -294,13 +301,13 @@ namespace LiveCell_Gui
 
         private void btJogYinc_MouseUp(object sender, MouseEventArgs e)
         {
-            string senddata = "movestop1";
+            string senddata = "movestop,1";
             opto_serial_write(senddata, false);
         }
 
         private void btJogZinc_MouseDown(object sender, MouseEventArgs e)           /************************************* Jog Z-axis inc ***************************************/
         {
-            string senddata = "movejog2,1";
+            string senddata = "movejog,2,1";
 
             int speed;
             if (int.TryParse(tbjogspeedz.Text, out speed))
@@ -318,7 +325,7 @@ namespace LiveCell_Gui
 
         private void btJogZinc_MouseUp(object sender, MouseEventArgs e)
         {
-            string senddata = "movestop2";
+            string senddata = "movestop,2";
             opto_serial_write(senddata, false);
         }
         /************************************************************************************************
@@ -326,7 +333,7 @@ namespace LiveCell_Gui
         *************************************************************************************************/
         private void btJogXdec_MouseDown(object sender, MouseEventArgs e)       /************************************* Jog X-axis dec ***************************************/
         {
-            string senddata = "movejog0,0";
+            string senddata = "movejog,0,0";
 
             int speed = 0;
             if (int.TryParse(tbjogspeedx.Text, out speed))
@@ -345,12 +352,12 @@ namespace LiveCell_Gui
 
         private void btJogXdec_MouseUp(object sender, MouseEventArgs e)
         {
-            string senddata = "movestop0";
+            string senddata = "movestop,0";
             opto_serial_write(senddata, false);
         }
         private void btJogYdec_MouseDown(object sender, MouseEventArgs e)       /************************************* Jog Y-axis dec ***************************************/
         {
-            string senddata = "movejog1,0";
+            string senddata = "movejog,1,0";
 
             int speed = 0;
             if (int.TryParse(tbjogspeedy.Text, out speed))
@@ -369,13 +376,13 @@ namespace LiveCell_Gui
 
         private void btJogYdec_MouseUp(object sender, MouseEventArgs e)
         {
-            string senddata = "movestop1";
+            string senddata = "movestop,1";
             opto_serial_write(senddata, false);
         }
 
         private void btJogZdec_MouseDown(object sender, MouseEventArgs e)       /************************************* Jog Z-axis dec ***************************************/
         {
-            string senddata = "movejog2,0";
+            string senddata = "movejog,2,0";
 
             int speed = 0;
             if (int.TryParse(tbjogspeedz.Text, out speed))
@@ -394,7 +401,7 @@ namespace LiveCell_Gui
 
         private void btJogZdec_MouseUp(object sender, MouseEventArgs e)
         {
-            string senddata = "movestop2";
+            string senddata = "movestop,2";
             opto_serial_write(senddata, false);
         }
         /************************************************************************************************
@@ -402,19 +409,19 @@ namespace LiveCell_Gui
         *************************************************************************************************/
         private void btHomeX_Click(object sender, EventArgs e)
         {
-            string senddata = "moveorg0";
+            string senddata = "moveorg,0";
             opto_serial_write(senddata, false);
         }
 
         private void btHomeY_Click(object sender, EventArgs e)
         {
-            string senddata = "moveorg1";
+            string senddata = "moveorg,1";
             opto_serial_write(senddata, false);
         }
 
         private void btHomeZ_Click(object sender, EventArgs e)
         {
-            string senddata = "moveorg2";
+            string senddata = "moveorg,2";
             opto_serial_write(senddata, false);
         }
 
@@ -516,28 +523,6 @@ namespace LiveCell_Gui
 
             senddata = "moveallorg";
             opto_serial_write(senddata, false);
-
-#if false
-            if (MotorLive[0] == 1)
-            {
-                senddata = "moveorg0";
-                opto_serial_write(senddata, false);
-                Thread.Sleep(DLEAY_10);
-            }
-
-            if (MotorLive[1] == 1)
-            {
-                senddata = "moveorg1";
-                opto_serial_write(senddata, false);
-                Thread.Sleep(DLEAY_10);
-            }
-
-            if (MotorLive[2] == 1)
-            {
-                senddata = "moveorg2";
-                opto_serial_write(senddata, false);
-            }
-#endif
         }
 
         /************************************************************************************************
