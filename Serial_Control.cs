@@ -209,9 +209,9 @@ namespace LiveCell_Gui
             {
                 //this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "TRY CONNECT Received" });
 
-                if (recv[14] == '1') { gbxaxis.BackColor = Color.Lavender; MotorLive[0] = 1; } else { gbxaxis.BackColor = Color.GhostWhite; }
-                if (recv[15] == '1') { gbyaxis.BackColor = Color.Lavender; MotorLive[1] = 1; } else { gbyaxis.BackColor = Color.GhostWhite; }
-                if (recv[16] == '1') { gbzaxis.BackColor = Color.Lavender; MotorLive[2] = 1; } else { gbzaxis.BackColor = Color.GhostWhite; }
+                if (recv[14] == '1') { gbxaxis.BackColor = Color.Lavender; MotorLive[0] = 1; } else { gbxaxis.BackColor = Color.Lavender; }
+                if (recv[15] == '1') { gbyaxis.BackColor = Color.Lavender; MotorLive[1] = 1; } else { gbyaxis.BackColor = Color.Lavender; }
+                if (recv[16] == '1') { gbzaxis.BackColor = Color.Lavender; MotorLive[2] = 1; } else { gbzaxis.BackColor = Color.Lavender; }
             }
             else if (recv.Contains(MCU_LIVE_TEST))
             {
@@ -221,17 +221,34 @@ namespace LiveCell_Gui
             {
                 string position = recv.Substring(10);
                 //this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "SERVO POS : " + recv });
-                if (recv[8] == 'x') { if (lbcurposx.InvokeRequired) { lbcurposx.Invoke(new MethodInvoker(delegate () { lbcurposx.Text = position; ; })); } else lbcurposx.Text = position; }
-                else if (recv[8] == 'y') { if (lbcurposy.InvokeRequired) { lbcurposy.Invoke(new MethodInvoker(delegate () { lbcurposy.Text = position; ; })); } else lbcurposy.Text = position; }
-                else if (recv[8] == 'z') { if (lbcurposz.InvokeRequired) { lbcurposz.Invoke(new MethodInvoker(delegate() { lbcurposz.Text = position; ; })); } else lbcurposz.Text = position; }
+                if (recv[8] == '0') { if (lbcurposx.InvokeRequired) { lbcurposx.Invoke(new MethodInvoker(delegate () { lbcurposx.Text = position; ; })); } else lbcurposx.Text = position; }
+                else if (recv[8] == '1') { if (lbcurposy.InvokeRequired) { lbcurposy.Invoke(new MethodInvoker(delegate () { lbcurposy.Text = position; ; })); } else lbcurposy.Text = position; }
+                else if (recv[8] == '2') { if (lbcurposz.InvokeRequired) { lbcurposz.Invoke(new MethodInvoker(delegate() { lbcurposz.Text = position; ; })); } else lbcurposz.Text = position; }
             }
             else if (recv.Contains(SERVO_STATUS))
             {
-                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { recv });
+                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' });
 
-                if(recv.Equals(SERVO_STATUS_IDLE)) { gbmotionctrl.BackColor = Color.GhostWhite; }
-                else if (recv.Equals(SERVO_STATUS_IDLE)) { gbmotionctrl.BackColor = Color.LightGreen; }
-                else { gbmotionctrl.BackColor = Color.Red; }
+                if (recv[11] == '0')
+                {
+                    if (recv.Contains("idle")) btMoveXasix.BackColor = Color.LightGreen;
+                    else if(recv.Contains("busy")) btMoveXasix.BackColor = Color.LightPink;
+                    else btMoveXasix.BackColor = Color.Red;
+                }
+                else if (recv[11] == '1')
+                {
+                    if (recv.Contains("idle")) btMoveYasix.BackColor = Color.LightGreen;
+                    else if (recv.Contains("busy")) btMoveYasix.BackColor = Color.LightPink;
+                    else btMoveYasix.BackColor = Color.Red;
+                }
+                if (recv[11] == '2')
+                {
+                    if (recv.Contains("idle")) btMoveZasix.BackColor = Color.LightGreen;
+                    else if (recv.Contains("busy")) btMoveZasix.BackColor = Color.LightPink;
+                    else btMoveZasix.BackColor = Color.Red;
+                }
+
+
             }
         }
         private void serial_DataReceived(object sender, SerialDataReceivedEventArgs e)

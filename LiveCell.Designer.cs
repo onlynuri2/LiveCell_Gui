@@ -267,7 +267,7 @@
             // 
             // gbzaxis
             // 
-            gbzaxis.BackColor = Color.GhostWhite;
+            gbzaxis.BackColor = Color.Lavender;
             gbzaxis.Controls.Add(gbHomePosZ);
             gbzaxis.Controls.Add(lbjogspeedlimitz);
             gbzaxis.Controls.Add(tbjogspeedz);
@@ -397,12 +397,13 @@
             // 
             // btMoveZasix
             // 
+            btMoveZasix.BackColor = SystemColors.ButtonFace;
             btMoveZasix.Location = new Point(16, 243);
             btMoveZasix.Name = "btMoveZasix";
             btMoveZasix.Size = new Size(260, 54);
             btMoveZasix.TabIndex = 6;
             btMoveZasix.Text = "Move Z-axis";
-            btMoveZasix.UseVisualStyleBackColor = true;
+            btMoveZasix.UseVisualStyleBackColor = false;
             btMoveZasix.Click += btMoveZasix_Click;
             // 
             // lbcurposz
@@ -471,7 +472,7 @@
             // 
             // gbyaxis
             // 
-            gbyaxis.BackColor = Color.GhostWhite;
+            gbyaxis.BackColor = Color.Lavender;
             gbyaxis.Controls.Add(gbHomePosY);
             gbyaxis.Controls.Add(lbjogspeedlimity);
             gbyaxis.Controls.Add(tbjogspeedy);
@@ -601,12 +602,13 @@
             // 
             // btMoveYasix
             // 
+            btMoveYasix.BackColor = SystemColors.ButtonFace;
             btMoveYasix.Location = new Point(16, 243);
             btMoveYasix.Name = "btMoveYasix";
             btMoveYasix.Size = new Size(260, 54);
             btMoveYasix.TabIndex = 6;
             btMoveYasix.Text = "Move Y-axis";
-            btMoveYasix.UseVisualStyleBackColor = true;
+            btMoveYasix.UseVisualStyleBackColor = false;
             btMoveYasix.Click += btMoveYasix_Click;
             // 
             // lbcurposy
@@ -675,7 +677,7 @@
             // 
             // gbxaxis
             // 
-            gbxaxis.BackColor = Color.GhostWhite;
+            gbxaxis.BackColor = Color.Lavender;
             gbxaxis.Controls.Add(gbHomePosX);
             gbxaxis.Controls.Add(lbjogspeedlimitx);
             gbxaxis.Controls.Add(tbjogspeedx);
@@ -805,12 +807,13 @@
             // 
             // btMoveXasix
             // 
+            btMoveXasix.BackColor = SystemColors.ButtonFace;
             btMoveXasix.Location = new Point(16, 243);
             btMoveXasix.Name = "btMoveXasix";
             btMoveXasix.Size = new Size(260, 54);
             btMoveXasix.TabIndex = 6;
             btMoveXasix.Text = "Move X-axis";
-            btMoveXasix.UseVisualStyleBackColor = true;
+            btMoveXasix.UseVisualStyleBackColor = false;
             btMoveXasix.Click += btMoveXasix_Click;
             // 
             // lbcurposx

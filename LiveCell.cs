@@ -62,9 +62,9 @@ namespace LiveCell_Gui
                     btdisconnection.BackColor = Color.Transparent;
                     groupBox_comport.BackColor = Color.Transparent;
 
-                    gbxaxis.BackColor = Color.GhostWhite;
-                    gbyaxis.BackColor = Color.GhostWhite;
-                    gbzaxis.BackColor = Color.GhostWhite;
+                    gbxaxis.BackColor = Color.Lavender;
+                    gbyaxis.BackColor = Color.Lavender;
+                    gbzaxis.BackColor = Color.Lavender;
                 }));
             }
         }
@@ -101,7 +101,8 @@ namespace LiveCell_Gui
         }
         private void LiveCell_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Disconnection();
+            //Disconnection();
+            opto_serial.Close();
         }
         private void btconnection_Click(object sender, EventArgs e)
         {
