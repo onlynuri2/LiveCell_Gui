@@ -88,6 +88,15 @@ namespace LiveCell_Gui
             lbjogspeedlimity.Text = "(0" + "~" + MAX_SPEED_Y.ToString() + ")";
             lbjogspeedlimitz.Text = "(0" + "~" + MAX_SPEED_Z.ToString() + ")";
 
+            tbcmdposx.Text = tbcmdposy.Text = tbcmdposz.Text = "0";
+            tbcmdspeedx.Text = Convert.ToString(DEFAULT_SPEED_X);
+            tbcmdspeedy.Text = Convert.ToString(DEFAULT_SPEED_Y);
+            tbcmdspeedz.Text = Convert.ToString(DEFAULT_SPEED_Z);
+
+            tbjogspeedx.Text = Convert.ToString(DEFAULT_SPEED_X);
+            tbjogspeedy.Text = Convert.ToString(DEFAULT_SPEED_Y);
+            tbjogspeedz.Text = Convert.ToString(DEFAULT_SPEED_Z);
+
             opto_serial.DataReceived += new SerialDataReceivedEventHandler(serial_DataReceived);
         }
         private void LiveCell_FormClosing(object sender, FormClosingEventArgs e)
@@ -607,25 +616,6 @@ namespace LiveCell_Gui
             {
                 e.Handled = true;
             }
-        }
-
-        private void tbcmdposx_TextChanged(object sender, EventArgs e)
-        {
-            int pos;
-            if (int.TryParse(tbcmdposx.Text, out pos))
-            {
-                if (pos > X_MAX_DIST)
-                {
-                    //this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : X Positon Limit !" });
-                    //tbcmdposx.Text = tbcmdposx.Text.Substring(0, tbcmdposx.Text.Length - 1);
-                    //tbcmdposx.SelectionStart = tbcmdposx.Text.Length;
-                }
-            }
-        }
-
-        private void tbcmdspeedx_TextChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

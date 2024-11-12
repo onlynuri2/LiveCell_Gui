@@ -435,14 +435,13 @@
             tbcmdspeedz.Name = "tbcmdspeedz";
             tbcmdspeedz.Size = new Size(147, 45);
             tbcmdspeedz.TabIndex = 3;
-            tbcmdspeedz.Text = "10000";
             tbcmdspeedz.TextAlign = HorizontalAlignment.Right;
             tbcmdspeedz.KeyPress += tbcmdspeedz_KeyPress;
             // 
             // tbcmdposz
             // 
             tbcmdposz.Location = new Point(131, 103);
-            tbcmdposz.MaxLength = 7;
+            tbcmdposz.MaxLength = 5;
             tbcmdposz.Name = "tbcmdposz";
             tbcmdposz.Size = new Size(147, 45);
             tbcmdposz.TabIndex = 2;
@@ -640,14 +639,13 @@
             tbcmdspeedy.Name = "tbcmdspeedy";
             tbcmdspeedy.Size = new Size(147, 45);
             tbcmdspeedy.TabIndex = 3;
-            tbcmdspeedy.Text = "80000";
             tbcmdspeedy.TextAlign = HorizontalAlignment.Right;
             tbcmdspeedy.KeyPress += tbcmdspeedy_KeyPress;
             // 
             // tbcmdposy
             // 
             tbcmdposy.Location = new Point(131, 103);
-            tbcmdposy.MaxLength = 7;
+            tbcmdposy.MaxLength = 5;
             tbcmdposy.Name = "tbcmdposy";
             tbcmdposy.Size = new Size(147, 45);
             tbcmdposy.TabIndex = 2;
@@ -845,21 +843,18 @@
             tbcmdspeedx.Name = "tbcmdspeedx";
             tbcmdspeedx.Size = new Size(147, 45);
             tbcmdspeedx.TabIndex = 3;
-            tbcmdspeedx.Text = "100000";
             tbcmdspeedx.TextAlign = HorizontalAlignment.Right;
-            tbcmdspeedx.TextChanged += tbcmdspeedx_TextChanged;
             tbcmdspeedx.KeyPress += tbcmdspeedx_KeyPress;
             // 
             // tbcmdposx
             // 
             tbcmdposx.Location = new Point(131, 103);
-            tbcmdposx.MaxLength = 7;
+            tbcmdposx.MaxLength = 6;
             tbcmdposx.Name = "tbcmdposx";
             tbcmdposx.Size = new Size(147, 45);
             tbcmdposx.TabIndex = 2;
             tbcmdposx.Text = "0";
             tbcmdposx.TextAlign = HorizontalAlignment.Right;
-            tbcmdposx.TextChanged += tbcmdposx_TextChanged;
             tbcmdposx.KeyPress += tbcmdposx_KeyPress;
             // 
             // lbcmdspeedx

@@ -19,28 +19,30 @@ namespace LiveCell_Gui
         /* Receive  */
 
         /* Send */
-        const string MCU_LIVE_TEST = "mculivetest";
+        const string MCU_LIVE_TEST = "mculive";
         const string TRY_CONNECT = "TryConnection";
-        const string SERVO_POS       = "ServoPos";
-
+        const string SERVO_POS       = "servopos";
+        const string SERVO_STATUS = "servostatus";
+        const string SERVO_STATUS_IDLE = "servostatusidle";
+        const string SERVO_STATUS_BUSY = "servostatusbusy";
         private SerialPort opto_serial = new SerialPort();        // 시리얼 포트 변수 생성
         string recv_str = string.Empty;
 
         private const int DLEAY_10 = 10;
         private const int DLEAY_20 = 20;
 
-        private const int X_MAX_DIST = 135000;//real 1350000;
+        private const int X_MAX_DIST = 120000;//real 1350000;
         private const int Y_MAX_DIST = 20000;//real 200000;
-        private const int Z_MAX_DIST = 12500;//real 125000;
+        private const int Z_MAX_DIST = 20000;//real 125000;
 
-        private const int DEFAULT_SPEED_X = 100000;
         private const int MAX_SPEED_X = 300000;
+        private const int DEFAULT_SPEED_X = 100000;
 
-        private const int DEFAULT_SPEED_Y = 80000;
         private const int MAX_SPEED_Y = 100000;
+        private const int DEFAULT_SPEED_Y = 80000;
 
-        private const int DEFAULT_SPEED_Z = 10000;
         private const int MAX_SPEED_Z = 50000;
+        private const int DEFAULT_SPEED_Z = 20000;
 
 
         private void Connection()
@@ -218,21 +220,18 @@ namespace LiveCell_Gui
             else if (recv.Contains(SERVO_POS))
             {
                 string position = recv.Substring(10);
-
                 //this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "SERVO POS : " + recv });
-#if false
-                Invoke(new Action(() =>
+                if (recv[8] == 'x') { if (lbcurposx.InvokeRequired) { lbcurposx.Invoke(new MethodInvoker(delegate () { lbcurposx.Text = position; ; })); } else lbcurposx.Text = position; }
+                else if (recv[8] == 'y') { if (lbcurposy.InvokeRequired) { lbcurposy.Invoke(new MethodInvoker(delegate () { lbcurposy.Text = position; ; })); } else lbcurposy.Text = position; }
+                else if (recv[8] == 'z') { if (lbcurposz.InvokeRequired) { lbcurposz.Invoke(new MethodInvoker(delegate() { lbcurposz.Text = position; ; })); } else lbcurposz.Text = position; }
+            }
+            else if (recv.Contains(SERVO_STATUS))
             {
-                if (recv[8] == 'X') lbcurposx.Text = position;
-                else if (recv[8] == 'Y') lbcurposy.Text = position;
-                //else if (recv[8] == '0') lbcurposz.Text = position;
-            }));
-#endif
-#if true
-                if (recv[8] == 'X') { if (lbcurposx.InvokeRequired) { lbcurposx.Invoke(new MethodInvoker(delegate () { lbcurposx.Text = position; ; })); } else lbcurposx.Text = position; }
-                else if (recv[8] == 'Y') { if (lbcurposy.InvokeRequired) { lbcurposy.Invoke(new MethodInvoker(delegate () { lbcurposy.Text = position; ; })); } else lbcurposy.Text = position; }
-                //else if (recv[8] == 'Z') { if (lbcurposz.InvokeRequired) { lbcurposz.Invoke(new MethodInvoker(delegate() { lbcurposz.Text = position; ; })); } else lbcurposz.Text = position; }
-#endif
+                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { recv });
+
+                if(recv.Equals(SERVO_STATUS_IDLE)) { gbmotionctrl.BackColor = Color.GhostWhite; }
+                else if (recv.Equals(SERVO_STATUS_IDLE)) { gbmotionctrl.BackColor = Color.LightGreen; }
+                else { gbmotionctrl.BackColor = Color.Red; }
             }
         }
         private void serial_DataReceived(object sender, SerialDataReceivedEventArgs e)
