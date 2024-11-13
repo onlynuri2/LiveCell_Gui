@@ -220,7 +220,7 @@ namespace LiveCell_Gui
             else if (recv.Contains(SERVO_POS))
             {
                 string position = recv.Substring(10);
-                //this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "SERVO POS : " + recv });
+                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' });
                 if (recv[8] == '0') { if (lbcurposx.InvokeRequired) { lbcurposx.Invoke(new MethodInvoker(delegate () { lbcurposx.Text = position; ; })); } else lbcurposx.Text = position; }
                 else if (recv[8] == '1') { if (lbcurposy.InvokeRequired) { lbcurposy.Invoke(new MethodInvoker(delegate () { lbcurposy.Text = position; ; })); } else lbcurposy.Text = position; }
                 else if (recv[8] == '2') { if (lbcurposz.InvokeRequired) { lbcurposz.Invoke(new MethodInvoker(delegate() { lbcurposz.Text = position; ; })); } else lbcurposz.Text = position; }
@@ -231,20 +231,20 @@ namespace LiveCell_Gui
 
                 if (recv[11] == '0')
                 {
-                    if (recv.Contains("idle")) btMoveXasix.BackColor = Color.LightGreen;
-                    else if(recv.Contains("busy")) btMoveXasix.BackColor = Color.LightPink;
+                    if (recv.Contains("idle")) btMoveXasix.BackColor = Color.LightCyan;
+                    else if(recv.Contains("busy")) btMoveXasix.BackColor = Color.MistyRose;
                     else btMoveXasix.BackColor = Color.Red;
                 }
                 else if (recv[11] == '1')
                 {
-                    if (recv.Contains("idle")) btMoveYasix.BackColor = Color.LightGreen;
-                    else if (recv.Contains("busy")) btMoveYasix.BackColor = Color.LightPink;
+                    if (recv.Contains("idle")) btMoveYasix.BackColor = Color.LightCyan;
+                    else if (recv.Contains("busy")) btMoveYasix.BackColor = Color.MistyRose;
                     else btMoveYasix.BackColor = Color.Red;
                 }
                 if (recv[11] == '2')
                 {
-                    if (recv.Contains("idle")) btMoveZasix.BackColor = Color.LightGreen;
-                    else if (recv.Contains("busy")) btMoveZasix.BackColor = Color.LightPink;
+                    if (recv.Contains("idle")) btMoveZasix.BackColor = Color.LightCyan;
+                    else if (recv.Contains("busy")) btMoveZasix.BackColor = Color.MistyRose;
                     else btMoveZasix.BackColor = Color.Red;
                 }
 

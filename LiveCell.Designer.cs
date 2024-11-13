@@ -114,13 +114,14 @@
             // 
             // btconnection
             // 
+            btconnection.BackColor = Color.LightBlue;
             btconnection.Font = new Font("맑은 고딕", 16F, FontStyle.Regular, GraphicsUnit.Point, 129);
             btconnection.Location = new Point(14, 110);
             btconnection.Name = "btconnection";
             btconnection.Size = new Size(125, 56);
             btconnection.TabIndex = 0;
             btconnection.Text = "연결";
-            btconnection.UseVisualStyleBackColor = true;
+            btconnection.UseVisualStyleBackColor = false;
             btconnection.Click += btconnection_Click;
             // 
             // groupBox_comport
@@ -888,7 +889,9 @@
             Controls.Add(gbmotionctrl);
             Controls.Add(gbTransfer);
             Controls.Add(groupBox_comport);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
             Name = "LiveCell";
             Text = "LiveCell";
             FormClosing += LiveCell_FormClosing;
