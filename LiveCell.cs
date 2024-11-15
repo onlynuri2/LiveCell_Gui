@@ -62,9 +62,13 @@ namespace LiveCell_Gui
                     btdisconnection.BackColor = Color.Transparent;
                     groupBox_comport.BackColor = Color.Transparent;
 
-                    gbxaxis.BackColor = Color.Lavender;
-                    gbyaxis.BackColor = Color.Lavender;
-                    gbzaxis.BackColor = Color.Lavender;
+                    gbxaxis.BackColor = SystemColors.ButtonFace;
+                    gbyaxis.BackColor = SystemColors.ButtonFace;
+                    gbzaxis.BackColor = SystemColors.ButtonFace;
+
+                    btMoveXasix.BackColor = SystemColors.ButtonFace;
+                    btMoveYasix.BackColor = SystemColors.ButtonFace;
+                    btMoveZasix.BackColor = SystemColors.ButtonFace;
                 }));
             }
         }
@@ -172,7 +176,7 @@ namespace LiveCell_Gui
 #if false
             opto_serial_write(textBox_TX_data.Text, false);
 #else
-            if (opto_serial.IsOpen == false) this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "통신연결을 확인해주세요" });
+            if (opto_serial.IsOpen == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "통신연결을 확인해주세요" }); return; }
 
             this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { textBox_TX_data.Text });
             opto_serial.Write(textBox_TX_data.Text);
@@ -198,8 +202,9 @@ namespace LiveCell_Gui
 
             if (int.TryParse(tbcmdspeedx.Text, out speed))
             {
-                if (speed > MAX_SPEED_X) {
-                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed X-axis!" }); 
+                if (speed > MAX_SPEED_X)
+                {
+                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed X-axis!" });
                     MessageBox.Show(Form.ActiveForm, "Max Speed Exceed X-axis!", "Error");
                     return;
                 }
@@ -215,7 +220,8 @@ namespace LiveCell_Gui
             int pos, speed;
             if (int.TryParse(tbcmdposy.Text, out pos))
             {
-                if (pos > Y_MAX_DIST) {
+                if (pos > Y_MAX_DIST)
+                {
                     this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed Y-axis!" });
                     MessageBox.Show(Form.ActiveForm, "Max Postiton Exceed Y-axis!", "Error");
                     return;
@@ -225,7 +231,8 @@ namespace LiveCell_Gui
 
             if (int.TryParse(tbcmdspeedy.Text, out speed))
             {
-                if (speed > MAX_SPEED_Y) {
+                if (speed > MAX_SPEED_Y)
+                {
                     this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed Y-axis!" });
                     MessageBox.Show(Form.ActiveForm, "Max Speed Exceed Y-axis!", "Error");
                     return;
@@ -233,7 +240,7 @@ namespace LiveCell_Gui
             }
             else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Y Speed Value Something Wrong !" }); return; }
 
-            string senddata = "movesabs" + ',' + '1'  + ',' + tbcmdposy.Text + ',' + tbcmdspeedy.Text;
+            string senddata = "movesabs" + ',' + '1' + ',' + tbcmdposy.Text + ',' + tbcmdspeedy.Text;
             opto_serial_write(senddata, false);
         }
 
@@ -242,7 +249,8 @@ namespace LiveCell_Gui
             int pos, speed;
             if (int.TryParse(tbcmdposz.Text, out pos))
             {
-                if (pos > Z_MAX_DIST) {
+                if (pos > Z_MAX_DIST)
+                {
                     this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed Z-axis!" });
                     MessageBox.Show(Form.ActiveForm, "Max Postiton Exceed Z-axis!", "Error");
                     return;
@@ -252,14 +260,16 @@ namespace LiveCell_Gui
 
             if (int.TryParse(tbcmdspeedz.Text, out speed))
             {
-                if (speed > MAX_SPEED_Z) {
+                if (speed > MAX_SPEED_Z)
+                {
                     this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed Z-axis!" });
                     MessageBox.Show(Form.ActiveForm, "Max Speed Exceed Z-axis!", "Error");
-                    return; }
+                    return;
+                }
             }
             else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Z Speed Value Something Wrong !" }); return; }
 
-            string senddata = "movesabs" + ',' + '2'  + ',' + tbcmdposz.Text + ',' + tbcmdspeedz.Text;
+            string senddata = "movesabs" + ',' + '2' + ',' + tbcmdposz.Text + ',' + tbcmdspeedz.Text;
             opto_serial_write(senddata, false);
         }
         /************************************************************************************************
@@ -276,7 +286,7 @@ namespace LiveCell_Gui
                 {
                     this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed X-axis!" });
                     MessageBox.Show(Form.ActiveForm, "Max Speed Exceed X-axis!", "Error");
-                    return; 
+                    return;
                 }
                 if (speed > 0) senddata += ',' + tbjogspeedx.Text;
             }
@@ -322,7 +332,8 @@ namespace LiveCell_Gui
             int speed;
             if (int.TryParse(tbjogspeedz.Text, out speed))
             {
-                if (speed > MAX_SPEED_Z){
+                if (speed > MAX_SPEED_Z)
+                {
                     this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Z-axis!" });
                     MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  Z-axis!", "Error");
                     return;
@@ -617,6 +628,39 @@ namespace LiveCell_Gui
             {
                 e.Handled = true;
             }
+        }
+
+        private void btledonoff_Click(object sender, EventArgs e)
+        {
+            if (opto_serial.IsOpen == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "통신연결을 확인해주세요" }); return; }
+
+            int brightness;
+            if (int.TryParse(tbledbr.Text, out brightness))
+            {
+                if(false)//if ((brightness == 0) || (brightness > LED_BR_MAX))
+                {
+                    string errstr;
+
+                    if (brightness == 0) errstr = "Check LED Value!";
+                    else errstr = "LED Max Brightness Exceed !";
+
+                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : " + errstr });
+                    MessageBox.Show(Form.ActiveForm, errstr, "Error");
+                    return;
+                }
+            }
+
+            btledon.BackColor = Color.LightGreen;
+            string senddata = "ledbrightness" + ',' + tbledbr.Text;
+            opto_serial_write(senddata, false);
+        }
+
+        private void btledoff_Click(object sender, EventArgs e)
+        {
+            btledon.BackColor = SystemColors.ButtonFace; ;
+
+            string senddata = "ledbrightness" + ',' + "0";
+            opto_serial_write(senddata, false);
         }
     }
 }

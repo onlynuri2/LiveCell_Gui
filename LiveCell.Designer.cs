@@ -40,6 +40,11 @@
             textBox_TX_data = new TextBox();
             button_tx_send = new Button();
             gbmotionctrl = new GroupBox();
+            groupBox1 = new GroupBox();
+            btledoff = new Button();
+            label1 = new Label();
+            btledon = new Button();
+            tbledbr = new TextBox();
             gbxyzaxis = new GroupBox();
             btHomeXYZ = new Button();
             btMoveXYZasix = new Button();
@@ -100,6 +105,7 @@
             groupBox_comport.SuspendLayout();
             gbTransfer.SuspendLayout();
             gbmotionctrl.SuspendLayout();
+            groupBox1.SuspendLayout();
             gbxyzaxis.SuspendLayout();
             gbzaxis.SuspendLayout();
             gbHomePosZ.SuspendLayout();
@@ -221,7 +227,8 @@
             // 
             // gbmotionctrl
             // 
-            gbmotionctrl.BackColor = Color.GhostWhite;
+            gbmotionctrl.BackColor = Color.FromArgb(240, 250, 255);
+            gbmotionctrl.Controls.Add(groupBox1);
             gbmotionctrl.Controls.Add(gbxyzaxis);
             gbmotionctrl.Controls.Add(gbzaxis);
             gbmotionctrl.Controls.Add(gbyaxis);
@@ -234,6 +241,61 @@
             gbmotionctrl.TabStop = false;
             gbmotionctrl.Text = "Motion Control";
             // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(btledoff);
+            groupBox1.Controls.Add(label1);
+            groupBox1.Controls.Add(btledon);
+            groupBox1.Controls.Add(tbledbr);
+            groupBox1.Font = new Font("맑은 고딕", 14F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            groupBox1.Location = new Point(713, 695);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(289, 134);
+            groupBox1.TabIndex = 17;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "LED 밝기";
+            // 
+            // btledoff
+            // 
+            btledoff.BackColor = SystemColors.ButtonFace;
+            btledoff.Location = new Point(189, 48);
+            btledoff.Name = "btledoff";
+            btledoff.Size = new Size(84, 54);
+            btledoff.TabIndex = 16;
+            btledoff.Text = "OFF";
+            btledoff.UseVisualStyleBackColor = false;
+            btledoff.Click += btledoff_Click;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            label1.Location = new Point(6, 104);
+            label1.Name = "label1";
+            label1.Size = new Size(95, 25);
+            label1.TabIndex = 15;
+            label1.Text = "(1~10000)";
+            // 
+            // btledon
+            // 
+            btledon.BackColor = SystemColors.ButtonFace;
+            btledon.Location = new Point(16, 49);
+            btledon.Name = "btledon";
+            btledon.Size = new Size(73, 54);
+            btledon.TabIndex = 1;
+            btledon.Text = "ON";
+            btledon.UseVisualStyleBackColor = false;
+            btledon.Click += btledonoff_Click;
+            // 
+            // tbledbr
+            // 
+            tbledbr.Location = new Point(93, 54);
+            tbledbr.MaxLength = 5;
+            tbledbr.Name = "tbledbr";
+            tbledbr.Size = new Size(90, 45);
+            tbledbr.TabIndex = 0;
+            tbledbr.TextAlign = HorizontalAlignment.Right;
+            // 
             // gbxyzaxis
             // 
             gbxyzaxis.Controls.Add(btHomeXYZ);
@@ -241,34 +303,36 @@
             gbxyzaxis.Font = new Font("맑은 고딕", 14F, FontStyle.Regular, GraphicsUnit.Point, 129);
             gbxyzaxis.Location = new Point(46, 695);
             gbxyzaxis.Name = "gbxyzaxis";
-            gbxyzaxis.Size = new Size(956, 134);
+            gbxyzaxis.Size = new Size(626, 134);
             gbxyzaxis.TabIndex = 16;
             gbxyzaxis.TabStop = false;
             gbxyzaxis.Text = "XYZ-axis";
             // 
             // btHomeXYZ
             // 
+            btHomeXYZ.BackColor = SystemColors.ButtonFace;
             btHomeXYZ.Location = new Point(349, 49);
             btHomeXYZ.Name = "btHomeXYZ";
             btHomeXYZ.Size = new Size(260, 54);
             btHomeXYZ.TabIndex = 18;
             btHomeXYZ.Text = "Home XYZ-axis";
-            btHomeXYZ.UseVisualStyleBackColor = true;
+            btHomeXYZ.UseVisualStyleBackColor = false;
             btHomeXYZ.Click += btHomeXYZ_Click;
             // 
             // btMoveXYZasix
             // 
+            btMoveXYZasix.BackColor = SystemColors.ButtonFace;
             btMoveXYZasix.Location = new Point(16, 49);
             btMoveXYZasix.Name = "btMoveXYZasix";
             btMoveXYZasix.Size = new Size(260, 54);
             btMoveXYZasix.TabIndex = 17;
             btMoveXYZasix.Text = "Move XYZ-axis";
-            btMoveXYZasix.UseVisualStyleBackColor = true;
+            btMoveXYZasix.UseVisualStyleBackColor = false;
             btMoveXYZasix.Click += btMoveXYZasix_Click;
             // 
             // gbzaxis
             // 
-            gbzaxis.BackColor = Color.Lavender;
+            gbzaxis.BackColor = SystemColors.ButtonFace;
             gbzaxis.Controls.Add(gbHomePosZ);
             gbzaxis.Controls.Add(lbjogspeedlimitz);
             gbzaxis.Controls.Add(tbjogspeedz);
@@ -303,12 +367,13 @@
             // 
             // btHomeZ
             // 
+            btHomeZ.BackColor = SystemColors.ButtonFace;
             btHomeZ.Location = new Point(0, 50);
             btHomeZ.Name = "btHomeZ";
             btHomeZ.Size = new Size(260, 54);
             btHomeZ.TabIndex = 0;
             btHomeZ.Text = "Home Z-axis";
-            btHomeZ.UseVisualStyleBackColor = true;
+            btHomeZ.UseVisualStyleBackColor = false;
             btHomeZ.Click += btHomeZ_Click;
             // 
             // lbjogspeedlimitz
@@ -376,23 +441,25 @@
             // 
             // btJogZinc
             // 
+            btJogZinc.BackColor = SystemColors.ButtonFace;
             btJogZinc.Location = new Point(155, 100);
             btJogZinc.Name = "btJogZinc";
             btJogZinc.Size = new Size(102, 41);
             btJogZinc.TabIndex = 1;
             btJogZinc.Text = "Jog(+)";
-            btJogZinc.UseVisualStyleBackColor = true;
+            btJogZinc.UseVisualStyleBackColor = false;
             btJogZinc.MouseDown += btJogZinc_MouseDown;
             btJogZinc.MouseUp += btJogZinc_MouseUp;
             // 
             // btJogZdec
             // 
+            btJogZdec.BackColor = SystemColors.ButtonFace;
             btJogZdec.Location = new Point(3, 100);
             btJogZdec.Name = "btJogZdec";
             btJogZdec.Size = new Size(102, 41);
             btJogZdec.TabIndex = 0;
             btJogZdec.Text = "Jog(-)";
-            btJogZdec.UseVisualStyleBackColor = true;
+            btJogZdec.UseVisualStyleBackColor = false;
             btJogZdec.MouseDown += btJogZdec_MouseDown;
             btJogZdec.MouseUp += btJogZdec_MouseUp;
             // 
@@ -473,7 +540,7 @@
             // 
             // gbyaxis
             // 
-            gbyaxis.BackColor = Color.Lavender;
+            gbyaxis.BackColor = SystemColors.ButtonFace;
             gbyaxis.Controls.Add(gbHomePosY);
             gbyaxis.Controls.Add(lbjogspeedlimity);
             gbyaxis.Controls.Add(tbjogspeedy);
@@ -508,12 +575,13 @@
             // 
             // btHomeY
             // 
+            btHomeY.BackColor = SystemColors.ButtonFace;
             btHomeY.Location = new Point(0, 50);
             btHomeY.Name = "btHomeY";
             btHomeY.Size = new Size(260, 54);
             btHomeY.TabIndex = 0;
             btHomeY.Text = "Home Y-axis";
-            btHomeY.UseVisualStyleBackColor = true;
+            btHomeY.UseVisualStyleBackColor = false;
             btHomeY.Click += btHomeY_Click;
             // 
             // lbjogspeedlimity
@@ -581,23 +649,25 @@
             // 
             // btJogYinc
             // 
+            btJogYinc.BackColor = SystemColors.ButtonFace;
             btJogYinc.Location = new Point(155, 100);
             btJogYinc.Name = "btJogYinc";
             btJogYinc.Size = new Size(102, 41);
             btJogYinc.TabIndex = 1;
             btJogYinc.Text = "Jog(+)";
-            btJogYinc.UseVisualStyleBackColor = true;
+            btJogYinc.UseVisualStyleBackColor = false;
             btJogYinc.MouseDown += btJogYinc_MouseDown;
             btJogYinc.MouseUp += btJogYinc_MouseUp;
             // 
             // btJogYdec
             // 
+            btJogYdec.BackColor = SystemColors.ButtonFace;
             btJogYdec.Location = new Point(3, 100);
             btJogYdec.Name = "btJogYdec";
             btJogYdec.Size = new Size(102, 41);
             btJogYdec.TabIndex = 0;
             btJogYdec.Text = "Jog(-)";
-            btJogYdec.UseVisualStyleBackColor = true;
+            btJogYdec.UseVisualStyleBackColor = false;
             btJogYdec.MouseDown += btJogYdec_MouseDown;
             btJogYdec.MouseUp += btJogYdec_MouseUp;
             // 
@@ -678,7 +748,7 @@
             // 
             // gbxaxis
             // 
-            gbxaxis.BackColor = Color.Lavender;
+            gbxaxis.BackColor = SystemColors.ButtonFace;
             gbxaxis.Controls.Add(gbHomePosX);
             gbxaxis.Controls.Add(lbjogspeedlimitx);
             gbxaxis.Controls.Add(tbjogspeedx);
@@ -713,12 +783,13 @@
             // 
             // btHomeX
             // 
+            btHomeX.BackColor = SystemColors.ButtonFace;
             btHomeX.Location = new Point(0, 50);
             btHomeX.Name = "btHomeX";
             btHomeX.Size = new Size(260, 54);
             btHomeX.TabIndex = 0;
             btHomeX.Text = "Home X-axis";
-            btHomeX.UseVisualStyleBackColor = true;
+            btHomeX.UseVisualStyleBackColor = false;
             btHomeX.Click += btHomeX_Click;
             // 
             // lbjogspeedlimitx
@@ -786,23 +857,25 @@
             // 
             // btJogXinc
             // 
+            btJogXinc.BackColor = SystemColors.ButtonFace;
             btJogXinc.Location = new Point(157, 100);
             btJogXinc.Name = "btJogXinc";
             btJogXinc.Size = new Size(100, 40);
             btJogXinc.TabIndex = 1;
             btJogXinc.Text = "Jog(+)";
-            btJogXinc.UseVisualStyleBackColor = true;
+            btJogXinc.UseVisualStyleBackColor = false;
             btJogXinc.MouseDown += btJogXinc_MouseDown;
             btJogXinc.MouseUp += btJogXinc_MouseUp;
             // 
             // btJogXdec
             // 
+            btJogXdec.BackColor = SystemColors.ButtonFace;
             btJogXdec.Location = new Point(3, 100);
             btJogXdec.Name = "btJogXdec";
             btJogXdec.Size = new Size(100, 40);
             btJogXdec.TabIndex = 0;
             btJogXdec.Text = "Jog(-)";
-            btJogXdec.UseVisualStyleBackColor = true;
+            btJogXdec.UseVisualStyleBackColor = false;
             btJogXdec.MouseDown += btJogXdec_MouseDown;
             btJogXdec.MouseUp += btJogXdec_MouseUp;
             // 
@@ -901,6 +974,8 @@
             gbTransfer.ResumeLayout(false);
             gbTransfer.PerformLayout();
             gbmotionctrl.ResumeLayout(false);
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
             gbxyzaxis.ResumeLayout(false);
             gbzaxis.ResumeLayout(false);
             gbzaxis.PerformLayout();
@@ -987,5 +1062,10 @@
         private GroupBox gbxyzaxis;
         private Button btHomeXYZ;
         private Button btMoveXYZasix;
+        private GroupBox groupBox1;
+        private TextBox tbledbr;
+        private Label label1;
+        private Button btledon;
+        private Button btledoff;
     }
 }

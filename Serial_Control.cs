@@ -44,6 +44,7 @@ namespace LiveCell_Gui
         private const int MAX_SPEED_Z = 50000;
         private const int DEFAULT_SPEED_Z = 20000;
 
+        private const int LED_BR_MAX = 10000;
 
         private void Connection()
         {
