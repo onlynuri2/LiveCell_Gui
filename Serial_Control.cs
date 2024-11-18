@@ -20,11 +20,13 @@ namespace LiveCell_Gui
 
         /* Send */
         const string MCU_LIVE_TEST = "mculive";
+        const string MOTOR_LIVE_TEST = "motorlive";
         const string TRY_CONNECT = "TryConnection";
-        const string SERVO_POS       = "servopos";
-        const string SERVO_STATUS = "servostatus";
-        const string SERVO_STATUS_IDLE = "servostatusidle";
-        const string SERVO_STATUS_BUSY = "servostatusbusy";
+        const string MOTOR_STATUS_REQ = "motorstatusreq"; 
+        const string MOTOR_POS = "motorpos";
+        const string MOTOR_STATUS = "motorstatus";
+        const string MOTOR_STATUS_IDLE = "motorstatusidle"; 
+        const string MOTOR_STATUS_BUSY = "motorstatusbusy";
         private SerialPort opto_serial = new SerialPort();        // 시리얼 포트 변수 생성
         string recv_str = string.Empty;
 
@@ -196,6 +198,8 @@ namespace LiveCell_Gui
             }
             else
             {
+                if (str.Contains(TRY_CONNECT)) return true;
+
                 this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { str  + " Transfer Success"});
                 return true;
             }
@@ -208,32 +212,36 @@ namespace LiveCell_Gui
             /*********************************************************************************/
             if (recv.Contains(TRY_CONNECT))
             {
-                //this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "TRY CONNECT Received" });
+                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' });
 
-                if (recv[14] == '1') { gbxaxis.BackColor = Color.Lavender; MotorLive[0] = 1; } else { gbxaxis.BackColor = Color.Lavender; }
-                if (recv[15] == '1') { gbyaxis.BackColor = Color.Lavender; MotorLive[1] = 1; } else { gbyaxis.BackColor = Color.Lavender; }
-                if (recv[16] == '1') { gbzaxis.BackColor = Color.Lavender; MotorLive[2] = 1; } else { gbzaxis.BackColor = Color.Lavender; }
+                if (recv[14] == '1') { gbxaxis.BackColor = Color.Lavender; MotorLive[0] = 1; } else { gbxaxis.BackColor = SystemColors.ButtonFace; }
+                if (recv[15] == '1') { gbyaxis.BackColor = Color.Lavender; MotorLive[1] = 1; } else { gbyaxis.BackColor = SystemColors.ButtonFace; }
+                if (recv[16] == '1') { gbzaxis.BackColor = Color.Lavender; MotorLive[2] = 1; } else { gbzaxis.BackColor = SystemColors.ButtonFace; }
             }
-            else if (recv.Contains(MCU_LIVE_TEST))
+            else if (recv.Contains(MOTOR_LIVE_TEST))
             {
-                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "MCU LIVE TEST Received" });
+                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' });
             }
-            else if (recv.Contains(SERVO_POS))
+            else if (recv.Contains(MOTOR_POS))
             {
                 string position = recv.Substring(10);
-                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' });
+                if (cbdebug.Checked == true) this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' });
                 if (recv[8] == '0') { if (lbcurposx.InvokeRequired) { lbcurposx.Invoke(new MethodInvoker(delegate () { lbcurposx.Text = position; ; })); } else lbcurposx.Text = position; }
                 else if (recv[8] == '1') { if (lbcurposy.InvokeRequired) { lbcurposy.Invoke(new MethodInvoker(delegate () { lbcurposy.Text = position; ; })); } else lbcurposy.Text = position; }
-                else if (recv[8] == '2') { if (lbcurposz.InvokeRequired) { lbcurposz.Invoke(new MethodInvoker(delegate() { lbcurposz.Text = position; ; })); } else lbcurposz.Text = position; }
+                else if (recv[8] == '2') { if (lbcurposz.InvokeRequired) { lbcurposz.Invoke(new MethodInvoker(delegate () { lbcurposz.Text = position; ; })); } else lbcurposz.Text = position; }
             }
-            else if (recv.Contains(SERVO_STATUS))
+            else if (recv.Contains(MOTOR_STATUS_REQ))
             {
                 this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' });
+            }
+            else if (recv.Contains(MOTOR_STATUS))
+            {
+                if (cbdebug.Checked == true) this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' });
 
                 if (recv[11] == '0')
                 {
                     if (recv.Contains("idle")) btMoveXasix.BackColor = Color.LightCyan;
-                    else if(recv.Contains("busy")) btMoveXasix.BackColor = Color.MistyRose;
+                    else if (recv.Contains("busy")) btMoveXasix.BackColor = Color.MistyRose;
                     else btMoveXasix.BackColor = Color.Red;
                 }
                 else if (recv[11] == '1')
@@ -248,8 +256,6 @@ namespace LiveCell_Gui
                     else if (recv.Contains("busy")) btMoveZasix.BackColor = Color.MistyRose;
                     else btMoveZasix.BackColor = Color.Red;
                 }
-
-
             }
         }
         private void serial_DataReceived(object sender, SerialDataReceivedEventArgs e)

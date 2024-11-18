@@ -77,7 +77,7 @@ namespace LiveCell_Gui
             //Populate the Combobox with SerialPorts on the System
             comport_info_update();
 
-            this.Text = "LiveCell - " + "V1.0";
+            this.Text = "LiveCell Motion Test - " + "V1.0.0";
 
             lbxmaxdistance.Text = "(0" + "~" + X_MAX_DIST.ToString() + ")";
             lbxmaxspeed.Text = "(0" + "~" + MAX_SPEED_X.ToString() + ")";
@@ -637,7 +637,7 @@ namespace LiveCell_Gui
             int brightness;
             if (int.TryParse(tbledbr.Text, out brightness))
             {
-                if(false)//if ((brightness == 0) || (brightness > LED_BR_MAX))
+                if ((brightness == 0) || (brightness > LED_BR_MAX))
                 {
                     string errstr;
 

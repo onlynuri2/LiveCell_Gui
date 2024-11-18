@@ -36,6 +36,7 @@
             btdisconnection = new Button();
             textBox_RX_data = new TextBox();
             gbTransfer = new GroupBox();
+            cbdebug = new CheckBox();
             button_disp_clear = new Button();
             textBox_TX_data = new TextBox();
             button_tx_send = new Button();
@@ -187,6 +188,7 @@
             // 
             // gbTransfer
             // 
+            gbTransfer.Controls.Add(cbdebug);
             gbTransfer.Controls.Add(button_disp_clear);
             gbTransfer.Controls.Add(textBox_RX_data);
             gbTransfer.Controls.Add(textBox_TX_data);
@@ -198,9 +200,19 @@
             gbTransfer.TabStop = false;
             gbTransfer.Text = "송신";
             // 
+            // cbdebug
+            // 
+            cbdebug.AutoSize = true;
+            cbdebug.Location = new Point(718, 32);
+            cbdebug.Name = "cbdebug";
+            cbdebug.Size = new Size(51, 29);
+            cbdebug.TabIndex = 5;
+            cbdebug.Text = "D";
+            cbdebug.UseVisualStyleBackColor = true;
+            // 
             // button_disp_clear
             // 
-            button_disp_clear.Location = new Point(661, 27);
+            button_disp_clear.Location = new Point(612, 29);
             button_disp_clear.Name = "button_disp_clear";
             button_disp_clear.Size = new Size(103, 34);
             button_disp_clear.TabIndex = 4;
@@ -210,9 +222,9 @@
             // 
             // textBox_TX_data
             // 
-            textBox_TX_data.Location = new Point(123, 30);
+            textBox_TX_data.Location = new Point(120, 31);
             textBox_TX_data.Name = "textBox_TX_data";
-            textBox_TX_data.Size = new Size(531, 31);
+            textBox_TX_data.Size = new Size(490, 31);
             textBox_TX_data.TabIndex = 4;
             // 
             // button_tx_send
@@ -958,7 +970,7 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1065, 1035);
+            ClientSize = new Size(1067, 1035);
             Controls.Add(gbmotionctrl);
             Controls.Add(gbTransfer);
             Controls.Add(groupBox_comport);
@@ -966,7 +978,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "LiveCell";
-            Text = "LiveCell";
+            Text = "LiveCell Motion Test";
             FormClosing += LiveCell_FormClosing;
             Load += LiveCell_Load;
             groupBox_comport.ResumeLayout(false);
@@ -1067,5 +1079,6 @@
         private Label label1;
         private Button btledon;
         private Button btledoff;
+        private CheckBox cbdebug;
     }
 }
