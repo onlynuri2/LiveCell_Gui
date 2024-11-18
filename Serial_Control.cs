@@ -226,9 +226,9 @@ namespace LiveCell_Gui
             {
                 string position = recv.Substring(10);
                 if (cbdebug.Checked == true) this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' });
-                if (recv[8] == '0') { if (lbcurposx.InvokeRequired) { lbcurposx.Invoke(new MethodInvoker(delegate () { lbcurposx.Text = position; ; })); } else lbcurposx.Text = position; }
-                else if (recv[8] == '1') { if (lbcurposy.InvokeRequired) { lbcurposy.Invoke(new MethodInvoker(delegate () { lbcurposy.Text = position; ; })); } else lbcurposy.Text = position; }
-                else if (recv[8] == '2') { if (lbcurposz.InvokeRequired) { lbcurposz.Invoke(new MethodInvoker(delegate () { lbcurposz.Text = position; ; })); } else lbcurposz.Text = position; }
+                if (recv[8] == 'x') { if (lbcurposx.InvokeRequired) { lbcurposx.Invoke(new MethodInvoker(delegate () { lbcurposx.Text = position; ; })); } else lbcurposx.Text = position; }
+                else if (recv[8] == 'y') { if (lbcurposy.InvokeRequired) { lbcurposy.Invoke(new MethodInvoker(delegate () { lbcurposy.Text = position; ; })); } else lbcurposy.Text = position; }
+                else if (recv[8] == 'z') { if (lbcurposz.InvokeRequired) { lbcurposz.Invoke(new MethodInvoker(delegate () { lbcurposz.Text = position; ; })); } else lbcurposz.Text = position; }
             }
             else if (recv.Contains(MOTOR_STATUS_REQ))
             {
@@ -238,19 +238,19 @@ namespace LiveCell_Gui
             {
                 if (cbdebug.Checked == true) this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' });
 
-                if (recv[11] == '0')
+                if (recv[11] == 'x')
                 {
                     if (recv.Contains("idle")) btMoveXasix.BackColor = Color.LightCyan;
                     else if (recv.Contains("busy")) btMoveXasix.BackColor = Color.MistyRose;
                     else btMoveXasix.BackColor = Color.Red;
                 }
-                else if (recv[11] == '1')
+                else if (recv[11] == 'y')
                 {
                     if (recv.Contains("idle")) btMoveYasix.BackColor = Color.LightCyan;
                     else if (recv.Contains("busy")) btMoveYasix.BackColor = Color.MistyRose;
                     else btMoveYasix.BackColor = Color.Red;
                 }
-                if (recv[11] == '2')
+                if (recv[11] == 'z')
                 {
                     if (recv.Contains("idle")) btMoveZasix.BackColor = Color.LightCyan;
                     else if (recv.Contains("busy")) btMoveZasix.BackColor = Color.MistyRose;

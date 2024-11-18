@@ -211,7 +211,7 @@ namespace LiveCell_Gui
             }
             else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : X Speed Value Something Wrong !" }); return; }
 
-            string senddata = "movesabs" + ',' + "0" + ',' + tbcmdposx.Text + ',' + tbcmdspeedx.Text;
+            string senddata = "movesabs" + ",x," + tbcmdposx.Text + ',' + tbcmdspeedx.Text;
             opto_serial_write(senddata, false);
         }
 
@@ -240,7 +240,7 @@ namespace LiveCell_Gui
             }
             else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Y Speed Value Something Wrong !" }); return; }
 
-            string senddata = "movesabs" + ',' + '1' + ',' + tbcmdposy.Text + ',' + tbcmdspeedy.Text;
+            string senddata = "movesabs" + ",y," + tbcmdposy.Text + ',' + tbcmdspeedy.Text;
             opto_serial_write(senddata, false);
         }
 
@@ -269,7 +269,7 @@ namespace LiveCell_Gui
             }
             else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Z Speed Value Something Wrong !" }); return; }
 
-            string senddata = "movesabs" + ',' + '2' + ',' + tbcmdposz.Text + ',' + tbcmdspeedz.Text;
+            string senddata = "movesabs" + ",z," + tbcmdposz.Text + ',' + tbcmdspeedz.Text;
             opto_serial_write(senddata, false);
         }
         /************************************************************************************************
@@ -296,7 +296,7 @@ namespace LiveCell_Gui
 
         private void btJogXinc_MouseUp(object sender, MouseEventArgs e)
         {
-            string senddata = "movestop,0";
+            string senddata = "movestop,x";
             opto_serial_write(senddata, false);
         }
 
@@ -321,7 +321,7 @@ namespace LiveCell_Gui
 
         private void btJogYinc_MouseUp(object sender, MouseEventArgs e)
         {
-            string senddata = "movestop,1";
+            string senddata = "movestop,y";
             opto_serial_write(senddata, false);
         }
 
@@ -346,7 +346,7 @@ namespace LiveCell_Gui
 
         private void btJogZinc_MouseUp(object sender, MouseEventArgs e)
         {
-            string senddata = "movestop,2";
+            string senddata = "movestop,z";
             opto_serial_write(senddata, false);
         }
         /************************************************************************************************
@@ -373,7 +373,7 @@ namespace LiveCell_Gui
 
         private void btJogXdec_MouseUp(object sender, MouseEventArgs e)
         {
-            string senddata = "movestop,0";
+            string senddata = "movestop,x";
             opto_serial_write(senddata, false);
         }
         private void btJogYdec_MouseDown(object sender, MouseEventArgs e)       /************************************* Jog Y-axis dec ***************************************/
@@ -397,7 +397,7 @@ namespace LiveCell_Gui
 
         private void btJogYdec_MouseUp(object sender, MouseEventArgs e)
         {
-            string senddata = "movestop,1";
+            string senddata = "movestop,y";
             opto_serial_write(senddata, false);
         }
 
@@ -422,7 +422,7 @@ namespace LiveCell_Gui
 
         private void btJogZdec_MouseUp(object sender, MouseEventArgs e)
         {
-            string senddata = "movestop,2";
+            string senddata = "movestop,z";
             opto_serial_write(senddata, false);
         }
         /************************************************************************************************
@@ -430,19 +430,19 @@ namespace LiveCell_Gui
         *************************************************************************************************/
         private void btHomeX_Click(object sender, EventArgs e)
         {
-            string senddata = "moveorg,0";
+            string senddata = "moveorg,x";
             opto_serial_write(senddata, false);
         }
 
         private void btHomeY_Click(object sender, EventArgs e)
         {
-            string senddata = "moveorg,1";
+            string senddata = "moveorg,y";
             opto_serial_write(senddata, false);
         }
 
         private void btHomeZ_Click(object sender, EventArgs e)
         {
-            string senddata = "moveorg,2";
+            string senddata = "moveorg,z";
             opto_serial_write(senddata, false);
         }
 
@@ -531,9 +531,9 @@ namespace LiveCell_Gui
 
             string senddata = "movetabs";
 
-            if (MotorLive[0] == 1) senddata += ",0," + tbcmdposx.Text + ',' + tbcmdspeedx.Text;
-            if (MotorLive[1] == 1) senddata += ",1," + tbcmdposy.Text + ',' + tbcmdspeedy.Text;
-            if (MotorLive[2] == 1) senddata += ",2," + tbcmdposz.Text + ',' + tbcmdspeedz.Text;
+            if (MotorLive[0] == 1) senddata += ",x," + tbcmdposx.Text + ',' + tbcmdspeedx.Text;
+            if (MotorLive[1] == 1) senddata += ",y," + tbcmdposy.Text + ',' + tbcmdspeedy.Text;
+            if (MotorLive[2] == 1) senddata += ",z," + tbcmdposz.Text + ',' + tbcmdspeedz.Text;
 
             opto_serial_write(senddata, false);
         }
