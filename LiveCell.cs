@@ -277,7 +277,7 @@ namespace LiveCell_Gui
         *************************************************************************************************/
         private void btJogXinc_MouseDown(object sender, MouseEventArgs e)           /************************************* Jog X-axis inc ***************************************/
         {
-            string senddata = "movejog,0,1";
+            string senddata = "movejog,x,1";
 
             int speed;
             if (int.TryParse(tbjogspeedx.Text, out speed))
@@ -302,7 +302,7 @@ namespace LiveCell_Gui
 
         private void btJogYinc_MouseDown(object sender, MouseEventArgs e)           /************************************* Jog Y-axis inc ***************************************/
         {
-            string senddata = "movejog,1,1";
+            string senddata = "movejog,y,1";
 
             int speed;
             if (int.TryParse(tbjogspeedy.Text, out speed))
@@ -327,7 +327,7 @@ namespace LiveCell_Gui
 
         private void btJogZinc_MouseDown(object sender, MouseEventArgs e)           /************************************* Jog Z-axis inc ***************************************/
         {
-            string senddata = "movejog,2,1";
+            string senddata = "movejog,z,1";
 
             int speed;
             if (int.TryParse(tbjogspeedz.Text, out speed))
@@ -354,7 +354,7 @@ namespace LiveCell_Gui
         *************************************************************************************************/
         private void btJogXdec_MouseDown(object sender, MouseEventArgs e)       /************************************* Jog X-axis dec ***************************************/
         {
-            string senddata = "movejog,0,0";
+            string senddata = "movejog,x,0";
 
             int speed = 0;
             if (int.TryParse(tbjogspeedx.Text, out speed))
@@ -378,7 +378,7 @@ namespace LiveCell_Gui
         }
         private void btJogYdec_MouseDown(object sender, MouseEventArgs e)       /************************************* Jog Y-axis dec ***************************************/
         {
-            string senddata = "movejog,1,0";
+            string senddata = "movejog,y,0";
 
             int speed = 0;
             if (int.TryParse(tbjogspeedy.Text, out speed))
@@ -403,7 +403,7 @@ namespace LiveCell_Gui
 
         private void btJogZdec_MouseDown(object sender, MouseEventArgs e)       /************************************* Jog Z-axis dec ***************************************/
         {
-            string senddata = "movejog,2,0";
+            string senddata = "movejog,z,0";
 
             int speed = 0;
             if (int.TryParse(tbjogspeedz.Text, out speed))
