@@ -100,8 +100,6 @@ namespace LiveCell_Gui
             tbjogspeedx.Text = Convert.ToString(DEFAULT_SPEED_X);
             tbjogspeedy.Text = Convert.ToString(DEFAULT_SPEED_Y);
             tbjogspeedz.Text = Convert.ToString(DEFAULT_SPEED_Z);
-
-            opto_serial.DataReceived += new SerialDataReceivedEventHandler(serial_DataReceived);
         }
         private void LiveCell_FormClosing(object sender, FormClosingEventArgs e)
         {

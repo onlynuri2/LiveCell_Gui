@@ -22,12 +22,13 @@ namespace LiveCell_Gui
         const string MCU_LIVE_TEST = "mculive";
         const string MOTOR_LIVE_TEST = "motorlive";
         const string TRY_CONNECT = "TryConnection";
-        const string MOTOR_STATUS_REQ = "motorstatusreq"; 
+        const string MOTOR_STATUS_REQ = "motorstatusreq";
         const string MOTOR_POS = "motorpos";
         const string MOTOR_STATUS = "motorstatus";
-        const string MOTOR_STATUS_IDLE = "motorstatusidle"; 
+        const string MOTOR_STATUS_IDLE = "motorstatusidle";
         const string MOTOR_STATUS_BUSY = "motorstatusbusy";
-        private SerialPort opto_serial = new SerialPort();        // 시리얼 포트 변수 생성
+        static SerialPort opto_serial;        // 시리얼 포트 변수 생성
+        static StringBuilder _buffer = new StringBuilder();
         string recv_str = string.Empty;
 
         private const int DLEAY_10 = 10;
@@ -58,21 +59,24 @@ namespace LiveCell_Gui
             else
                 comport_str = comboBox_available_port.Text;
 
+            opto_serial = new SerialPort
+            {
+                BaudRate = 115200,  // 보드레이트 설정
+                Parity = Parity.None,
+                DataBits = 8,
+                StopBits = StopBits.One,
+                Handshake = Handshake.None,
+                ReadTimeout = 500,
+                WriteTimeout = 500
+            };
+            opto_serial.DataReceived += new SerialDataReceivedEventHandler(serial_DataReceived);
+
             if (!opto_serial.IsOpen)
             {
                 if (comboBox_available_port.InvokeRequired == true)
                     comboBox_available_port.Invoke(new MethodInvoker(delegate () { opto_serial.PortName = comboBox_available_port.Text; }));
                 else
                     opto_serial.PortName = comboBox_available_port.Text;
-
-                opto_serial.BaudRate = 115200;
-                opto_serial.DataBits = 8;
-                opto_serial.Parity = Parity.None;
-                opto_serial.StopBits = StopBits.One;
-                opto_serial.ReadTimeout = 100;
-                opto_serial.WriteTimeout = 100;
-                opto_serial.Handshake = Handshake.None;
-                //opto_serial.RtsEnable = true;
 
                 try
                 {
@@ -85,7 +89,7 @@ namespace LiveCell_Gui
                     {
                         comport_str += " - Open Success !";
 
-                        this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { comport_str } );
+                        this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { comport_str });
 
                         Connection_display(true);
                     }
@@ -156,7 +160,7 @@ namespace LiveCell_Gui
             {
                 Thread.Sleep(DLEAY_10);
 
-                if (recv_str.Contains(str))
+                if ((_buffer.ToString().IndexOf(str) >= 0) || recv_str.Contains(str))
                     return true;
             }
 
@@ -200,7 +204,7 @@ namespace LiveCell_Gui
             {
                 if (str.Contains(TRY_CONNECT)) return true;
 
-                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { str  + " Transfer Success"});
+                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { str + " Transfer Success" });
                 return true;
             }
         }
@@ -214,9 +218,21 @@ namespace LiveCell_Gui
             {
                 this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' });
 
-                if (recv[14] == '1') { gbxaxis.BackColor = Color.Lavender; MotorLive[0] = 1; } else { gbxaxis.BackColor = SystemColors.ButtonFace; }
-                if (recv[15] == '1') { gbyaxis.BackColor = Color.Lavender; MotorLive[1] = 1; } else { gbyaxis.BackColor = SystemColors.ButtonFace; }
-                if (recv[16] == '1') { gbzaxis.BackColor = Color.Lavender; MotorLive[2] = 1; } else { gbzaxis.BackColor = SystemColors.ButtonFace; }
+                if (recv[14] == '1')
+                {
+                    if (gbxaxis.InvokeRequired) { gbxaxis.Invoke(new MethodInvoker(delegate () { gbxaxis.BackColor = Color.Lavender; ; })); } else gbxaxis.BackColor = Color.Lavender;
+                    MotorLive[0] = 1;
+                }
+                if (recv[15] == '1')
+                {
+                    if (gbyaxis.InvokeRequired) { gbyaxis.Invoke(new MethodInvoker(delegate () { gbyaxis.BackColor = Color.Lavender; ; })); } else gbyaxis.BackColor = Color.Lavender;
+                    MotorLive[1] = 1;
+                }
+                if (recv[16] == '1')
+                {
+                    if (gbzaxis.InvokeRequired) { gbzaxis.Invoke(new MethodInvoker(delegate () { gbzaxis.BackColor = Color.Lavender; ; })); } else gbzaxis.BackColor = Color.Lavender;
+                    MotorLive[2] = 1;
+                }
             }
             else if (recv.Contains(MOTOR_LIVE_TEST))
             {
@@ -229,6 +245,10 @@ namespace LiveCell_Gui
                 if (recv[8] == 'x') { if (lbcurposx.InvokeRequired) { lbcurposx.Invoke(new MethodInvoker(delegate () { lbcurposx.Text = position; ; })); } else lbcurposx.Text = position; }
                 else if (recv[8] == 'y') { if (lbcurposy.InvokeRequired) { lbcurposy.Invoke(new MethodInvoker(delegate () { lbcurposy.Text = position; ; })); } else lbcurposy.Text = position; }
                 else if (recv[8] == 'z') { if (lbcurposz.InvokeRequired) { lbcurposz.Invoke(new MethodInvoker(delegate () { lbcurposz.Text = position; ; })); } else lbcurposz.Text = position; }
+
+                //this.Invalidate();  // request a delayed Repaint by the normal MessageLoop system    
+                //this.Update();      // forces Repaint of invalidated area 
+                //this.Refresh();     // Combines Invalidate() and Update()
             }
             else if (recv.Contains(MOTOR_STATUS_REQ))
             {
@@ -238,24 +258,35 @@ namespace LiveCell_Gui
             {
                 if (cbdebug.Checked == true) this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' });
 
+                Color backcolor;
                 if (recv[11] == 'x')
                 {
-                    if (recv.Contains("idle")) btMoveXasix.BackColor = Color.LightCyan;
-                    else if (recv.Contains("busy")) btMoveXasix.BackColor = Color.MistyRose;
-                    else btMoveXasix.BackColor = Color.Red;
+                    if (recv.Contains("idle")) backcolor = Color.LightCyan;
+                    else if (recv.Contains("busy")) backcolor = Color.MistyRose;
+                    else { backcolor = Color.Red; this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' }); }
+
+                    if (btMoveXasix.InvokeRequired) { btMoveXasix.Invoke(new MethodInvoker(delegate () { btMoveXasix.BackColor = backcolor; ; })); } else btMoveXasix.BackColor = backcolor;
                 }
                 else if (recv[11] == 'y')
                 {
-                    if (recv.Contains("idle")) btMoveYasix.BackColor = Color.LightCyan;
-                    else if (recv.Contains("busy")) btMoveYasix.BackColor = Color.MistyRose;
-                    else btMoveYasix.BackColor = Color.Red;
+                    if (recv.Contains("idle")) backcolor = Color.LightCyan;
+                    else if (recv.Contains("busy")) backcolor = Color.MistyRose;
+                    else { backcolor = Color.Red; this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' }); }
+
+                    if (btMoveYasix.InvokeRequired) { btMoveYasix.Invoke(new MethodInvoker(delegate () { btMoveYasix.BackColor = backcolor; ; })); } else btMoveYasix.BackColor = backcolor;
                 }
-                if (recv[11] == 'z')
+                else if (recv[11] == 'z')
                 {
-                    if (recv.Contains("idle")) btMoveZasix.BackColor = Color.LightCyan;
-                    else if (recv.Contains("busy")) btMoveZasix.BackColor = Color.MistyRose;
-                    else btMoveZasix.BackColor = Color.Red;
+                    if (recv.Contains("idle")) backcolor = Color.LightCyan;
+                    else if (recv.Contains("busy")) backcolor = Color.MistyRose;
+                    else { backcolor = Color.Red; this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' }); }
+
+                    if (btMoveZasix.InvokeRequired) { btMoveZasix.Invoke(new MethodInvoker(delegate () { btMoveZasix.BackColor = backcolor; ; })); } else btMoveZasix.BackColor = backcolor;
                 }
+            }
+            else
+            {
+                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Motor Status Wrong Text Recv : " + recv });
             }
         }
         private void serial_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -264,7 +295,62 @@ namespace LiveCell_Gui
             //MySerialReceived(sender, e);
 
             //if (opto_serial.IsOpen)
-            MySerialReceivedByte(sender, e);
+            //MySerialReceivedByte(sender, e);
+            MySerialReceivedByteBinary(sender, e);
+        }
+
+        private void ProcessBuffer()
+        {
+            string data = _buffer.ToString();
+            const string startToken = "#"; // 시작 문자열
+            const string endToken = "*";    // 종료 문자열
+
+            int startIndex = data.IndexOf(startToken);
+            int endIndex = data.IndexOf(endToken, startIndex + startToken.Length);
+
+            // 시작과 종료 문자열이 모두 있는 경우 데이터 추출
+            while (startIndex >= 0 && endIndex > startIndex)
+            {
+                int dataStart = startIndex + startToken.Length;
+                int dataLength = endIndex - dataStart;
+                string extractedData = data.Substring(dataStart, dataLength);
+
+                //this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { $"Extracted Data : {extractedData}" });
+                parse_string(extractedData);
+
+                // 처리된 데이터와 토큰 제거
+                data = data.Substring(endIndex + endToken.Length);
+                startIndex = data.IndexOf(startToken);
+                endIndex = data.IndexOf(endToken, startIndex + startToken.Length);
+
+                //this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { $"After data : {data}" });
+            }
+
+            // 남은 데이터 버퍼에 다시 저장
+            _buffer.Clear();
+            _buffer.Append(data);
+        }
+        private void MySerialReceivedByteBinary(object s, EventArgs e)  //여기에서 수신 데이타를 사용자의 용도에 따라 처리한다.
+        {
+            try
+            {
+                // 수신된 데이터 읽기
+                int bytesToRead = opto_serial.BytesToRead;
+                byte[] buffer = new byte[bytesToRead];
+                opto_serial.Read(buffer, 0, bytesToRead);
+
+                // 읽은 데이터를 StringBuilder에 추가
+                string receivedData = Encoding.ASCII.GetString(buffer); // 바이너리 데이터를 ASCII 문자열로 변환
+                _buffer.Append(receivedData);
+
+                // 버퍼에서 데이터를 처리
+                ProcessBuffer();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error processing data: {ex.Message}");
+                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { $"Error processing data: {ex.Message}" });
+            }
         }
 
         private void MySerialReceivedByte(object s, EventArgs e)  //여기에서 수신 데이타를 사용자의 용도에 따라 처리한다.
@@ -289,11 +375,11 @@ namespace LiveCell_Gui
                 if (opto_serial.BytesToRead > 0)
                 {
                     recvbytes[idx++] = (byte)opto_serial.ReadByte();
-                    if (recvbytes[idx - 1] == '*') { recvbytes[idx] = 0; break; }
+                    if (recvbytes[idx - 1] == '*') { break; }
                     loopcnt = 0;
                 }
 
-            } while (loopcnt++ < 100000);
+            } while (loopcnt++ < 500);//300 ok
 
             //TimeSpan span = DateTime.Now - start;
             //this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "END - " });
@@ -301,43 +387,8 @@ namespace LiveCell_Gui
             recv_str = Encoding.Default.GetString(recvbytes, 0, idx);
             parse_string(recv_str.Substring(1, recv_str.Length - 2));
 
-            Thread.Sleep(DLEAY_10);
-        }
-
-        private void MySerialReceived(object s, EventArgs e)  //여기에서 수신 데이타를 사용자의 용도에 따라 처리한다.
-        {
-            int cnt = 0, old_recv_len = 0;
-            recv_str = String.Empty;
-            char start, end;
-            //Thread.Sleep(1);
-            string starts = String.Empty, ends = String.Empty; ;
-            do
-            {
-                recv_str += opto_serial.ReadExisting();
-
-                if ((recv_str.Length > 0) && (recv_str[recv_str.Length - 1] == '*')) break; ;
-
-                if (recv_str.Length != old_recv_len) { old_recv_len = recv_str.Length; cnt = 0; }
-
-                Thread.Sleep(1);
-
-            } while (cnt++ < 10);
-
-            if (recv_str.Length == 0) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "length 0" }); return; }
-
-            start = recv_str[0];
-            if (start != '#') { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Not #" + recv_str }); return; }
-
-            end = recv_str[recv_str.Length - 1];
-            if (end != '*') { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Not *" + recv_str }); return; }
-
-            if (end == '*')
-            {
-                //parse_string(recv_str.Substring(1, recv_str.Length - 2));
-                //this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "recv-" +recv_str.Substring(0, recv_str.Length - 1) });
-            }
-            else
-                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Someting Wrong : " });
+            Thread.Sleep(1);
+            //Task.Delay(TimeSpan.FromMilliseconds(0.1)).GetAwaiter().GetResult();
         }
     }
 }
