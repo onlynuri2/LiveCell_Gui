@@ -104,7 +104,8 @@ namespace LiveCell_Gui
         private void LiveCell_FormClosing(object sender, FormClosingEventArgs e)
         {
             //Disconnection();
-            opto_serial.Close();
+            //if (opto_serial.IsOpen) opto_serial.Close();
+            if (opto_serial != null && opto_serial.IsOpen) opto_serial.Close();
         }
         private void btconnection_Click(object sender, EventArgs e)
         {
