@@ -661,5 +661,120 @@ namespace LiveCell_Gui
             string senddata = "ledbrightness" + ',' + "0";
             opto_serial_write(senddata, false);
         }
+
+        /************************************************************************************************
+                                                                        Offset X
+        *************************************************************************************************/
+        private void btOffsetXfor_Click(object sender, EventArgs e)
+        {
+            int OffsetPos, CurrentPos, TargetPos;
+            string MovePos;
+
+            if(lbcurposx.Text.Length == 0) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Input OffsetX Value" }); return; }
+
+            if (int.TryParse(lbcurposx.Text, out CurrentPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetXfor CurrentPos Something Wrong !" }); return; }
+            if (int.TryParse(tbOffsetX.Text, out OffsetPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetXfor OffsetPosSomething Wrong !" }); return; }
+
+            TargetPos = CurrentPos + OffsetPos;
+            if (TargetPos > X_MAX_DIST) TargetPos = X_MAX_DIST;
+            MovePos = TargetPos.ToString();
+
+            string senddata = "movesabs" + ",x," + MovePos + ',' + tbcmdspeedx.Text;
+            opto_serial_write(senddata, false);
+        }
+        private void btOffsetXback_Click(object sender, EventArgs e)
+        {
+            int OffsetPos, CurrentPos, TargetPos;
+            string MovePos;
+
+            if (lbcurposx.Text.Length == 0) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Input OffsetX Value" }); return; }
+
+            if (int.TryParse(lbcurposx.Text, out CurrentPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetXfor CurrentPos Something Wrong !" }); return; }
+            if (int.TryParse(tbOffsetX.Text, out OffsetPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetXfor OffsetPosSomething Wrong !" }); return; }
+
+            TargetPos = CurrentPos - OffsetPos;
+            if (TargetPos < 0) TargetPos = 0;
+            MovePos = TargetPos.ToString();
+
+            string senddata = "movesabs" + ",x," + MovePos + ',' + tbcmdspeedx.Text;
+            opto_serial_write(senddata, false);
+        }
+        /************************************************************************************************
+                                                                        Offset Y
+        *************************************************************************************************/
+        private void btOffsetYfor_Click(object sender, EventArgs e)
+        {
+            int OffsetPos, CurrentPos, TargetPos;
+            string MovePos;
+
+            if (lbcurposy.Text.Length == 0) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Input OffsetY Value" }); return; }
+
+            if (int.TryParse(lbcurposy.Text, out CurrentPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetYfor CurrentPos Something Wrong !" }); return; }
+            if (int.TryParse(tbOffsetY.Text, out OffsetPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetYfor OffsetPosSomething Wrong !" }); return; }
+
+            TargetPos = CurrentPos + OffsetPos;
+            if (TargetPos > Y_MAX_DIST) TargetPos = Y_MAX_DIST;
+            MovePos = TargetPos.ToString();
+
+            string senddata = "movesabs" + ",y," + MovePos + ',' + tbcmdspeedy.Text;
+            opto_serial_write(senddata, false);
+        }
+
+        private void btOffsetYback_Click(object sender, EventArgs e)
+        {
+            int OffsetPos, CurrentPos, TargetPos;
+            string MovePos;
+
+            if (lbcurposy.Text.Length == 0) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Input OffsetY Value" }); return; }
+
+            if (int.TryParse(lbcurposy.Text, out CurrentPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetYfor CurrentPos Something Wrong !" }); return; }
+            if (int.TryParse(tbOffsetY.Text, out OffsetPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetYfor OffsetPosSomething Wrong !" }); return; }
+
+            TargetPos = CurrentPos - OffsetPos;
+            if (TargetPos < 0) TargetPos = 0;
+            MovePos = TargetPos.ToString();
+
+            string senddata = "movesabs" + ",y," + MovePos + ',' + tbcmdspeedy.Text;
+            opto_serial_write(senddata, false);
+
+        }
+        /************************************************************************************************
+                                                                        Offset Z
+        *************************************************************************************************/
+        private void btOffsetZfor_Click(object sender, EventArgs e)
+        {
+            int OffsetPos, CurrentPos, TargetPos;
+            string MovePos;
+
+            if (lbcurposz.Text.Length == 0) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Input OffsetZ Value" }); return; }
+
+            if (int.TryParse(lbcurposz.Text, out CurrentPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetZfor CurrentPos Something Wrong !" }); return; }
+            if (int.TryParse(tbOffsetZ.Text, out OffsetPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetZfor OffsetPosSomething Wrong !" }); return; }
+
+            TargetPos = CurrentPos + OffsetPos;
+            if (TargetPos > Z_MAX_DIST) TargetPos = Z_MAX_DIST;
+            MovePos = TargetPos.ToString();
+
+            string senddata = "movesabs" + ",z," + MovePos + ',' + tbcmdspeedz.Text;
+            opto_serial_write(senddata, false);
+        }
+
+        private void btOffsetZback_Click(object sender, EventArgs e)
+        {
+            int OffsetPos, CurrentPos, TargetPos;
+            string MovePos;
+
+            if (lbcurposz.Text.Length == 0) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Input OffsetZ Value" }); return; }
+
+            if (int.TryParse(lbcurposz.Text, out CurrentPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetZfor CurrentPos Something Wrong !" }); return; }
+            if (int.TryParse(tbOffsetZ.Text, out OffsetPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetZfor OffsetPosSomething Wrong !" }); return; }
+
+            TargetPos = CurrentPos - OffsetPos;
+            if (TargetPos < 0) TargetPos = 0;
+            MovePos = TargetPos.ToString();
+
+            string senddata = "movesabs" + ",z," + MovePos + ',' + tbcmdspeedz.Text;
+            opto_serial_write(senddata, false);
+        }
     }
 }
