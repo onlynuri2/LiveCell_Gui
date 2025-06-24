@@ -34,18 +34,18 @@ namespace LiveCell_Gui
         private const int DLEAY_10 = 10;
         private const int DLEAY_20 = 20;
 
-        private const int X_MAX_DIST = 120000;//real 1350000;
+        private const int X_MAX_DIST = 30000;//real 1350000;
         private const int Y_MAX_DIST = 20000;//real 200000;
-        private const int Z_MAX_DIST = 20000;//real 125000;
+        private const int Z_MAX_DIST = 14000;//real 125000;
 
-        private const int MAX_SPEED_X = 300000;
+        private const int MAX_SPEED_X = 200000;
         private const int DEFAULT_SPEED_X = 100000;
 
-        private const int MAX_SPEED_Y = 100000;
-        private const int DEFAULT_SPEED_Y = 80000;
+        private const int MAX_SPEED_Y = 150000;
+        private const int DEFAULT_SPEED_Y = 66000;
 
-        private const int MAX_SPEED_Z = 50000;
-        private const int DEFAULT_SPEED_Z = 20000;
+        private const int MAX_SPEED_Z = 10000;
+        private const int DEFAULT_SPEED_Z = 6000;
 
         private const int LED_BR_MAX = 10000;
 
@@ -85,7 +85,7 @@ namespace LiveCell_Gui
 
                     textBox_RX_data.Clear();
 
-                    if (opto_serial_write(TRY_CONNECT, true))
+                    if (opto_serial_write(TRY_CONNECT, false))
                     {
                         comport_str += " - Open Success !";
 
@@ -105,8 +105,7 @@ namespace LiveCell_Gui
                 catch (Exception e)
                 {
                     opto_serial.Close();
-                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : " + e.Message });
-                    MessageBox.Show(Form.ActiveForm, comport_str + " Port Connection Fail !", " Error");
+                    if (this.IsHandleCreated)  this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : " + e.Message });
                 }
             }
             else
@@ -348,8 +347,7 @@ namespace LiveCell_Gui
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error processing data: {ex.Message}");
-                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { $"Error processing data: {ex.Message}" });
+                if (this.IsHandleCreated)   this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { $"Error processing data: {ex.Message}" });
             }
         }
 

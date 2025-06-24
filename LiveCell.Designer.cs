@@ -41,11 +41,6 @@
             textBox_TX_data = new TextBox();
             button_tx_send = new Button();
             gbmotionctrl = new GroupBox();
-            groupBox1 = new GroupBox();
-            btledoff = new Button();
-            label1 = new Label();
-            btledon = new Button();
-            tbledbr = new TextBox();
             gbxyzaxis = new GroupBox();
             btHomeXYZ = new Button();
             btMoveXYZasix = new Button();
@@ -115,7 +110,6 @@
             groupBox_comport.SuspendLayout();
             gbTransfer.SuspendLayout();
             gbmotionctrl.SuspendLayout();
-            groupBox1.SuspendLayout();
             gbxyzaxis.SuspendLayout();
             gbzaxis.SuspendLayout();
             gbHomePosZ.SuspendLayout();
@@ -249,7 +243,6 @@
             // gbmotionctrl
             // 
             gbmotionctrl.BackColor = Color.FromArgb(240, 250, 255);
-            gbmotionctrl.Controls.Add(groupBox1);
             gbmotionctrl.Controls.Add(gbxyzaxis);
             gbmotionctrl.Controls.Add(gbzaxis);
             gbmotionctrl.Controls.Add(gbyaxis);
@@ -262,61 +255,6 @@
             gbmotionctrl.TabStop = false;
             gbmotionctrl.Text = "Motion Control";
             // 
-            // groupBox1
-            // 
-            groupBox1.Controls.Add(btledoff);
-            groupBox1.Controls.Add(label1);
-            groupBox1.Controls.Add(btledon);
-            groupBox1.Controls.Add(tbledbr);
-            groupBox1.Font = new Font("맑은 고딕", 14F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            groupBox1.Location = new Point(713, 734);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(289, 134);
-            groupBox1.TabIndex = 17;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "LED 밝기";
-            // 
-            // btledoff
-            // 
-            btledoff.BackColor = SystemColors.ButtonFace;
-            btledoff.Location = new Point(189, 48);
-            btledoff.Name = "btledoff";
-            btledoff.Size = new Size(84, 54);
-            btledoff.TabIndex = 16;
-            btledoff.Text = "OFF";
-            btledoff.UseVisualStyleBackColor = false;
-            btledoff.Click += btledoff_Click;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            label1.Location = new Point(6, 104);
-            label1.Name = "label1";
-            label1.Size = new Size(95, 25);
-            label1.TabIndex = 15;
-            label1.Text = "(1~10000)";
-            // 
-            // btledon
-            // 
-            btledon.BackColor = SystemColors.ButtonFace;
-            btledon.Location = new Point(16, 49);
-            btledon.Name = "btledon";
-            btledon.Size = new Size(73, 54);
-            btledon.TabIndex = 1;
-            btledon.Text = "ON";
-            btledon.UseVisualStyleBackColor = false;
-            btledon.Click += btledonoff_Click;
-            // 
-            // tbledbr
-            // 
-            tbledbr.Location = new Point(93, 54);
-            tbledbr.MaxLength = 5;
-            tbledbr.Name = "tbledbr";
-            tbledbr.Size = new Size(90, 45);
-            tbledbr.TabIndex = 0;
-            tbledbr.TextAlign = HorizontalAlignment.Right;
-            // 
             // gbxyzaxis
             // 
             gbxyzaxis.Controls.Add(btHomeXYZ);
@@ -324,7 +262,7 @@
             gbxyzaxis.Font = new Font("맑은 고딕", 14F, FontStyle.Regular, GraphicsUnit.Point, 129);
             gbxyzaxis.Location = new Point(46, 734);
             gbxyzaxis.Name = "gbxyzaxis";
-            gbxyzaxis.Size = new Size(626, 134);
+            gbxyzaxis.Size = new Size(978, 134);
             gbxyzaxis.TabIndex = 16;
             gbxyzaxis.TabStop = false;
             gbxyzaxis.Text = "XYZ-axis";
@@ -332,7 +270,7 @@
             // btHomeXYZ
             // 
             btHomeXYZ.BackColor = SystemColors.ButtonFace;
-            btHomeXYZ.Location = new Point(349, 49);
+            btHomeXYZ.Location = new Point(515, 49);
             btHomeXYZ.Name = "btHomeXYZ";
             btHomeXYZ.Size = new Size(260, 54);
             btHomeXYZ.TabIndex = 18;
@@ -343,7 +281,7 @@
             // btMoveXYZasix
             // 
             btMoveXYZasix.BackColor = SystemColors.ButtonFace;
-            btMoveXYZasix.Location = new Point(16, 49);
+            btMoveXYZasix.Location = new Point(181, 49);
             btMoveXYZasix.Name = "btMoveXYZasix";
             btMoveXYZasix.Size = new Size(260, 54);
             btMoveXYZasix.TabIndex = 17;
@@ -1100,8 +1038,6 @@
             gbTransfer.ResumeLayout(false);
             gbTransfer.PerformLayout();
             gbmotionctrl.ResumeLayout(false);
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
             gbxyzaxis.ResumeLayout(false);
             gbzaxis.ResumeLayout(false);
             gbzaxis.PerformLayout();
@@ -1188,11 +1124,6 @@
         private GroupBox gbxyzaxis;
         private Button btHomeXYZ;
         private Button btMoveXYZasix;
-        private GroupBox groupBox1;
-        private TextBox tbledbr;
-        private Label label1;
-        private Button btledon;
-        private Button btledoff;
         private CheckBox cbdebug;
         private TextBox tbOffsetX;
         private Button btOffsetXfor;

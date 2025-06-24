@@ -629,39 +629,6 @@ namespace LiveCell_Gui
             }
         }
 
-        private void btledonoff_Click(object sender, EventArgs e)
-        {
-            if (opto_serial.IsOpen == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "통신연결을 확인해주세요" }); return; }
-
-            int brightness;
-            if (int.TryParse(tbledbr.Text, out brightness))
-            {
-                if ((brightness == 0) || (brightness > LED_BR_MAX))
-                {
-                    string errstr;
-
-                    if (brightness == 0) errstr = "Check LED Value!";
-                    else errstr = "LED Max Brightness Exceed !";
-
-                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : " + errstr });
-                    MessageBox.Show(Form.ActiveForm, errstr, "Error");
-                    return;
-                }
-            }
-
-            btledon.BackColor = Color.LightGreen;
-            string senddata = "ledbrightness" + ',' + tbledbr.Text;
-            opto_serial_write(senddata, false);
-        }
-
-        private void btledoff_Click(object sender, EventArgs e)
-        {
-            btledon.BackColor = SystemColors.ButtonFace; ;
-
-            string senddata = "ledbrightness" + ',' + "0";
-            opto_serial_write(senddata, false);
-        }
-
         /************************************************************************************************
                                                                         Offset X
         *************************************************************************************************/
