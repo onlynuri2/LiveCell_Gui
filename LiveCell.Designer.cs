@@ -324,7 +324,7 @@
             btOffsetZfor.Name = "btOffsetZfor";
             btOffsetZfor.Size = new Size(72, 45);
             btOffsetZfor.TabIndex = 22;
-            btOffsetZfor.Text = "전진";
+            btOffsetZfor.Text = "Up";
             btOffsetZfor.UseVisualStyleBackColor = true;
             btOffsetZfor.Click += btOffsetZfor_Click;
             // 
@@ -356,7 +356,7 @@
             btOffsetZback.Name = "btOffsetZback";
             btOffsetZback.Size = new Size(72, 45);
             btOffsetZback.TabIndex = 21;
-            btOffsetZback.Text = "후진";
+            btOffsetZback.Text = "Dn";
             btOffsetZback.UseVisualStyleBackColor = true;
             btOffsetZback.Click += btOffsetZback_Click;
             // 

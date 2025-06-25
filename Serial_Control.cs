@@ -27,7 +27,11 @@ namespace LiveCell_Gui
         const string MOTOR_STATUS = "motorstatus";
         const string MOTOR_STATUS_IDLE = "motorstatusidle";
         const string MOTOR_STATUS_BUSY = "motorstatusbusy";
-        static SerialPort opto_serial;        // 시리얼 포트 변수 생성
+        //private static SerialPort opto_serial;
+        private static SerialPort opto_serial = new SerialPort();
+
+        private List<byte> recvBuffer = new List<byte>();  // 데이터 버퍼
+
         static StringBuilder _buffer = new StringBuilder();
         string recv_str = string.Empty;
 
@@ -57,8 +61,9 @@ namespace LiveCell_Gui
             if (comboBox_available_port.InvokeRequired == true)
                 comboBox_available_port.Invoke(new MethodInvoker(delegate () { comport_str = comboBox_available_port.Text; }));
             else
-                comport_str = comboBox_available_port.Text;
+                comport_str = opto_serial.PortName = comboBox_available_port.Text;
 
+#if false
             opto_serial = new SerialPort
             {
                 BaudRate = 115200,  // 보드레이트 설정
@@ -66,18 +71,24 @@ namespace LiveCell_Gui
                 DataBits = 8,
                 StopBits = StopBits.One,
                 Handshake = Handshake.None,
-                ReadTimeout = 500,
-                WriteTimeout = 500
+                ReadTimeout = 100,
+                WriteTimeout = 100
             };
+//#else
+            //opto_serial = new SerialPort();
+            opto_serial.BaudRate = 115200;
+            opto_serial.DataBits = 8;
+            opto_serial.Parity = Parity.None;
+            opto_serial.StopBits = StopBits.One;
+            opto_serial.ReadTimeout = 100;
+            opto_serial.WriteTimeout = 100;
+            opto_serial.Handshake = Handshake.None;
+#endif
+            opto_serial = new SerialPort(comport_str, 115200, Parity.None, 8, StopBits.One);
             opto_serial.DataReceived += new SerialDataReceivedEventHandler(serial_DataReceived);
 
-            if (!opto_serial.IsOpen)
+            if (opto_serial != null && !opto_serial.IsOpen)
             {
-                if (comboBox_available_port.InvokeRequired == true)
-                    comboBox_available_port.Invoke(new MethodInvoker(delegate () { opto_serial.PortName = comboBox_available_port.Text; }));
-                else
-                    opto_serial.PortName = comboBox_available_port.Text;
-
                 try
                 {
                     opto_serial.Open();
@@ -129,7 +140,7 @@ namespace LiveCell_Gui
             byte[] serial_send_data = new byte[8];
             string comport_str = comboBox_available_port.Text;
 
-            if (opto_serial.IsOpen)
+            if (opto_serial != null && opto_serial.IsOpen)
             {
                 try
                 {
@@ -290,14 +301,65 @@ namespace LiveCell_Gui
         }
         private void serial_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            //this.Invoke(new EventHandler(MySerialReceived));
-            //MySerialReceived(sender, e);
-
-            //if (opto_serial.IsOpen)
+            if (opto_serial.IsOpen)
             //MySerialReceivedByte(sender, e);
-            MySerialReceivedByteBinary(sender, e);
+            //MySerialReceivedByteBinary(sender, e);
+            serial_DataReceived_list(sender, e);
         }
 
+        /********************************************************************************************************/
+        /******************************* serial_DataReceived_list ***********************************************/
+        /********************************************************************************************************/
+        private void serial_DataReceived_list(object sender, SerialDataReceivedEventArgs e)
+        {
+            try
+            {
+                int bytesToRead = opto_serial.BytesToRead;
+                byte[] buffer = new byte[bytesToRead];
+                opto_serial.Read(buffer, 0, bytesToRead);
+
+                lock (recvBuffer) // 스레드 안전 처리
+                {
+                    recvBuffer.AddRange(buffer);
+
+                    while (true)
+                    {
+                        int startIdx = recvBuffer.IndexOf((byte)'#');
+                        int endIdx = recvBuffer.IndexOf((byte)'*');
+
+                        if (startIdx != -1 && endIdx > startIdx + 3)  // 최소 크기 보장
+                        {
+                            byte[] packet = recvBuffer.Skip(startIdx).Take(endIdx - startIdx + 1).ToArray();
+                            recvBuffer.RemoveRange(0, endIdx + 1); // 처리된 패킷 삭제
+
+                            ProcessPacket(packet);
+                        }
+                        else
+                        {
+                            break; // 데이터 부족하면 루프 종료
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (this.IsHandleCreated)   this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { $"Error processing data: {ex.Message}" });
+            }
+        }
+        private void ProcessPacket(byte[] packet)
+        {
+            if (packet.Length < 5) return; // 최소 길이 체크 (CRC 2바이트 포함)
+
+            int delsize = 2;
+            byte[] dataWithoutCRC = packet.Skip(1).Take(packet.Length - delsize).ToArray(); // '#' 제거, CRC 제외
+            
+            recv_str = Encoding.UTF8.GetString(dataWithoutCRC);
+            parse_string(recv_str);
+        }
+
+        /********************************************************************************************************/
+        /******************************* MySerialReceivedByteBinary *********************************************/
+        /********************************************************************************************************/
         private void ProcessBuffer()
         {
             string data = _buffer.ToString();

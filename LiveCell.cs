@@ -36,6 +36,7 @@ namespace LiveCell_Gui
         public LiveCell()
         {
             InitializeComponent();
+            CenterToScreen();
             //livecell = this;
         }
 
@@ -77,7 +78,7 @@ namespace LiveCell_Gui
             //Populate the Combobox with SerialPorts on the System
             comport_info_update();
 
-            this.Text = "LiveCell Motion Test - " + "V1.0.0";
+            this.Text = "LiveCell Motion Test - " + "V1.1.0";
 
             lbxmaxdistance.Text = "(0" + "~" + X_MAX_DIST.ToString() + ")";
             lbxmaxspeed.Text = "(0" + "~" + MAX_SPEED_X.ToString() + ")";
