@@ -39,7 +39,7 @@ namespace LiveCell_Gui
         private const int DLEAY_20 = 20;
 
         private const int X_MAX_DIST = 30000;//real 1350000;
-        private const int Y_MAX_DIST = 20000;//real 200000;
+        private const int Y_MAX_DIST = 35000;//real 200000;
         private const int Z_MAX_DIST = 14000;//real 125000;
 
         private const int MAX_SPEED_X = 200000;
@@ -155,7 +155,7 @@ namespace LiveCell_Gui
             }
             else
             {
-                opto_serial.Close();
+                if(opto_serial != null) opto_serial.Close();
                 comport_str += " - Closed!";
                 this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { comport_str });
             }
