@@ -142,20 +142,32 @@ namespace LiveCell_Gui
 
             if (opto_serial != null && opto_serial.IsOpen)
             {
-                try
+                Thread closeThread = new Thread(() =>
                 {
-                    opto_serial.Close();
-                    comport_str += " - Closed !";
-                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { comport_str });
-                }
-                catch
-                {
-                    MessageBox.Show(Form.ActiveForm, "SEIRAL PORT Close FAIL !", " Error");
-                }
+                    try
+                    {
+                        opto_serial.DataReceived -= serial_DataReceived;
+                        opto_serial.Close();
+                        // UI 갱신은 메인 스레드에서
+                        this.BeginInvoke(new Action(() =>
+                        {
+                            comport_str += " - Closed !";
+                            this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { comport_str });
+                        }));
+                    }
+                    catch
+                    {
+                        MessageBox.Show(Form.ActiveForm, "SEIRAL PORT Close FAIL !", " Error");
+                    }
+
+                });
+                
+                closeThread.IsBackground = true;
+                closeThread.Start();
             }
             else
             {
-                if(opto_serial != null) opto_serial.Close();
+                if (opto_serial != null) opto_serial.Close();
                 comport_str += " - Closed!";
                 this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { comport_str });
             }
