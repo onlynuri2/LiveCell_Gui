@@ -104,9 +104,7 @@ namespace LiveCell_Gui
         }
         private void LiveCell_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //Disconnection();
-            //if (opto_serial.IsOpen) opto_serial.Close();
-            if (opto_serial != null && opto_serial.IsOpen) opto_serial.Close();
+            Disconnection();
         }
         private void btconnection_Click(object sender, EventArgs e)
         {
@@ -127,9 +125,29 @@ namespace LiveCell_Gui
         /*-----------------------------------------------------------------------------
         *  Display Function
         *---------------------------------------------------------------------------*/
-        private void display_data_textbox(string str)
+        private void display_data_RX_textbox(string str)
         {
-            this.textBox_RX_data.AppendText(str + Environment.NewLine);
+            //this.BeginInvoke(new Action(() =>
+            this.BeginInvoke((MethodInvoker)(() =>
+            {
+                if (str.Length > 0)
+                    this.textBox_RX_data.AppendText(str + Environment.NewLine);
+                else
+                    this.textBox_RX_data.Clear();
+            }));
+        }
+        private void display_data_TX_textbox(string str)
+        {
+            if (this.InvokeRequired)
+            {
+                this.BeginInvoke(new Action<string>(display_data_TX_textbox), str);
+                return;
+            }
+
+            if (str.Length > 0)
+                this.textBox_TX_data.AppendText(str + Environment.NewLine);
+            else
+                this.textBox_TX_data.Clear();
         }
 
         private void comport_info_update()
@@ -157,7 +175,7 @@ namespace LiveCell_Gui
         }
         private void comboBox_available_port_Click(object sender, EventArgs e)
         {
-            textBox_RX_data.Clear();
+            display_data_RX_textbox(string.Empty);
 
             string[] port = SerialPort.GetPortNames();
             comboBox_available_port.Items.Clear();
@@ -167,20 +185,16 @@ namespace LiveCell_Gui
 
         private void button_disp_clear_Click(object sender, EventArgs e)
         {
-            textBox_RX_data.Clear();
-            textBox_TX_data.Clear();
+            display_data_RX_textbox(string.Empty);
+            display_data_TX_textbox(string.Empty);
         }
 
         private void button_tx_send_Click(object sender, EventArgs e)
         {
-#if false
-            opto_serial_write(textBox_TX_data.Text, false);
-#else
-            if (opto_serial.IsOpen == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "통신연결을 확인해주세요" }); return; }
+            if (opto_serial.IsOpen == false) { display_data_RX_textbox("통신연결을 확인해주세요"); return; }
 
-            this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { textBox_TX_data.Text });
+            display_data_RX_textbox(textBox_TX_data.Text);
             opto_serial.Write(textBox_TX_data.Text);
-#endif
         }
 
         /************************************************************************************************
@@ -193,23 +207,23 @@ namespace LiveCell_Gui
             {
                 if (pos > X_MAX_DIST)
                 {
-                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed X-axis!" });
+                    display_data_RX_textbox("Error : Max Postiton Exceed X-axis!");
                     MessageBox.Show(Form.ActiveForm, "Max Postiton Exceed X-axis!", "Error");
                     return;
                 }
             }
-            else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : X Positon Value Something Wrong !" }); return; }
+            else { display_data_RX_textbox("Error : X Positon Value Something Wrong !"); return; }
 
             if (int.TryParse(tbcmdspeedx.Text, out speed))
             {
                 if (speed > MAX_SPEED_X)
                 {
-                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed X-axis!" });
+                    display_data_RX_textbox("Error : Max Speed Exceed X-axis!");
                     MessageBox.Show(Form.ActiveForm, "Max Speed Exceed X-axis!", "Error");
                     return;
                 }
             }
-            else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : X Speed Value Something Wrong !" }); return; }
+            else { display_data_RX_textbox("Error : X Speed Value Something Wrong !"); return; }
 
             string senddata = "movesabs" + ",x," + tbcmdposx.Text + ',' + tbcmdspeedx.Text;
             opto_serial_write(senddata, false);
@@ -222,23 +236,23 @@ namespace LiveCell_Gui
             {
                 if (pos > Y_MAX_DIST)
                 {
-                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed Y-axis!" });
+                    display_data_RX_textbox("Error : Max Postiton Exceed Y-axis!");
                     MessageBox.Show(Form.ActiveForm, "Max Postiton Exceed Y-axis!", "Error");
                     return;
                 }
             }
-            else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Y Positon Value Something Wrong !" }); return; }
+            else { display_data_RX_textbox("Error : Y Positon Value Something Wrong !"); return; }
 
             if (int.TryParse(tbcmdspeedy.Text, out speed))
             {
                 if (speed > MAX_SPEED_Y)
                 {
-                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed Y-axis!" });
+                    display_data_RX_textbox("Error : Max Speed Exceed Y-axis!");
                     MessageBox.Show(Form.ActiveForm, "Max Speed Exceed Y-axis!", "Error");
                     return;
                 }
             }
-            else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Y Speed Value Something Wrong !" }); return; }
+            else { display_data_RX_textbox("Error : Y Speed Value Something Wrong !"); return; }
 
             string senddata = "movesabs" + ",y," + tbcmdposy.Text + ',' + tbcmdspeedy.Text;
             opto_serial_write(senddata, false);
@@ -251,23 +265,23 @@ namespace LiveCell_Gui
             {
                 if (pos > Z_MAX_DIST)
                 {
-                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed Z-axis!" });
+                    display_data_RX_textbox("Error : Max Postiton Exceed Z-axis!");
                     MessageBox.Show(Form.ActiveForm, "Max Postiton Exceed Z-axis!", "Error");
                     return;
                 }
             }
-            else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Z Positon Value Something Wrong !" }); return; }
+            else { display_data_RX_textbox("Error : Z Positon Value Something Wrong !"); return; }
 
             if (int.TryParse(tbcmdspeedz.Text, out speed))
             {
                 if (speed > MAX_SPEED_Z)
                 {
-                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed Z-axis!" });
+                    display_data_RX_textbox("Error : Max Speed Exceed Z-axis!");
                     MessageBox.Show(Form.ActiveForm, "Max Speed Exceed Z-axis!", "Error");
                     return;
                 }
             }
-            else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Z Speed Value Something Wrong !" }); return; }
+            else { display_data_RX_textbox("Error : Z Speed Value Something Wrong !"); return; }
 
             string senddata = "movesabs" + ",z," + tbcmdposz.Text + ',' + tbcmdspeedz.Text;
             opto_serial_write(senddata, false);
@@ -284,7 +298,7 @@ namespace LiveCell_Gui
             {
                 if (speed > MAX_SPEED_X)
                 {
-                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed X-axis!" });
+                    display_data_RX_textbox("Error : Max Speed Exceed X-axis!");
                     MessageBox.Show(Form.ActiveForm, "Max Speed Exceed X-axis!", "Error");
                     return;
                 }
@@ -309,7 +323,7 @@ namespace LiveCell_Gui
             {
                 if (speed > MAX_SPEED_Y)
                 {
-                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Y-axis!" });
+                    display_data_RX_textbox("Error : Max Speed Exceed  Y-axis!");
                     MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  Y-axis!", "Error");
                     return;
                 }
@@ -334,7 +348,7 @@ namespace LiveCell_Gui
             {
                 if (speed > MAX_SPEED_Z)
                 {
-                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Z-axis!" });
+                    display_data_RX_textbox("Error : Max Speed Exceed  Z-axis!");
                     MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  Z-axis!", "Error");
                     return;
                 }
@@ -361,7 +375,7 @@ namespace LiveCell_Gui
             {
                 if (speed > MAX_SPEED_X)
                 {
-                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  X-axis!" });
+                    display_data_RX_textbox("Error : Max Speed Exceed  X-axis!");
                     MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  X-axis!", "Error");
                     return;
                 }
@@ -385,7 +399,7 @@ namespace LiveCell_Gui
             {
                 if (speed > MAX_SPEED_Y)
                 {
-                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Y-axis!" });
+                    display_data_RX_textbox("Error : Max Speed Exceed  Y-axis!");
                     MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  Y-axis!", "Error");
                     return;
                 }
@@ -410,7 +424,7 @@ namespace LiveCell_Gui
             {
                 if (speed > MAX_SPEED_Z)
                 {
-                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed  Z-axis!" });
+                    display_data_RX_textbox("Error : Max Speed Exceed  Z-axis!");
                     MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  Z-axis!", "Error");
                     return;
                 }
@@ -460,23 +474,23 @@ namespace LiveCell_Gui
                 {
                     if (pos > X_MAX_DIST)
                     {
-                        this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed X-axis!" });
+                        display_data_RX_textbox("Error : Max Postiton Exceed X-axis!");
                         MessageBox.Show(Form.ActiveForm, "Max Postiton Exceed X-axis!", "Error");
                         return;
                     }
                 }
-                else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : X Positon Value Something Wrong !" }); return; }
+                else { display_data_RX_textbox("Error : X Positon Value Something Wrong !"); return; }
 
                 if (int.TryParse(tbcmdspeedx.Text, out speed))
                 {
                     if (speed > MAX_SPEED_X)
                     {
-                        this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed X-axis!" });
+                        display_data_RX_textbox("Error : Max Speed Exceed X-axis!");
                         MessageBox.Show(Form.ActiveForm, "Max Speed Exceed X-axis!", "Error");
                         return;
                     }
                 }
-                else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : X Speed Value Something Wrong !" }); return; }
+                else { display_data_RX_textbox("Error : X Speed Value Something Wrong !"); return; }
             }
             /******************************************** Y-axis Move Singal Abs *******************************************************/
             if (MotorLive[1] == 1)
@@ -485,23 +499,23 @@ namespace LiveCell_Gui
                 {
                     if (pos > Y_MAX_DIST)
                     {
-                        this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed Y-axis!" });
+                        display_data_RX_textbox("Error : Max Postiton Exceed Y-axis!");
                         MessageBox.Show(Form.ActiveForm, "Error : Max Postiton Exceed Y-axis!", "Error");
                         return;
                     }
                 }
-                else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Y Positon Value Something Wrong !" }); return; }
+                else { display_data_RX_textbox("Error : Y Positon Value Something Wrong !"); return; }
 
                 if (int.TryParse(tbcmdspeedy.Text, out speed))
                 {
                     if (speed > MAX_SPEED_Y)
                     {
-                        this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed Y-axis!!" });
+                        display_data_RX_textbox("Error : Max Speed Exceed Y-axis!!");
                         MessageBox.Show(Form.ActiveForm, "Max Speed Exceed Y-axis!", "Error");
                         return;
                     }
                 }
-                else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Y Speed Value Something Wrong !" }); return; }
+                else { display_data_RX_textbox("Error : Y Speed Value Something Wrong !"); return; }
             }
             /******************************************** Z-axis Move Singal Abs *******************************************************/
             if (MotorLive[2] == 1)
@@ -510,23 +524,23 @@ namespace LiveCell_Gui
                 {
                     if (pos > Z_MAX_DIST)
                     {
-                        this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Postiton Exceed Z-axis!" });
+                        display_data_RX_textbox("Error : Max Postiton Exceed Z-axis!");
                         MessageBox.Show(Form.ActiveForm, "Error : Max Postiton Exceed Z-axis!", "Error");
                         return;
                     }
                 }
-                else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Z Positon Value Something Wrong !" }); return; }
+                else { display_data_RX_textbox("Error : Z Positon Value Something Wrong !"); return; }
 
                 if (int.TryParse(tbcmdspeedz.Text, out speed))
                 {
                     if (speed > MAX_SPEED_Z)
                     {
-                        this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Max Speed Exceed Z-axis!!" });
+                        display_data_RX_textbox("Error : Max Speed Exceed Z-axis!!");
                         MessageBox.Show(Form.ActiveForm, "Max Speed Exceed Z-axis!", "Error");
                         return;
                     }
                 }
-                else { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Z Speed Value Something Wrong !" }); return; }
+                else { display_data_RX_textbox("Error : Z Speed Value Something Wrong !"); return; }
             }
 
             string senddata = "movetabs";
@@ -638,10 +652,10 @@ namespace LiveCell_Gui
             int OffsetPos, CurrentPos, TargetPos;
             string MovePos;
 
-            if(lbcurposx.Text.Length == 0) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Input OffsetX Value" }); return; }
+            if(lbcurposx.Text.Length == 0) { display_data_RX_textbox("Error : Input OffsetX Value"); return; }
 
-            if (int.TryParse(lbcurposx.Text, out CurrentPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetXfor CurrentPos Something Wrong !" }); return; }
-            if (int.TryParse(tbOffsetX.Text, out OffsetPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetXfor OffsetPosSomething Wrong !" }); return; }
+            if (int.TryParse(lbcurposx.Text, out CurrentPos) == false) { display_data_RX_textbox("Error : btOffsetXfor CurrentPos Something Wrong !"); return; }
+            if (int.TryParse(tbOffsetX.Text, out OffsetPos) == false) { display_data_RX_textbox("Error : btOffsetXfor OffsetPosSomething Wrong !"); return; }
 
             TargetPos = CurrentPos + OffsetPos;
             if (TargetPos > X_MAX_DIST) TargetPos = X_MAX_DIST;
@@ -655,10 +669,10 @@ namespace LiveCell_Gui
             int OffsetPos, CurrentPos, TargetPos;
             string MovePos;
 
-            if (lbcurposx.Text.Length == 0) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Input OffsetX Value" }); return; }
+            if (lbcurposx.Text.Length == 0) { display_data_RX_textbox("Error : Input OffsetX Value"); return; }
 
-            if (int.TryParse(lbcurposx.Text, out CurrentPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetXfor CurrentPos Something Wrong !" }); return; }
-            if (int.TryParse(tbOffsetX.Text, out OffsetPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetXfor OffsetPosSomething Wrong !" }); return; }
+            if (int.TryParse(lbcurposx.Text, out CurrentPos) == false) { display_data_RX_textbox("Error : btOffsetXfor CurrentPos Something Wrong !"); return; }
+            if (int.TryParse(tbOffsetX.Text, out OffsetPos) == false) { display_data_RX_textbox("Error : btOffsetXfor OffsetPosSomething Wrong !"); return; }
 
             TargetPos = CurrentPos - OffsetPos;
             if (TargetPos < 0) TargetPos = 0;
@@ -675,10 +689,10 @@ namespace LiveCell_Gui
             int OffsetPos, CurrentPos, TargetPos;
             string MovePos;
 
-            if (lbcurposy.Text.Length == 0) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Input OffsetY Value" }); return; }
+            if (lbcurposy.Text.Length == 0) { display_data_RX_textbox("Error : Input OffsetY Value"); return; }
 
-            if (int.TryParse(lbcurposy.Text, out CurrentPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetYfor CurrentPos Something Wrong !" }); return; }
-            if (int.TryParse(tbOffsetY.Text, out OffsetPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetYfor OffsetPosSomething Wrong !" }); return; }
+            if (int.TryParse(lbcurposy.Text, out CurrentPos) == false) { display_data_RX_textbox("Error : btOffsetYfor CurrentPos Something Wrong !"); return; }
+            if (int.TryParse(tbOffsetY.Text, out OffsetPos) == false) { display_data_RX_textbox("Error : btOffsetYfor OffsetPosSomething Wrong !"); return; }
 
             TargetPos = CurrentPos + OffsetPos;
             if (TargetPos > Y_MAX_DIST) TargetPos = Y_MAX_DIST;
@@ -693,10 +707,10 @@ namespace LiveCell_Gui
             int OffsetPos, CurrentPos, TargetPos;
             string MovePos;
 
-            if (lbcurposy.Text.Length == 0) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Input OffsetY Value" }); return; }
+            if (lbcurposy.Text.Length == 0) { display_data_RX_textbox("Error : Input OffsetY Value"); return; }
 
-            if (int.TryParse(lbcurposy.Text, out CurrentPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetYfor CurrentPos Something Wrong !" }); return; }
-            if (int.TryParse(tbOffsetY.Text, out OffsetPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetYfor OffsetPosSomething Wrong !" }); return; }
+            if (int.TryParse(lbcurposy.Text, out CurrentPos) == false) { display_data_RX_textbox("Error : btOffsetYfor CurrentPos Something Wrong !"); return; }
+            if (int.TryParse(tbOffsetY.Text, out OffsetPos) == false) { display_data_RX_textbox("Error : btOffsetYfor OffsetPosSomething Wrong !"); return; }
 
             TargetPos = CurrentPos - OffsetPos;
             if (TargetPos < 0) TargetPos = 0;
@@ -714,10 +728,10 @@ namespace LiveCell_Gui
             int OffsetPos, CurrentPos, TargetPos;
             string MovePos;
 
-            if (lbcurposz.Text.Length == 0) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Input OffsetZ Value" }); return; }
+            if (lbcurposz.Text.Length == 0) { display_data_RX_textbox("Error : Input OffsetZ Value"); return; }
 
-            if (int.TryParse(lbcurposz.Text, out CurrentPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetZfor CurrentPos Something Wrong !" }); return; }
-            if (int.TryParse(tbOffsetZ.Text, out OffsetPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetZfor OffsetPosSomething Wrong !" }); return; }
+            if (int.TryParse(lbcurposz.Text, out CurrentPos) == false) { display_data_RX_textbox("Error : btOffsetZfor CurrentPos Something Wrong !"); return; }
+            if (int.TryParse(tbOffsetZ.Text, out OffsetPos) == false) { display_data_RX_textbox("Error : btOffsetZfor OffsetPosSomething Wrong !"); return; }
 
             TargetPos = CurrentPos + OffsetPos;
             if (TargetPos > Z_MAX_DIST) TargetPos = Z_MAX_DIST;
@@ -732,10 +746,10 @@ namespace LiveCell_Gui
             int OffsetPos, CurrentPos, TargetPos;
             string MovePos;
 
-            if (lbcurposz.Text.Length == 0) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : Input OffsetZ Value" }); return; }
+            if (lbcurposz.Text.Length == 0) { display_data_RX_textbox("Error : Input OffsetZ Value"); return; }
 
-            if (int.TryParse(lbcurposz.Text, out CurrentPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetZfor CurrentPos Something Wrong !" }); return; }
-            if (int.TryParse(tbOffsetZ.Text, out OffsetPos) == false) { this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : btOffsetZfor OffsetPosSomething Wrong !" }); return; }
+            if (int.TryParse(lbcurposz.Text, out CurrentPos) == false) { display_data_RX_textbox("Error : btOffsetZfor CurrentPos Something Wrong !"); return; }
+            if (int.TryParse(tbOffsetZ.Text, out OffsetPos) == false) { display_data_RX_textbox("Error : btOffsetZfor OffsetPosSomething Wrong !"); return; }
 
             TargetPos = CurrentPos - OffsetPos;
             if (TargetPos < 0) TargetPos = 0;

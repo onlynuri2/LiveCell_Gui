@@ -27,8 +27,7 @@ namespace LiveCell_Gui
         const string MOTOR_STATUS = "motorstatus";
         const string MOTOR_STATUS_IDLE = "motorstatusidle";
         const string MOTOR_STATUS_BUSY = "motorstatusbusy";
-        //private static SerialPort opto_serial;
-        private static SerialPort opto_serial = new SerialPort();
+        private static SerialPort opto_serial;// = new SerialPort();
 
         private List<byte> recvBuffer = new List<byte>();  // 데이터 버퍼
 
@@ -61,11 +60,11 @@ namespace LiveCell_Gui
             if (comboBox_available_port.InvokeRequired == true)
                 comboBox_available_port.Invoke(new MethodInvoker(delegate () { comport_str = comboBox_available_port.Text; }));
             else
-                comport_str = opto_serial.PortName = comboBox_available_port.Text;
-
+                comport_str = comboBox_available_port.Text;
 #if false
             opto_serial = new SerialPort
             {
+                PortName = comboBox_available_port.Text;
                 BaudRate = 115200,  // 보드레이트 설정
                 Parity = Parity.None,
                 DataBits = 8,
@@ -76,6 +75,7 @@ namespace LiveCell_Gui
             };
 //#else
             //opto_serial = new SerialPort();
+            opto_serial.PortName = comboBox_available_port.Text;
             opto_serial.BaudRate = 115200;
             opto_serial.DataBits = 8;
             opto_serial.Parity = Parity.None;
@@ -86,6 +86,7 @@ namespace LiveCell_Gui
 #endif
             opto_serial = new SerialPort(comport_str, 115200, Parity.None, 8, StopBits.One);
             opto_serial.DataReceived += new SerialDataReceivedEventHandler(serial_DataReceived);
+            opto_serial.ErrorReceived += OptoSerial_ErrorReceived;
 
             if (opto_serial != null && !opto_serial.IsOpen)
             {
@@ -94,43 +95,43 @@ namespace LiveCell_Gui
                     opto_serial.Open();
                     Thread.Sleep(10);
 
-                    textBox_RX_data.Clear();
+                    display_data_RX_textbox(string.Empty);
 
                     if (opto_serial_write(TRY_CONNECT, false))
                     {
                         comport_str += " - Open Success !";
 
-                        this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { comport_str });
+                        display_data_RX_textbox(comport_str);
 
                         Connection_display(true);
                     }
                     else
                     {
-                        opto_serial.Close();
+                        opto_serial.Dispose();
                         comport_str += " - Open Something wrong !";
-                        this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { comport_str });
+                        display_data_RX_textbox(comport_str);
 
                         Connection_display(false);
                     }
                 }
                 catch (Exception e)
                 {
-                    opto_serial.Close();
-                    if (this.IsHandleCreated)  this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Error : " + e.Message });
+                    opto_serial.Dispose();
+                    if (this.IsHandleCreated)  display_data_RX_textbox("Error : " + e.Message);
                 }
             }
             else
             {
                 if (opto_serial_write(TRY_CONNECT, true) == true)
                 {
-                    textBox_RX_data.Clear();
+                    display_data_RX_textbox(string.Empty);
                     comport_str += " - Already Opened !";
-                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { comport_str });
+                    display_data_RX_textbox(comport_str);
                     Connection_display(true);
                 }
                 else
                 {
-                    this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { comport_str + " Connection Something Wrong" });
+                    display_data_RX_textbox(comport_str + " Connection Something Wrong");
                     Connection_display(false);
                 }
             }
@@ -147,12 +148,13 @@ namespace LiveCell_Gui
                     try
                     {
                         opto_serial.DataReceived -= serial_DataReceived;
-                        opto_serial.Close();
+                        opto_serial.ErrorReceived -= OptoSerial_ErrorReceived;
+                        opto_serial.Dispose();
                         // UI 갱신은 메인 스레드에서
                         this.BeginInvoke(new Action(() =>
                         {
                             comport_str += " - Closed !";
-                            this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { comport_str });
+                            display_data_RX_textbox(comport_str);
                         }));
                     }
                     catch
@@ -167,9 +169,9 @@ namespace LiveCell_Gui
             }
             else
             {
-                if (opto_serial != null) opto_serial.Close();
+                if (opto_serial != null) opto_serial.Dispose();
                 comport_str += " - Closed!";
-                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { comport_str });
+                display_data_RX_textbox(comport_str);
             }
 
             Connection_display(false);
@@ -199,7 +201,7 @@ namespace LiveCell_Gui
 
             if (serial_sleep_wait(str) == false)
             {
-                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { str + " Serial Transfer Thread Fail" });
+                display_data_RX_textbox(str + " Serial Transfer Thread Fail");
             }
         }
 
@@ -207,28 +209,44 @@ namespace LiveCell_Gui
         {
             if (opto_serial.IsOpen == false)
             {
-                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "통신연결을 확인해주세요" });
+                display_data_RX_textbox("통신연결을 확인해주세요");
+                Disconnection();
                 return false;
             }
 
-            opto_serial.Write('#' + str + '*');
-
-            this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "#" + str + "*" });
-
-            if (check == false) return true;
-
-            if (serial_sleep_wait(str) == false)
+            try
             {
-                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { str + " Transfer Fail" });
-                return false;
-            }
-            else
-            {
-                if (str.Contains(TRY_CONNECT)) return true;
 
-                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { str + " Transfer Success" });
-                return true;
+                opto_serial.Write('#' + str + '*');
+
+                display_data_RX_textbox("#" + str + "*");
+
+                if (check == false) return true;
+
+                if (serial_sleep_wait(str) == false)
+                {
+                    display_data_RX_textbox(str + " Transfer Fail");
+                    return false;
+                }
+                else
+                {
+                    if (str.Contains(TRY_CONNECT)) return true;
+
+                    display_data_RX_textbox(str + " Transfer Success");
+                    return true;
+                }
             }
+            catch (IOException ex)// COM 포트 분리된 상태
+            {
+                display_data_RX_textbox("포트에 쓰기 실패 - 장치가 제거되었습니다.");
+                Disconnection();
+            }
+            catch (InvalidOperationException ex)// 포트 닫힌 상태
+            {
+                display_data_RX_textbox("포트에 쓰기 실패 - 포트가 닫혀 있습니다.");
+            }
+
+            return false;
         }
 
         private void parse_string(string recv)
@@ -238,7 +256,7 @@ namespace LiveCell_Gui
             /*********************************************************************************/
             if (recv.Contains(TRY_CONNECT))
             {
-                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' });
+                display_data_RX_textbox('#' + recv + '*');
 
                 if (recv[14] == '1')
                 {
@@ -258,12 +276,12 @@ namespace LiveCell_Gui
             }
             else if (recv.Contains(MOTOR_LIVE_TEST))
             {
-                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' });
+                display_data_RX_textbox('#' + recv + '*');
             }
             else if (recv.Contains(MOTOR_POS))
             {
                 string position = recv.Substring(10);
-                if (cbdebug.Checked == true) this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' });
+                if (cbdebug.Checked == true) display_data_RX_textbox('#' + recv + '*');
                 if (recv[8] == 'x') { if (lbcurposx.InvokeRequired) { lbcurposx.Invoke(new MethodInvoker(delegate () { lbcurposx.Text = position; ; })); } else lbcurposx.Text = position; }
                 else if (recv[8] == 'y') { if (lbcurposy.InvokeRequired) { lbcurposy.Invoke(new MethodInvoker(delegate () { lbcurposy.Text = position; ; })); } else lbcurposy.Text = position; }
                 else if (recv[8] == 'z') { if (lbcurposz.InvokeRequired) { lbcurposz.Invoke(new MethodInvoker(delegate () { lbcurposz.Text = position; ; })); } else lbcurposz.Text = position; }
@@ -274,18 +292,18 @@ namespace LiveCell_Gui
             }
             else if (recv.Contains(MOTOR_STATUS_REQ))
             {
-                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' });
+                display_data_RX_textbox('#' + recv + '*');
             }
             else if (recv.Contains(MOTOR_STATUS))
             {
-                if (cbdebug.Checked == true) this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' });
+                if (cbdebug.Checked == true) display_data_RX_textbox('#' + recv + '*');
 
                 Color backcolor;
                 if (recv[11] == 'x')
                 {
                     if (recv.Contains("idle")) backcolor = Color.LightCyan;
                     else if (recv.Contains("busy")) backcolor = Color.MistyRose;
-                    else { backcolor = Color.Red; this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' }); }
+                    else { backcolor = Color.Red; display_data_RX_textbox('#' + recv + '*'); }
 
                     if (btMoveXasix.InvokeRequired) { btMoveXasix.Invoke(new MethodInvoker(delegate () { btMoveXasix.BackColor = backcolor; ; })); } else btMoveXasix.BackColor = backcolor;
                 }
@@ -293,7 +311,7 @@ namespace LiveCell_Gui
                 {
                     if (recv.Contains("idle")) backcolor = Color.LightCyan;
                     else if (recv.Contains("busy")) backcolor = Color.MistyRose;
-                    else { backcolor = Color.Red; this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' }); }
+                    else { backcolor = Color.Red; display_data_RX_textbox('#' + recv + '*'); }
 
                     if (btMoveYasix.InvokeRequired) { btMoveYasix.Invoke(new MethodInvoker(delegate () { btMoveYasix.BackColor = backcolor; ; })); } else btMoveYasix.BackColor = backcolor;
                 }
@@ -301,14 +319,25 @@ namespace LiveCell_Gui
                 {
                     if (recv.Contains("idle")) backcolor = Color.LightCyan;
                     else if (recv.Contains("busy")) backcolor = Color.MistyRose;
-                    else { backcolor = Color.Red; this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { '#' + recv + '*' }); }
+                    else { backcolor = Color.Red; display_data_RX_textbox('#' + recv + '*'); }
 
                     if (btMoveZasix.InvokeRequired) { btMoveZasix.Invoke(new MethodInvoker(delegate () { btMoveZasix.BackColor = backcolor; ; })); } else btMoveZasix.BackColor = backcolor;
                 }
             }
             else
             {
-                this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "Motor Status Wrong Text Recv : " + recv });
+                display_data_RX_textbox("Motor Status Wrong Text Recv : " + recv);
+            }
+        }
+        private void OptoSerial_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
+        {
+            // 예: 이벤트 종류 표시
+            display_data_RX_textbox($"[ErrorReceived] EventType = {e.EventType}");
+
+            // 장치 제거 감지 시 안전 닫기
+            if (e.EventType == SerialError.Frame || e.EventType == SerialError.RXOver)
+            {
+                Disconnection();
             }
         }
         private void serial_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -355,7 +384,7 @@ namespace LiveCell_Gui
             }
             catch (Exception ex)
             {
-                if (this.IsHandleCreated)   this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { $"Error processing data: {ex.Message}" });
+                if (this.IsHandleCreated)   display_data_RX_textbox($"Error processing data: {ex.Message}");
             }
         }
         private void ProcessPacket(byte[] packet)
@@ -388,7 +417,7 @@ namespace LiveCell_Gui
                 int dataLength = endIndex - dataStart;
                 string extractedData = data.Substring(dataStart, dataLength);
 
-                //this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { $"Extracted Data : {extractedData}" });
+                //display_data_RX_textbox($"Extracted Data : {extractedData}");
                 parse_string(extractedData);
 
                 // 처리된 데이터와 토큰 제거
@@ -396,7 +425,7 @@ namespace LiveCell_Gui
                 startIndex = data.IndexOf(startToken);
                 endIndex = data.IndexOf(endToken, startIndex + startToken.Length);
 
-                //this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { $"After data : {data}" });
+                //display_data_RX_textbox($"After data : {data}");
             }
 
             // 남은 데이터 버퍼에 다시 저장
@@ -421,7 +450,7 @@ namespace LiveCell_Gui
             }
             catch (Exception ex)
             {
-                if (this.IsHandleCreated)   this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { $"Error processing data: {ex.Message}" });
+                if (this.IsHandleCreated)   display_data_RX_textbox($"Error processing data: {ex.Message}");
             }
         }
 
@@ -454,7 +483,7 @@ namespace LiveCell_Gui
             } while (loopcnt++ < 500);//300 ok
 
             //TimeSpan span = DateTime.Now - start;
-            //this.BeginInvoke(new SetTextCallBack(display_data_textbox), new object[] { "END - " });
+            //display_data_RX_textbox("END - ");
 
             recv_str = Encoding.Default.GetString(recvbytes, 0, idx);
             parse_string(recv_str.Substring(1, recv_str.Length - 2));
