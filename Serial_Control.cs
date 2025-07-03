@@ -54,6 +54,13 @@ namespace LiveCell_Gui
 
         private void Connection()
         {
+            if (this.InvokeRequired)
+            {
+                // UI Thread에서 실행
+                this.Invoke(new Action(() => Connection()));
+                return;
+            }
+
             //CheckForIllegalCrossThreadCalls = false;
             string comport_str = string.Empty;// comboBox_available_port.Text;
 
