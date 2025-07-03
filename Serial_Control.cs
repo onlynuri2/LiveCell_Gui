@@ -27,7 +27,7 @@ namespace LiveCell_Gui
         const string MOTOR_STATUS = "motorstatus";
         const string MOTOR_STATUS_IDLE = "motorstatusidle";
         const string MOTOR_STATUS_BUSY = "motorstatusbusy";
-        private static SerialPort opto_serial;// = new SerialPort();
+        private static SerialPort? opto_serial;// = new SerialPort();
 
         private List<byte> recvBuffer = new List<byte>();  // 데이터 버퍼
 
