@@ -93,7 +93,7 @@ namespace LiveCell_Gui
             lbjogspeedlimity.Text = "(0" + "~" + MAX_SPEED_Y.ToString() + ")";
             lbjogspeedlimitz.Text = "(0" + "~" + MAX_SPEED_Z.ToString() + ")";
 
-            tbcmdposx.Text = tbcmdposy.Text = tbcmdposz.Text = "0";
+            //tbcmdposx.Text = tbcmdposy.Text = tbcmdposz.Text = "0";
             tbcmdspeedx.Text = Convert.ToString(DEFAULT_SPEED_X);
             tbcmdspeedy.Text = Convert.ToString(DEFAULT_SPEED_Y);
             tbcmdspeedz.Text = Convert.ToString(DEFAULT_SPEED_Z);
@@ -191,7 +191,7 @@ namespace LiveCell_Gui
 
         private void button_tx_send_Click(object sender, EventArgs e)
         {
-            if (opto_serial.IsOpen == false) { display_data_RX_textbox("통신연결을 확인해주세요"); return; }
+            if (opto_serial == null || opto_serial.IsOpen == false) { display_data_RX_textbox("통신연결을 확인해주세요"); return; }
 
             display_data_RX_textbox(textBox_TX_data.Text);
             opto_serial.Write(textBox_TX_data.Text);

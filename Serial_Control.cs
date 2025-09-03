@@ -61,7 +61,6 @@ namespace LiveCell_Gui
                 return;
             }
 
-            //CheckForIllegalCrossThreadCalls = false;
             string comport_str = string.Empty;// comboBox_available_port.Text;
 
             if (comboBox_available_port.InvokeRequired == true)
@@ -157,12 +156,7 @@ namespace LiveCell_Gui
                         opto_serial.DataReceived -= serial_DataReceived;
                         opto_serial.ErrorReceived -= OptoSerial_ErrorReceived;
                         opto_serial.Dispose();
-                        // UI 갱신은 메인 스레드에서
-                        this.BeginInvoke(new Action(() =>
-                        {
-                            comport_str += " - Closed !";
-                            display_data_RX_textbox(comport_str);
-                        }));
+                        display_data_RX_textbox(comport_str);
                     }
                     catch
                     {
@@ -200,7 +194,7 @@ namespace LiveCell_Gui
 
         private void serial_write_thread(string str, bool check)
         {
-            if (opto_serial.IsOpen == false) return;
+            if (opto_serial == null || opto_serial.IsOpen == false) return;
 
             opto_serial.Write("#" + str + "*");
 
@@ -214,7 +208,7 @@ namespace LiveCell_Gui
 
         private bool opto_serial_write(string str, bool check)
         {
-            if (opto_serial.IsOpen == false)
+            if (opto_serial == null || opto_serial.IsOpen == false)
             {
                 display_data_RX_textbox("통신연결을 확인해주세요");
                 Disconnection();
@@ -349,8 +343,7 @@ namespace LiveCell_Gui
         }
         private void serial_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            if (opto_serial.IsOpen)
-            //MySerialReceivedByte(sender, e);
+            if (opto_serial != null && opto_serial.IsOpen)
             //MySerialReceivedByteBinary(sender, e);
             serial_DataReceived_list(sender, e);
         }
@@ -362,29 +355,32 @@ namespace LiveCell_Gui
         {
             try
             {
-                int bytesToRead = opto_serial.BytesToRead;
-                byte[] buffer = new byte[bytesToRead];
-                opto_serial.Read(buffer, 0, bytesToRead);
-
-                lock (recvBuffer) // 스레드 안전 처리
+                if (opto_serial != null && opto_serial.IsOpen == true)
                 {
-                    recvBuffer.AddRange(buffer);
+                    int bytesToRead = opto_serial.BytesToRead;
+                    byte[] buffer = new byte[bytesToRead];
+                    opto_serial.Read(buffer, 0, bytesToRead);
 
-                    while (true)
+                    lock (recvBuffer) // 스레드 안전 처리
                     {
-                        int startIdx = recvBuffer.IndexOf((byte)'#');
-                        int endIdx = recvBuffer.IndexOf((byte)'*');
+                        recvBuffer.AddRange(buffer);
 
-                        if (startIdx != -1 && endIdx > startIdx + 3)  // 최소 크기 보장
+                        while (true)
                         {
-                            byte[] packet = recvBuffer.Skip(startIdx).Take(endIdx - startIdx + 1).ToArray();
-                            recvBuffer.RemoveRange(0, endIdx + 1); // 처리된 패킷 삭제
+                            int startIdx = recvBuffer.IndexOf((byte)'#');
+                            int endIdx = recvBuffer.IndexOf((byte)'*');
 
-                            ProcessPacket(packet);
-                        }
-                        else
-                        {
-                            break; // 데이터 부족하면 루프 종료
+                            if (startIdx != -1 && endIdx > startIdx + 3)  // 최소 크기 보장
+                            {
+                                byte[] packet = recvBuffer.Skip(startIdx).Take(endIdx - startIdx + 1).ToArray();
+                                recvBuffer.RemoveRange(0, endIdx + 1); // 처리된 패킷 삭제
+
+                                ProcessPacket(packet);
+                            }
+                            else
+                            {
+                                break; // 데이터 부족하면 루프 종료
+                            }
                         }
                     }
                 }
@@ -443,60 +439,25 @@ namespace LiveCell_Gui
         {
             try
             {
-                // 수신된 데이터 읽기
-                int bytesToRead = opto_serial.BytesToRead;
-                byte[] buffer = new byte[bytesToRead];
-                opto_serial.Read(buffer, 0, bytesToRead);
+                if (opto_serial != null && opto_serial.IsOpen == true)
+                {
+                    // 수신된 데이터 읽기
+                    int bytesToRead = opto_serial.BytesToRead;
+                    byte[] buffer = new byte[bytesToRead];
+                    opto_serial.Read(buffer, 0, bytesToRead);
 
-                // 읽은 데이터를 StringBuilder에 추가
-                string receivedData = Encoding.ASCII.GetString(buffer); // 바이너리 데이터를 ASCII 문자열로 변환
-                _buffer.Append(receivedData);
+                    // 읽은 데이터를 StringBuilder에 추가
+                    string receivedData = Encoding.ASCII.GetString(buffer); // 바이너리 데이터를 ASCII 문자열로 변환
+                    _buffer.Append(receivedData);
 
-                // 버퍼에서 데이터를 처리
-                ProcessBuffer();
+                    // 버퍼에서 데이터를 처리
+                    ProcessBuffer();
+                }
             }
             catch (Exception ex)
             {
                 if (this.IsHandleCreated)   display_data_RX_textbox($"Error processing data: {ex.Message}");
             }
-        }
-
-        private void MySerialReceivedByte(object s, EventArgs e)  //여기에서 수신 데이타를 사용자의 용도에 따라 처리한다.
-        {
-            int loopcnt = 0, idx = 0;
-            int readlen = opto_serial.BytesToRead;
-            byte firstbyte;
-
-            if (readlen == 0) return;
-            firstbyte = (byte)opto_serial.ReadByte();
-            if (firstbyte != '#') return;
-
-            byte[] recvbytes = new byte[100];
-            Array.Clear(recvbytes, 0x00, recvbytes.Length);
-
-            recvbytes[idx++] = firstbyte;
-
-            //DateTime start = DateTime.Now;            // 시간차 구하기
-
-            do
-            {
-                if (opto_serial.BytesToRead > 0)
-                {
-                    recvbytes[idx++] = (byte)opto_serial.ReadByte();
-                    if (recvbytes[idx - 1] == '*') { break; }
-                    loopcnt = 0;
-                }
-
-            } while (loopcnt++ < 500);//300 ok
-
-            //TimeSpan span = DateTime.Now - start;
-            //display_data_RX_textbox("END - ");
-
-            recv_str = Encoding.Default.GetString(recvbytes, 0, idx);
-            parse_string(recv_str.Substring(1, recv_str.Length - 2));
-
-            Thread.Sleep(1);
-            //Task.Delay(TimeSpan.FromMilliseconds(0.1)).GetAwaiter().GetResult();
         }
     }
 }

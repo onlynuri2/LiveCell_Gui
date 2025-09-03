@@ -508,7 +508,7 @@
             tbcmdposz.Name = "tbcmdposz";
             tbcmdposz.Size = new Size(147, 45);
             tbcmdposz.TabIndex = 2;
-            tbcmdposz.Text = "0";
+            tbcmdposz.Text = "7000";
             tbcmdposz.TextAlign = HorizontalAlignment.Right;
             tbcmdposz.KeyPress += tbcmdposz_KeyPress;
             // 
@@ -751,7 +751,7 @@
             tbcmdposy.Name = "tbcmdposy";
             tbcmdposy.Size = new Size(147, 45);
             tbcmdposy.TabIndex = 2;
-            tbcmdposy.Text = "0";
+            tbcmdposy.Text = "20000";
             tbcmdposy.TextAlign = HorizontalAlignment.Right;
             tbcmdposy.KeyPress += tbcmdposy_KeyPress;
             // 
@@ -994,7 +994,7 @@
             tbcmdposx.Name = "tbcmdposx";
             tbcmdposx.Size = new Size(147, 45);
             tbcmdposx.TabIndex = 2;
-            tbcmdposx.Text = "0";
+            tbcmdposx.Text = "26000";
             tbcmdposx.TextAlign = HorizontalAlignment.Right;
             tbcmdposx.KeyPress += tbcmdposx_KeyPress;
             // 
