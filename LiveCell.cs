@@ -10,11 +10,8 @@ using System.Windows.Forms;
 using System.IO;
 using System.IO.Ports;
 
-using System.Threading; //Thread Class Using
+using System.Threading;
 using System.Diagnostics;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-//using System.Reflection;
 
 namespace LiveCell_Gui
 {
@@ -36,7 +33,7 @@ namespace LiveCell_Gui
         public LiveCell()
         {
             InitializeComponent();
-            CenterToScreen();
+            //CenterToScreen();
             //livecell = this;
         }
 
@@ -77,8 +74,12 @@ namespace LiveCell_Gui
         {
             //Populate the Combobox with SerialPorts on the System
             comport_info_update();
-
+#if LIVECELL
             this.Text = "LiveCell Motion Test - " + "V1.1.0";
+#endif
+#if CGT
+            this.Text = "CGT Motion Test - " + "V1.1.0";
+#endif
 
             lbxmaxdistance.Text = "(0" + "~" + X_MAX_DIST.ToString() + ")";
             lbxmaxspeed.Text = "(0" + "~" + MAX_SPEED_X.ToString() + ")";
@@ -101,9 +102,29 @@ namespace LiveCell_Gui
             tbjogspeedx.Text = Convert.ToString(DEFAULT_SPEED_X);
             tbjogspeedy.Text = Convert.ToString(DEFAULT_SPEED_Y);
             tbjogspeedz.Text = Convert.ToString(DEFAULT_SPEED_Z);
+
+            tbcmdposx.Text = Convert.ToString(DEFAULT_POS_X);
+            tbcmdposy.Text = Convert.ToString(DEFAULT_POS_Y);
+            tbcmdposz.Text = Convert.ToString(DEFAULT_POS_Z);
+
+            tbOffsetX.Text = Convert.ToString(DEFAULT_OFFSET_X);
+            tbOffsetY.Text = Convert.ToString(DEFAULT_OFFSET_Y);
+            tbOffsetZ.Text = Convert.ToString(DEFAULT_OFFSET_Z);
+
+#if LIVECELL
+            btViewer.Hide(); AutoCapture.Hide(); AutoCapture_Stop.Hide();
+#endif
+#if CGT
+            btViewer.Show(); AutoCapture.Show(); AutoCapture_Stop.Show();
+#endif
+            this.Location = new Point(905, 0);
+
+            MotorStatus = new byte[3];
+			Array.Fill<byte>(MotorStatus, 1);
         }
         private void LiveCell_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (CGT_Viewer != null) { CGT_Viewer.Close(); }
             Disconnection();
         }
         private void btconnection_Click(object sender, EventArgs e)
@@ -208,7 +229,12 @@ namespace LiveCell_Gui
                 if (pos > X_MAX_DIST)
                 {
                     display_data_RX_textbox("Error : Max Postiton Exceed X-axis!");
-                    MessageBox.Show(Form.ActiveForm, "Max Postiton Exceed X-axis!", "Error");
+                    //Task.Run(() => { System.Windows.Forms.Application.Run(new AutoCloseForm("Info", "\"Error : Max Postiton Exceed X-axis!", 1200)); });
+                    //UIHelper.ShowAutoCloseMsg("Info", "\"Error : Max Postiton Exceed X-axis!", 1200);
+                    this.BeginInvoke((MethodInvoker)(() =>
+                    {
+                        //MessageBox.Show(Form.ActiveForm, "Max Postiton Exceed X-axis!", "Error");
+                    }));
                     return;
                 }
             }
@@ -219,7 +245,7 @@ namespace LiveCell_Gui
                 if (speed > MAX_SPEED_X)
                 {
                     display_data_RX_textbox("Error : Max Speed Exceed X-axis!");
-                    MessageBox.Show(Form.ActiveForm, "Max Speed Exceed X-axis!", "Error");
+                    //MessageBox.Show(Form.ActiveForm, "Max Speed Exceed X-axis!", "Error");
                     return;
                 }
             }
@@ -237,7 +263,7 @@ namespace LiveCell_Gui
                 if (pos > Y_MAX_DIST)
                 {
                     display_data_RX_textbox("Error : Max Postiton Exceed Y-axis!");
-                    MessageBox.Show(Form.ActiveForm, "Max Postiton Exceed Y-axis!", "Error");
+                    //MessageBox.Show(Form.ActiveForm, "Max Postiton Exceed Y-axis!", "Error");
                     return;
                 }
             }
@@ -248,7 +274,7 @@ namespace LiveCell_Gui
                 if (speed > MAX_SPEED_Y)
                 {
                     display_data_RX_textbox("Error : Max Speed Exceed Y-axis!");
-                    MessageBox.Show(Form.ActiveForm, "Max Speed Exceed Y-axis!", "Error");
+                    //MessageBox.Show(Form.ActiveForm, "Max Speed Exceed Y-axis!", "Error");
                     return;
                 }
             }
@@ -266,7 +292,7 @@ namespace LiveCell_Gui
                 if (pos > Z_MAX_DIST)
                 {
                     display_data_RX_textbox("Error : Max Postiton Exceed Z-axis!");
-                    MessageBox.Show(Form.ActiveForm, "Max Postiton Exceed Z-axis!", "Error");
+                    //MessageBox.Show(Form.ActiveForm, "Max Postiton Exceed Z-axis!", "Error");
                     return;
                 }
             }
@@ -277,7 +303,7 @@ namespace LiveCell_Gui
                 if (speed > MAX_SPEED_Z)
                 {
                     display_data_RX_textbox("Error : Max Speed Exceed Z-axis!");
-                    MessageBox.Show(Form.ActiveForm, "Max Speed Exceed Z-axis!", "Error");
+                    //MessageBox.Show(Form.ActiveForm, "Max Speed Exceed Z-axis!", "Error");
                     return;
                 }
             }
@@ -299,7 +325,7 @@ namespace LiveCell_Gui
                 if (speed > MAX_SPEED_X)
                 {
                     display_data_RX_textbox("Error : Max Speed Exceed X-axis!");
-                    MessageBox.Show(Form.ActiveForm, "Max Speed Exceed X-axis!", "Error");
+                    //MessageBox.Show(Form.ActiveForm, "Max Speed Exceed X-axis!", "Error");
                     return;
                 }
                 if (speed > 0) senddata += ',' + tbjogspeedx.Text;
@@ -324,7 +350,7 @@ namespace LiveCell_Gui
                 if (speed > MAX_SPEED_Y)
                 {
                     display_data_RX_textbox("Error : Max Speed Exceed  Y-axis!");
-                    MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  Y-axis!", "Error");
+                    //MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  Y-axis!", "Error");
                     return;
                 }
                 if (speed > 0) senddata += ',' + tbjogspeedy.Text;
@@ -349,7 +375,7 @@ namespace LiveCell_Gui
                 if (speed > MAX_SPEED_Z)
                 {
                     display_data_RX_textbox("Error : Max Speed Exceed  Z-axis!");
-                    MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  Z-axis!", "Error");
+                    //MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  Z-axis!", "Error");
                     return;
                 }
                 if (speed > 0) senddata += ',' + tbjogspeedz.Text;
@@ -376,7 +402,7 @@ namespace LiveCell_Gui
                 if (speed > MAX_SPEED_X)
                 {
                     display_data_RX_textbox("Error : Max Speed Exceed  X-axis!");
-                    MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  X-axis!", "Error");
+                    //MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  X-axis!", "Error");
                     return;
                 }
                 if (speed > 0) senddata += ',' + tbjogspeedx.Text;
@@ -400,7 +426,7 @@ namespace LiveCell_Gui
                 if (speed > MAX_SPEED_Y)
                 {
                     display_data_RX_textbox("Error : Max Speed Exceed  Y-axis!");
-                    MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  Y-axis!", "Error");
+                    //MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  Y-axis!", "Error");
                     return;
                 }
                 if (speed > 0) senddata += ',' + tbjogspeedy.Text;
@@ -425,7 +451,7 @@ namespace LiveCell_Gui
                 if (speed > MAX_SPEED_Z)
                 {
                     display_data_RX_textbox("Error : Max Speed Exceed  Z-axis!");
-                    MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  Z-axis!", "Error");
+                    //MessageBox.Show(Form.ActiveForm, "Max Speed Exceed  Z-axis!", "Error");
                     return;
                 }
                 if (speed > 0) senddata += ',' + tbjogspeedz.Text;
@@ -475,7 +501,7 @@ namespace LiveCell_Gui
                     if (pos > X_MAX_DIST)
                     {
                         display_data_RX_textbox("Error : Max Postiton Exceed X-axis!");
-                        MessageBox.Show(Form.ActiveForm, "Max Postiton Exceed X-axis!", "Error");
+                        //MessageBox.Show(Form.ActiveForm, "Max Postiton Exceed X-axis!", "Error");
                         return;
                     }
                 }
@@ -486,7 +512,7 @@ namespace LiveCell_Gui
                     if (speed > MAX_SPEED_X)
                     {
                         display_data_RX_textbox("Error : Max Speed Exceed X-axis!");
-                        MessageBox.Show(Form.ActiveForm, "Max Speed Exceed X-axis!", "Error");
+                        //MessageBox.Show(Form.ActiveForm, "Max Speed Exceed X-axis!", "Error");
                         return;
                     }
                 }
@@ -500,7 +526,7 @@ namespace LiveCell_Gui
                     if (pos > Y_MAX_DIST)
                     {
                         display_data_RX_textbox("Error : Max Postiton Exceed Y-axis!");
-                        MessageBox.Show(Form.ActiveForm, "Error : Max Postiton Exceed Y-axis!", "Error");
+                        //MessageBox.Show(Form.ActiveForm, "Error : Max Postiton Exceed Y-axis!", "Error");
                         return;
                     }
                 }
@@ -511,7 +537,7 @@ namespace LiveCell_Gui
                     if (speed > MAX_SPEED_Y)
                     {
                         display_data_RX_textbox("Error : Max Speed Exceed Y-axis!!");
-                        MessageBox.Show(Form.ActiveForm, "Max Speed Exceed Y-axis!", "Error");
+                        //MessageBox.Show(Form.ActiveForm, "Max Speed Exceed Y-axis!", "Error");
                         return;
                     }
                 }
@@ -525,7 +551,7 @@ namespace LiveCell_Gui
                     if (pos > Z_MAX_DIST)
                     {
                         display_data_RX_textbox("Error : Max Postiton Exceed Z-axis!");
-                        MessageBox.Show(Form.ActiveForm, "Error : Max Postiton Exceed Z-axis!", "Error");
+                        //MessageBox.Show(Form.ActiveForm, "Error : Max Postiton Exceed Z-axis!", "Error");
                         return;
                     }
                 }
@@ -536,7 +562,7 @@ namespace LiveCell_Gui
                     if (speed > MAX_SPEED_Z)
                     {
                         display_data_RX_textbox("Error : Max Speed Exceed Z-axis!!");
-                        MessageBox.Show(Form.ActiveForm, "Max Speed Exceed Z-axis!", "Error");
+                        //MessageBox.Show(Form.ActiveForm, "Max Speed Exceed Z-axis!", "Error");
                         return;
                     }
                 }
@@ -565,6 +591,13 @@ namespace LiveCell_Gui
         *************************************************************************************************/
         private void tbcmdposx_KeyPress(object sender, KeyPressEventArgs e)
         {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true;  // 기본 동작 막기
+                btMoveXasix_Click(this, EventArgs.Empty);
+                return;
+            }
+
             //숫자와 백스페이스를 제외한 나머지를 바로 처리
             if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))
             {
@@ -592,6 +625,13 @@ namespace LiveCell_Gui
 
         private void tbcmdposy_KeyPress(object sender, KeyPressEventArgs e)
         {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true;  // 기본 동작 막기
+                btMoveYasix_Click(this, EventArgs.Empty);
+                return;
+            }
+
             //숫자와 백스페이스를 제외한 나머지를 바로 처리
             if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))
             {
@@ -619,6 +659,13 @@ namespace LiveCell_Gui
 
         private void tbcmdposz_KeyPress(object sender, KeyPressEventArgs e)
         {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true;  // 기본 동작 막기
+                btMoveZasix_Click(this, EventArgs.Empty);
+                return;
+            }
+
             //숫자와 백스페이스를 제외한 나머지를 바로 처리
             if (!(char.IsDigit(e.KeyChar) || e.KeyChar == Convert.ToChar(Keys.Back)))
             {
@@ -652,7 +699,7 @@ namespace LiveCell_Gui
             int OffsetPos, CurrentPos, TargetPos;
             string MovePos;
 
-            if(lbcurposx.Text.Length == 0) { display_data_RX_textbox("Error : Input OffsetX Value"); return; }
+            if (lbcurposx.Text.Length == 0) { display_data_RX_textbox("Error : Input OffsetX Value"); return; }
 
             if (int.TryParse(lbcurposx.Text, out CurrentPos) == false) { display_data_RX_textbox("Error : btOffsetXfor CurrentPos Something Wrong !"); return; }
             if (int.TryParse(tbOffsetX.Text, out OffsetPos) == false) { display_data_RX_textbox("Error : btOffsetXfor OffsetPosSomething Wrong !"); return; }

@@ -1,4 +1,8 @@
-﻿using System;
+﻿//속성 -> 빌드 -> 조건부컴파일에 추가
+//#define LIVECELL
+//#define CGT
+
+using System;
 using System.Data;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +14,6 @@ using System.IO.Ports;
 using System.Threading; //스레드 클래스 사용
 using System.Diagnostics;
 using System.Drawing;
-
 
 namespace LiveCell_Gui
 {
@@ -27,6 +30,10 @@ namespace LiveCell_Gui
         const string MOTOR_STATUS = "motorstatus";
         const string MOTOR_STATUS_IDLE = "motorstatusidle";
         const string MOTOR_STATUS_BUSY = "motorstatusbusy";
+
+        const string CAPTURE_START = "CaptureStart";
+        const string CAPTURE_STOP = "CaptureStop";
+
         private static SerialPort? opto_serial;// = new SerialPort();
 
         private List<byte> recvBuffer = new List<byte>();  // 데이터 버퍼
@@ -37,18 +44,52 @@ namespace LiveCell_Gui
         private const int DLEAY_10 = 10;
         private const int DLEAY_20 = 20;
 
-        private const int X_MAX_DIST = 30000;//real 1350000;
-        private const int Y_MAX_DIST = 35000;//real 200000;
+        private byte[] MotorStatus;
+
+#if LIVECELL
+        private const int X_MAX_DIST = 300000;//real 1350000;
+        private const int Y_MAX_DIST = 350000;//real 200000;
         private const int Z_MAX_DIST = 14000;//real 125000;
 
-        private const int MAX_SPEED_X = 200000;
-        private const int DEFAULT_SPEED_X = 100000;
+        private const int MAX_SPEED_X = 99999;
+        private const int DEFAULT_SPEED_X = 80000;
 
-        private const int MAX_SPEED_Y = 150000;
+        private const int MAX_SPEED_Y = 99999;
+        private const int DEFAULT_SPEED_Y = 66000;
+
+        private const int MAX_SPEED_Z = 99999;
+        private const int DEFAULT_SPEED_Z = 6000;
+
+        private const int DEFAULT_POS_X = 260000;
+        private const int DEFAULT_POS_Y = 200000;
+        private const int DEFAULT_POS_Z = 7000;
+
+        private const int DEFAULT_OFFSET_X = 1000;
+        private const int DEFAULT_OFFSET_Y = 1000;
+        private const int DEFAULT_OFFSET_Z = 1000;
+#endif
+#if CGT
+        private const int X_MAX_DIST = 150000;//real 1350000;
+        private const int Y_MAX_DIST = 150000;//real 200000;
+        private const int Z_MAX_DIST = 14000;//real 125000;
+
+        private const int MAX_SPEED_X = 99999;
+        private const int DEFAULT_SPEED_X = 80000;
+
+        private const int MAX_SPEED_Y = 99999;
         private const int DEFAULT_SPEED_Y = 66000;
 
         private const int MAX_SPEED_Z = 10000;
         private const int DEFAULT_SPEED_Z = 6000;
+
+        private const int DEFAULT_POS_X = 15000;
+        private const int DEFAULT_POS_Y = 15000;
+        private const int DEFAULT_POS_Z = 0;
+
+        private const int DEFAULT_OFFSET_X = 19150;
+        private const int DEFAULT_OFFSET_Y = 19200;
+        private const int DEFAULT_OFFSET_Z = 7000;
+#endif
 
         private const int LED_BR_MAX = 10000;
 
@@ -99,17 +140,19 @@ namespace LiveCell_Gui
                 try
                 {
                     opto_serial.Open();
-                    Thread.Sleep(10);
+                    //Thread.Sleep(10);
 
                     display_data_RX_textbox(string.Empty);
 
-                    if (opto_serial_write(TRY_CONNECT, false))
+                    if (opto_serial_write(TRY_CONNECT, true))
                     {
                         comport_str += " - Open Success !";
 
                         display_data_RX_textbox(comport_str);
 
                         Connection_display(true);
+                        Task.Delay(1).Wait();
+                        opto_serial_write(MOTOR_STATUS_REQ, false);
                     }
                     else
                     {
@@ -153,16 +196,20 @@ namespace LiveCell_Gui
                 {
                     try
                     {
+                        this.BeginInvoke((MethodInvoker)(() =>
+                        {
+                            if (CGT_Viewer != null) { CGT_Viewer.Close(); }
+                        }));
+
                         opto_serial.DataReceived -= serial_DataReceived;
                         opto_serial.ErrorReceived -= OptoSerial_ErrorReceived;
                         opto_serial.Dispose();
                         display_data_RX_textbox(comport_str);
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        MessageBox.Show(Form.ActiveForm, "SEIRAL PORT Close FAIL !", " Error");
+                        display_data_RX_textbox("SEIRAL PORT Close FAIL !" + ex);
                     }
-
                 });
                 
                 closeThread.IsBackground = true;
@@ -239,12 +286,12 @@ namespace LiveCell_Gui
             }
             catch (IOException ex)// COM 포트 분리된 상태
             {
-                display_data_RX_textbox("포트에 쓰기 실패 - 장치가 제거되었습니다.");
+                display_data_RX_textbox("포트에 쓰기 실패 - 장치가 제거되었습니다." + ex);
                 Disconnection();
             }
             catch (InvalidOperationException ex)// 포트 닫힌 상태
             {
-                display_data_RX_textbox("포트에 쓰기 실패 - 포트가 닫혀 있습니다.");
+                display_data_RX_textbox("포트에 쓰기 실패 - 포트가 닫혀 있습니다." + ex);
             }
 
             return false;
@@ -290,10 +337,48 @@ namespace LiveCell_Gui
                 //this.Invalidate();  // request a delayed Repaint by the normal MessageLoop system    
                 //this.Update();      // forces Repaint of invalidated area 
                 //this.Refresh();     // Combines Invalidate() and Update()
+
+                if (CGT_Viewer != null && opto_serial != null && opto_serial.IsOpen)
+                {
+                    if (int.TryParse(lbcurposx.Text, out int x) && int.TryParse(lbcurposy.Text, out int y) && int.TryParse(lbcurposz.Text, out int z))
+                    {
+                        if(CGT_Viewer != null) CGT_Viewer.Send_Current_Position_To_CGTViewer(x, y, z);
+                    }
+                    //else
+                    //    MessageBox.Show(Form.ActiveForm, "Position Info Something Wrong", " Error!");
+                }
             }
             else if (recv.Contains(MOTOR_STATUS_REQ))
             {
                 display_data_RX_textbox('#' + recv + '*');
+
+                int x = 1, y = 1, z = 1;
+
+                try
+                {
+                    string valueString = recv.Split(':')[1];
+                    string[] values = valueString.Split(',');
+
+                    // TryParse를 사용하여 안전하게 변환
+                    if (values.Length == 3 &&
+                        int.TryParse(values[0], out x) &&
+                        int.TryParse(values[1], out y) &&
+                        int.TryParse(values[2], out z))
+                    {
+                        display_data_RX_textbox("Motor Status Text Recv : " + values[0] + values[1] + values[2]);
+                        if (x == 1) MotorStatus[0] = 0;
+                        if (y == 1) MotorStatus[1] = 0;
+                        if (z == 1) MotorStatus[2] = 0;
+                    }
+                    else
+                    {
+                        display_data_RX_textbox("MOTOR_STATUS_REQ Wrong Text Recv : " + recv);
+                    }
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    display_data_RX_textbox("MOTOR_STATUS_REQ Wrong : " + recv); 
+                }
             }
             else if (recv.Contains(MOTOR_STATUS))
             {
@@ -302,7 +387,9 @@ namespace LiveCell_Gui
                 Color backcolor;
                 if (recv[11] == 'x')
                 {
-                    if (recv.Contains("idle")) backcolor = Color.LightCyan;
+                    MotorStatus[0] = 1;
+
+                    if (recv.Contains("idle")) { backcolor = Color.LightCyan; MotorStatus[0] = 0; }
                     else if (recv.Contains("busy")) backcolor = Color.MistyRose;
                     else { backcolor = Color.Red; display_data_RX_textbox('#' + recv + '*'); }
 
@@ -310,7 +397,9 @@ namespace LiveCell_Gui
                 }
                 else if (recv[11] == 'y')
                 {
-                    if (recv.Contains("idle")) backcolor = Color.LightCyan;
+                    MotorStatus[1] = 1;
+
+                    if (recv.Contains("idle")) { backcolor = Color.LightCyan; MotorStatus[1] = 0; }
                     else if (recv.Contains("busy")) backcolor = Color.MistyRose;
                     else { backcolor = Color.Red; display_data_RX_textbox('#' + recv + '*'); }
 
@@ -318,7 +407,9 @@ namespace LiveCell_Gui
                 }
                 else if (recv[11] == 'z')
                 {
-                    if (recv.Contains("idle")) backcolor = Color.LightCyan;
+                    MotorStatus[2] = 1;
+
+                    if (recv.Contains("idle")) { backcolor = Color.LightCyan; MotorStatus[2] = 0; }
                     else if (recv.Contains("busy")) backcolor = Color.MistyRose;
                     else { backcolor = Color.Red; display_data_RX_textbox('#' + recv + '*'); }
 

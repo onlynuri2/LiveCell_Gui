@@ -4,6 +4,15 @@
     <_LastSelectedProfileId>D:\Project_IO\LiveCell_Gui\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Update="AutoCloseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="CGT_Func.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="CGT_Viewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="LiveCell.cs">
       <SubType>Form</SubType>
     </Compile>
