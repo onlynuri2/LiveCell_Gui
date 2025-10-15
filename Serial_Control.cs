@@ -232,8 +232,10 @@ namespace LiveCell_Gui
             {
                 Thread.Sleep(DLEAY_10);
 
-                if ((_buffer.ToString().IndexOf(str) >= 0) || recv_str.Contains(str))
+                if (recv_str.Contains(str))
                     return true;
+
+                Application.DoEvents();
             }
 
             return false;
@@ -509,10 +511,10 @@ namespace LiveCell_Gui
             {
                 int dataStart = startIndex + startToken.Length;
                 int dataLength = endIndex - dataStart;
-                string extractedData = data.Substring(dataStart, dataLength);
+                recv_str = data.Substring(dataStart, dataLength);
 
                 //display_data_RX_textbox($"Extracted Data : {extractedData}");
-                parse_string(extractedData);
+                parse_string(recv_str);
 
                 // 처리된 데이터와 토큰 제거
                 data = data.Substring(endIndex + endToken.Length);
