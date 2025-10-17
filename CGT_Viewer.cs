@@ -31,7 +31,7 @@ namespace LiveCell_Gui
         private Bitmap? image = null;
 
         // The object that will contain the palette information for the bitmap
-        private ColorPalette imgpal;
+        private ColorPalette? imgpal;
 
         // The Mutex object that will protect image objects during processing
         private static Mutex imageMutex = new Mutex();
@@ -42,7 +42,7 @@ namespace LiveCell_Gui
         // The MultiCam object that contains the acquired buffer
         private UInt32 currentSurface;
 
-        MC.CALLBACK multiCamCallback;
+        MC.CALLBACK? multiCamCallback;
 
         private LiveCell mainform;
 
@@ -152,33 +152,27 @@ namespace LiveCell_Gui
         /************************************************************************************************************************/
         /*                                                            Auto Capture Thread Start Stop                                                                     */
         /************************************************************************************************************************/
-        string CaptureStartTime;
-        Thread AutoCaptureThread;
+
+        string CaptureStartTime = DateTime.Now.ToString("yyMMdd_HHmmss");
+
         bool Is_Thread_run = false;
         int start_x, start_y, offset_x, offset_y;
 
-		public void AutoCapture_Thread_Start()
-        //public Task AutoCapture_Thread_Start()
+        public Task AutoCapture_Thread_Start()
         {
             CaptureStartTime = DateTime.Now.ToString("yyMMdd_HHmmss");
-#if true
-            AutoCaptureThread = new Thread(() => AutoCapture_Thread());
-            AutoCaptureThread.IsBackground = true;
-            AutoCaptureThread.Start();
+
             Is_Thread_run = true;
-#else
-			Is_Thread_run = true;
             _ = Task.Run(() => AutoCapture_Thread());
             return Task.CompletedTask;
 
-#endif
         }
         public void AutoCapture_Thread_Stop()
         {
             Is_Thread_run = false;
         }
         //private async Task AutoCapture_Thread()
-		private void AutoCapture_Thread()
+		private async Task AutoCapture_Thread()
         {
             if(uiTimer == null || uiTimer.Enabled == false)
             {
@@ -196,10 +190,10 @@ namespace LiveCell_Gui
                                     36, 35, 34, 33, 32, 31
                                     };
 
-            //System.Windows.Forms.Application.Run(new AutoCloseForm("Info", "Capture Start", 1200));
-            UIHelper.ShowAutoCloseMsg("Info", "Capture Start", 1200);
+            //System.Windows.Forms.Application.Run(new AutoCloseForm("Info", "Capture Start", 1000));
+            UIHelper.ShowAutoCloseMsg("Info", "Capture Start", 1000);
 
-            Thread.Sleep(1200);
+            await Task.Delay(1000);
 
             for (int idx = 0; idx < path.Count; idx++)
             {
@@ -213,21 +207,19 @@ namespace LiveCell_Gui
 
                 opto_serial_sub_write(senddata);
 
-                int cnt;
-                for (cnt = 0; cnt < 30; cnt++)
+                for (int cnt = 0; cnt <= 30; cnt++)
                 {
-                    //mainform.Received_Data_From_SubForm("UpdateUI");
-
                     if (path[idx].X == Curr_Pos_X && path[idx].Y == Curr_Pos_Y)
                     {
-                        Thread.Sleep(CaptureDelay);//await Task.Delay(CaptureDelay); //Thread.Sleep(CaptureDelay);
-                        if (!Is_Thread_run) return;
+                        await Task.Delay(CaptureDelay);
+
                         AutoCaptureImageSave(CaptureStartTime, Sequence_Idx[idx]);
                         break;
                     }
 
-                    if (cnt >= 30) { MessageBox.Show(Form.ActiveForm, "Auto Capture 중 error", "Error"); return; }
-                    Thread.Sleep(100);//await Task.Delay(100);//Thread.Sleep(100);
+                    if (cnt >= 30) { UIHelper.ShowAutoCloseMsg("Error", "Auto Capture 중 error", 1000); return; }
+
+                    await Task.Delay(100);
                 }
 
                 if (idx == path.Count - 1) opto_serial_sub_write("moveallorg");
@@ -261,6 +253,7 @@ namespace LiveCell_Gui
         public void Send_Start_Offset_To_CGTViewer(int _start_x, int _start_y, int _offset_x, int _offset_y)
         {
             start_x = _start_x; start_y = _start_y; offset_x = _offset_x; offset_y = _offset_y;
+            Send_Current_Position_To_CGTViewer(start_x, start_y, 0);
         }
         /************************************************************************************************************************/
         /*                                                                Recived XYZ Position                                                                                  */
@@ -387,8 +380,8 @@ namespace LiveCell_Gui
             }));
         }
         private readonly object frameLock = new object();
-        private Bitmap latestFrame = null;
-        private System.Windows.Forms.Timer uiTimer;
+        private Bitmap? latestFrame = null;
+        private System.Windows.Forms.Timer? uiTimer;
 
         private void StartUiTimer()
         {
@@ -533,7 +526,7 @@ namespace LiveCell_Gui
             {
                 imageMutex.WaitOne();
 
-                if (image != null)
+                if (image != null && clickedItem != null)
                 {
                     string fileName = $"{DateTime.Now.ToString("yyyyMMdd_HHmmss_fff")}{clickedItem.Text}";
                     image.Save(fileName, format);
@@ -541,7 +534,7 @@ namespace LiveCell_Gui
                 }
                 else MessageBox.Show("저장할 이미지가 없습니다.");
             }
-            catch (Exception ex) { MessageBox.Show("저장 중 오류: " + ex.Message + "item :" + clickedItem.Text); }
+            catch (Exception ex) { MessageBox.Show("저장 중 오류: " + ex.Message + "item :"); }
             finally { imageMutex.ReleaseMutex(); }
         }
         private void OrignalViewStripMenuItem_Click(object sender, EventArgs e)
@@ -641,8 +634,8 @@ namespace LiveCell_Gui
             if (opto_serial_sub.IsOpen == false) { return; }
 
             try { opto_serial_sub.Write('#' + str + '*'); }
-            catch (IOException ex) {  }
-            catch (InvalidOperationException ex) {  }
+            catch (IOException ex) { UIHelper.ShowAutoCloseMsg("Info", "opto_serial_sub_write error" + ex.Message, 2000); }
+            catch (InvalidOperationException ex) { UIHelper.ShowAutoCloseMsg("Info", "opto_serial_sub_write error2" + ex.Message, 2000); }
         }
         /************************************************************************************************************************/
         /*                                                                  X, Y Position Search                                                                                  */

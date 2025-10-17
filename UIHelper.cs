@@ -14,9 +14,9 @@ namespace LiveCell_Gui
             if (Application.OpenForms.Count > 0)
             {
                 // 가장 먼저 열린 폼 (보통 MainForm)
-                Form mainForm = Application.OpenForms[0];
+                Form mainForm = Application.OpenForms[Application.OpenForms.Count - 1];
 
-                if (mainForm.InvokeRequired)
+                if (mainForm != null && mainForm.InvokeRequired)
                 {
                     mainForm.BeginInvoke(new Action(() =>
                     {

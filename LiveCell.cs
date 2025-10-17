@@ -33,6 +33,10 @@ namespace LiveCell_Gui
         public LiveCell()
         {
             InitializeComponent();
+
+            MotorStatus = new byte[3];
+            Array.Fill<byte>(MotorStatus, 1);
+            
             //CenterToScreen();
             //livecell = this;
         }
@@ -118,16 +122,13 @@ namespace LiveCell_Gui
             btViewer.Show(); AutoCapture.Show(); AutoCapture_Stop.Show();
 #endif
             this.Location = new Point(905, 0);
-
-            MotorStatus = new byte[3];
-			Array.Fill<byte>(MotorStatus, 1);
         }
         private void LiveCell_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (CGT_Viewer != null) { CGT_Viewer.Close(); }
             Disconnection();
         }
-        private void btconnection_Click(object sender, EventArgs e)
+        private async void btconnection_Click(object sender, EventArgs e)
         {
             if (comboBox_available_port.Items.Count <= 1)//if (comboBox_available_port.SelectedValue.ToString() > 0)
             {
@@ -135,7 +136,8 @@ namespace LiveCell_Gui
                 return;
             }
 
-            Connection();
+            await Connection();
+            //_ = Task.Run(() => Connection());
         }
 
         private void btdisconnection_Click(object sender, EventArgs e)
@@ -252,7 +254,7 @@ namespace LiveCell_Gui
             else { display_data_RX_textbox("Error : X Speed Value Something Wrong !"); return; }
 
             string senddata = "movesabs" + ",x," + tbcmdposx.Text + ',' + tbcmdspeedx.Text;
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
 
         private void btMoveYasix_Click(object sender, EventArgs e)
@@ -281,7 +283,7 @@ namespace LiveCell_Gui
             else { display_data_RX_textbox("Error : Y Speed Value Something Wrong !"); return; }
 
             string senddata = "movesabs" + ",y," + tbcmdposy.Text + ',' + tbcmdspeedy.Text;
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
 
         private void btMoveZasix_Click(object sender, EventArgs e)
@@ -310,7 +312,7 @@ namespace LiveCell_Gui
             else { display_data_RX_textbox("Error : Z Speed Value Something Wrong !"); return; }
 
             string senddata = "movesabs" + ",z," + tbcmdposz.Text + ',' + tbcmdspeedz.Text;
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
         /************************************************************************************************
                                                                         Jog Control +
@@ -331,13 +333,13 @@ namespace LiveCell_Gui
                 if (speed > 0) senddata += ',' + tbjogspeedx.Text;
             }
 
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
 
         private void btJogXinc_MouseUp(object sender, MouseEventArgs e)
         {
             string senddata = "movestop,x";
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
 
         private void btJogYinc_MouseDown(object sender, MouseEventArgs e)           /************************************* Jog Y-axis inc ***************************************/
@@ -356,13 +358,13 @@ namespace LiveCell_Gui
                 if (speed > 0) senddata += ',' + tbjogspeedy.Text;
             }
 
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
 
         private void btJogYinc_MouseUp(object sender, MouseEventArgs e)
         {
             string senddata = "movestop,y";
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
 
         private void btJogZinc_MouseDown(object sender, MouseEventArgs e)           /************************************* Jog Z-axis inc ***************************************/
@@ -381,13 +383,13 @@ namespace LiveCell_Gui
                 if (speed > 0) senddata += ',' + tbjogspeedz.Text;
             }
 
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
 
         private void btJogZinc_MouseUp(object sender, MouseEventArgs e)
         {
             string senddata = "movestop,z";
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
         /************************************************************************************************
                                                                         Jog Control -
@@ -408,13 +410,13 @@ namespace LiveCell_Gui
                 if (speed > 0) senddata += ',' + tbjogspeedx.Text;
             }
 
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
 
         private void btJogXdec_MouseUp(object sender, MouseEventArgs e)
         {
             string senddata = "movestop,x";
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
         private void btJogYdec_MouseDown(object sender, MouseEventArgs e)       /************************************* Jog Y-axis dec ***************************************/
         {
@@ -432,13 +434,13 @@ namespace LiveCell_Gui
                 if (speed > 0) senddata += ',' + tbjogspeedy.Text;
             }
 
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
 
         private void btJogYdec_MouseUp(object sender, MouseEventArgs e)
         {
             string senddata = "movestop,y";
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
 
         private void btJogZdec_MouseDown(object sender, MouseEventArgs e)       /************************************* Jog Z-axis dec ***************************************/
@@ -457,13 +459,13 @@ namespace LiveCell_Gui
                 if (speed > 0) senddata += ',' + tbjogspeedz.Text;
             }
 
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
 
         private void btJogZdec_MouseUp(object sender, MouseEventArgs e)
         {
             string senddata = "movestop,z";
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
         /************************************************************************************************
                                                                 Home Position
@@ -471,19 +473,19 @@ namespace LiveCell_Gui
         private void btHomeX_Click(object sender, EventArgs e)
         {
             string senddata = "moveorg,x";
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
 
         private void btHomeY_Click(object sender, EventArgs e)
         {
             string senddata = "moveorg,y";
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
 
         private void btHomeZ_Click(object sender, EventArgs e)
         {
             string senddata = "moveorg,z";
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
 
         /************************************************************************************************
@@ -575,7 +577,7 @@ namespace LiveCell_Gui
             if (MotorLive[1] == 1) senddata += ",y," + tbcmdposy.Text + ',' + tbcmdspeedy.Text;
             if (MotorLive[2] == 1) senddata += ",z," + tbcmdposz.Text + ',' + tbcmdspeedz.Text;
 
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
 
         private void btHomeXYZ_Click(object sender, EventArgs e)
@@ -583,7 +585,7 @@ namespace LiveCell_Gui
             string senddata;
 
             senddata = "moveallorg";
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
 
         /************************************************************************************************
@@ -709,7 +711,7 @@ namespace LiveCell_Gui
             MovePos = TargetPos.ToString();
 
             string senddata = "movesabs" + ",x," + MovePos + ',' + tbcmdspeedx.Text;
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
         private void btOffsetXback_Click(object sender, EventArgs e)
         {
@@ -726,7 +728,7 @@ namespace LiveCell_Gui
             MovePos = TargetPos.ToString();
 
             string senddata = "movesabs" + ",x," + MovePos + ',' + tbcmdspeedx.Text;
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
         /************************************************************************************************
                                                                         Offset Y
@@ -746,7 +748,7 @@ namespace LiveCell_Gui
             MovePos = TargetPos.ToString();
 
             string senddata = "movesabs" + ",y," + MovePos + ',' + tbcmdspeedy.Text;
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
 
         private void btOffsetYback_Click(object sender, EventArgs e)
@@ -764,7 +766,7 @@ namespace LiveCell_Gui
             MovePos = TargetPos.ToString();
 
             string senddata = "movesabs" + ",y," + MovePos + ',' + tbcmdspeedy.Text;
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
 
         }
         /************************************************************************************************
@@ -785,7 +787,7 @@ namespace LiveCell_Gui
             MovePos = TargetPos.ToString();
 
             string senddata = "movesabs" + ",z," + MovePos + ',' + tbcmdspeedz.Text;
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
 
         private void btOffsetZback_Click(object sender, EventArgs e)
@@ -803,7 +805,7 @@ namespace LiveCell_Gui
             MovePos = TargetPos.ToString();
 
             string senddata = "movesabs" + ",z," + MovePos + ',' + tbcmdspeedz.Text;
-            opto_serial_write(senddata, false);
+            _ = opto_serial_write(senddata, false);
         }
     }
 }

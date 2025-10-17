@@ -39,7 +39,7 @@ namespace LiveCell_Gui
         private List<byte> recvBuffer = new List<byte>();  // 데이터 버퍼
 
         static StringBuilder _buffer = new StringBuilder();
-        string recv_str = string.Empty;
+        volatile string recv_str = string.Empty;
 
         private const int DLEAY_10 = 10;
         private const int DLEAY_20 = 20;
@@ -74,31 +74,31 @@ namespace LiveCell_Gui
         private const int Z_MAX_DIST = 14000;//real 125000;
 
         private const int MAX_SPEED_X = 99999;
-        private const int DEFAULT_SPEED_X = 80000;
+        private const int DEFAULT_SPEED_X = 50000;
 
         private const int MAX_SPEED_Y = 99999;
-        private const int DEFAULT_SPEED_Y = 66000;
+        private const int DEFAULT_SPEED_Y = 50000;
 
         private const int MAX_SPEED_Z = 10000;
         private const int DEFAULT_SPEED_Z = 6000;
 
-        private const int DEFAULT_POS_X = 15000;
-        private const int DEFAULT_POS_Y = 15000;
+        private const int DEFAULT_POS_X = 20000;
+        private const int DEFAULT_POS_Y = 20000;
         private const int DEFAULT_POS_Z = 0;
 
         private const int DEFAULT_OFFSET_X = 19150;
-        private const int DEFAULT_OFFSET_Y = 19200;
+        private const int DEFAULT_OFFSET_Y = 18600;
         private const int DEFAULT_OFFSET_Z = 7000;
 #endif
 
         private const int LED_BR_MAX = 10000;
 
-        private void Connection()
+        private async Task Connection()
         {
             if (this.InvokeRequired)
             {
                 // UI Thread에서 실행
-                this.Invoke(new Action(() => Connection()));
+                this.Invoke(new Action(async () => await Connection()));
                 return;
             }
 
@@ -144,15 +144,16 @@ namespace LiveCell_Gui
 
                     display_data_RX_textbox(string.Empty);
 
-                    if (opto_serial_write(TRY_CONNECT, true))
+                    bool ok = await opto_serial_write(TRY_CONNECT, true);
+                    //if (opto_serial_write(TRY_CONNECT, true))
+                    if(ok)
                     {
                         comport_str += " - Open Success !";
 
                         display_data_RX_textbox(comport_str);
 
                         Connection_display(true);
-                        Task.Delay(1).Wait();
-                        opto_serial_write(MOTOR_STATUS_REQ, false);
+                        _= opto_serial_write(MOTOR_STATUS_REQ, false);
                     }
                     else
                     {
@@ -171,7 +172,9 @@ namespace LiveCell_Gui
             }
             else
             {
-                if (opto_serial_write(TRY_CONNECT, true) == true)
+                bool ok = await opto_serial_write(TRY_CONNECT, true);
+                //if (opto_serial_write(TRY_CONNECT, true) == true)
+                if(ok)
                 {
                     display_data_RX_textbox(string.Empty);
                     comport_str += " - Already Opened !";
@@ -224,38 +227,43 @@ namespace LiveCell_Gui
 
             Connection_display(false);
         }
-        private bool serial_sleep_wait(string str)
+        private async Task<bool> serial_sleep_wait(string str)
         {
-            recv_str = string.Empty;
+            //recv_str = string.Empty;
             int i;
             for (i = 0; i < DLEAY_10; i++)
             {
-                Thread.Sleep(DLEAY_10);
+                //Thread.Sleep(DLEAY_10);
+                await Task.Delay(100);
 
+                Debug.WriteLine($"serial_sleep_wait cnt---------- ");
                 if (recv_str.Contains(str))
                     return true;
-
-                Application.DoEvents();
+					
+				//Application.DoEvents(); // UI 메시지 처리 (임시방편)
             }
 
             return false;
         }
 
-        private void serial_write_thread(string str, bool check)
+        private TaskCompletionSource<bool>? _recvTask;
+        string expect_str = string.Empty;
+        private async Task<bool> SerialWaitAsync(string expect, int timeoutMs = 100)
         {
-            if (opto_serial == null || opto_serial.IsOpen == false) return;
+            _recvTask = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+            recv_str = string.Empty;
+            expect_str = expect;
 
-            opto_serial.Write("#" + str + "*");
-
-            if (check == false) return;
-
-            if (serial_sleep_wait(str) == false)
+            // 타임아웃 설정
+            using (var cts = new CancellationTokenSource(timeoutMs))
             {
-                display_data_RX_textbox(str + " Serial Transfer Thread Fail");
+                using (cts.Token.Register(() => _recvTask.TrySetResult(false)))
+                {
+                    return await _recvTask.Task.ConfigureAwait(false);
+                }
             }
         }
-
-        private bool opto_serial_write(string str, bool check)
+        private async Task<bool> opto_serial_write(string str, bool check)
         {
             if (opto_serial == null || opto_serial.IsOpen == false)
             {
@@ -273,7 +281,10 @@ namespace LiveCell_Gui
 
                 if (check == false) return true;
 
-                if (serial_sleep_wait(str) == false)
+                //if (serial_sleep_wait(str) == false)
+                //bool ok = await (_ = serial_sleep_wait(str));
+                bool ok = await SerialWaitAsync(TRY_CONNECT, 100);
+                if (!ok)
                 {
                     display_data_RX_textbox(str + " Transfer Fail");
                     return false;
@@ -491,7 +502,14 @@ namespace LiveCell_Gui
             byte[] dataWithoutCRC = packet.Skip(1).Take(packet.Length - delsize).ToArray(); // '#' 제거, CRC 제외
             
             recv_str = Encoding.UTF8.GetString(dataWithoutCRC);
+
             parse_string(recv_str);
+
+            if (_recvTask != null && recv_str.Contains(expect_str)) // 예: 기대 문자열
+            {
+                _recvTask.TrySetResult(true);
+                expect_str = string.Empty;
+            }
         }
 
         /********************************************************************************************************/
