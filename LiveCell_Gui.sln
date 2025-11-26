@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiveCell_Gui", "LiveCell_Gui.csproj", "{ADBCE369-6CCF-490D-882C-70217F1DE223}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ADBCE369-6CCF-490D-882C-70217F1DE223}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADBCE369-6CCF-490D-882C-70217F1DE223}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADBCE369-6CCF-490D-882C-70217F1DE223}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADBCE369-6CCF-490D-882C-70217F1DE223}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0C8DE759-B6A8-4B43-AFB6-CE00F0D249DC}
+	EndGlobalSection
+EndGlobal
