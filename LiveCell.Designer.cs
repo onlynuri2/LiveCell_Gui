@@ -129,10 +129,9 @@
             // 
             btconnection.BackColor = Color.LightBlue;
             btconnection.Font = new Font("맑은 고딕", 16F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            btconnection.Location = new Point(10, 66);
-            btconnection.Margin = new Padding(2);
+            btconnection.Location = new Point(14, 110);
             btconnection.Name = "btconnection";
-            btconnection.Size = new Size(88, 34);
+            btconnection.Size = new Size(126, 57);
             btconnection.TabIndex = 0;
             btconnection.Text = "연결";
             btconnection.UseVisualStyleBackColor = false;
@@ -146,11 +145,9 @@
             groupBox_comport.Controls.Add(btdisconnection);
             groupBox_comport.Controls.Add(btconnection);
             groupBox_comport.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            groupBox_comport.Location = new Point(3, 2);
-            groupBox_comport.Margin = new Padding(2);
+            groupBox_comport.Location = new Point(4, 3);
             groupBox_comport.Name = "groupBox_comport";
-            groupBox_comport.Padding = new Padding(2);
-            groupBox_comport.Size = new Size(202, 107);
+            groupBox_comport.Size = new Size(289, 178);
             groupBox_comport.TabIndex = 1;
             groupBox_comport.TabStop = false;
             groupBox_comport.Text = "통신설정";
@@ -158,10 +155,9 @@
             // comboBox_available_port
             // 
             comboBox_available_port.FormattingEnabled = true;
-            comboBox_available_port.Location = new Point(66, 33);
-            comboBox_available_port.Margin = new Padding(2);
+            comboBox_available_port.Location = new Point(94, 55);
             comboBox_available_port.Name = "comboBox_available_port";
-            comboBox_available_port.Size = new Size(124, 29);
+            comboBox_available_port.Size = new Size(175, 40);
             comboBox_available_port.TabIndex = 3;
             comboBox_available_port.SelectedIndexChanged += comboBox_available_port_SelectedIndexChanged;
             comboBox_available_port.Click += comboBox_available_port_Click;
@@ -170,20 +166,18 @@
             // 
             port_label.AutoSize = true;
             port_label.Font = new Font("맑은 고딕", 18F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            port_label.Location = new Point(4, 31);
-            port_label.Margin = new Padding(2, 0, 2, 0);
+            port_label.Location = new Point(6, 52);
             port_label.Name = "port_label";
-            port_label.Size = new Size(62, 32);
+            port_label.Size = new Size(92, 48);
             port_label.TabIndex = 2;
             port_label.Text = "포트";
             // 
             // btdisconnection
             // 
             btdisconnection.Font = new Font("맑은 고딕", 16F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            btdisconnection.Location = new Point(102, 66);
-            btdisconnection.Margin = new Padding(2);
+            btdisconnection.Location = new Point(146, 110);
             btdisconnection.Name = "btdisconnection";
-            btdisconnection.Size = new Size(91, 34);
+            btdisconnection.Size = new Size(130, 57);
             btdisconnection.TabIndex = 1;
             btdisconnection.Text = "해제";
             btdisconnection.UseVisualStyleBackColor = true;
@@ -191,12 +185,11 @@
             // 
             // textBox_RX_data
             // 
-            textBox_RX_data.Location = new Point(4, 41);
-            textBox_RX_data.Margin = new Padding(2);
+            textBox_RX_data.Location = new Point(6, 68);
             textBox_RX_data.Multiline = true;
             textBox_RX_data.Name = "textBox_RX_data";
             textBox_RX_data.ScrollBars = ScrollBars.Vertical;
-            textBox_RX_data.Size = new Size(532, 68);
+            textBox_RX_data.Size = new Size(758, 111);
             textBox_RX_data.TabIndex = 2;
             // 
             // gbTransfer
@@ -206,11 +199,9 @@
             gbTransfer.Controls.Add(textBox_RX_data);
             gbTransfer.Controls.Add(textBox_TX_data);
             gbTransfer.Controls.Add(button_tx_send);
-            gbTransfer.Location = new Point(209, 2);
-            gbTransfer.Margin = new Padding(2);
+            gbTransfer.Location = new Point(299, 3);
             gbTransfer.Name = "gbTransfer";
-            gbTransfer.Padding = new Padding(2);
-            gbTransfer.Size = new Size(539, 107);
+            gbTransfer.Size = new Size(770, 178);
             gbTransfer.TabIndex = 3;
             gbTransfer.TabStop = false;
             gbTransfer.Text = "송신";
@@ -218,20 +209,18 @@
             // cbdebug
             // 
             cbdebug.AutoSize = true;
-            cbdebug.Location = new Point(503, 19);
-            cbdebug.Margin = new Padding(2);
+            cbdebug.Location = new Point(719, 32);
             cbdebug.Name = "cbdebug";
-            cbdebug.Size = new Size(35, 19);
+            cbdebug.Size = new Size(51, 29);
             cbdebug.TabIndex = 5;
             cbdebug.Text = "D";
             cbdebug.UseVisualStyleBackColor = true;
             // 
             // button_disp_clear
             // 
-            button_disp_clear.Location = new Point(428, 17);
-            button_disp_clear.Margin = new Padding(2);
+            button_disp_clear.Location = new Point(611, 28);
             button_disp_clear.Name = "button_disp_clear";
-            button_disp_clear.Size = new Size(72, 20);
+            button_disp_clear.Size = new Size(103, 33);
             button_disp_clear.TabIndex = 4;
             button_disp_clear.Text = "Clear";
             button_disp_clear.UseVisualStyleBackColor = true;
@@ -239,18 +228,16 @@
             // 
             // textBox_TX_data
             // 
-            textBox_TX_data.Location = new Point(84, 19);
-            textBox_TX_data.Margin = new Padding(2);
+            textBox_TX_data.Location = new Point(120, 32);
             textBox_TX_data.Name = "textBox_TX_data";
-            textBox_TX_data.Size = new Size(344, 23);
+            textBox_TX_data.Size = new Size(490, 31);
             textBox_TX_data.TabIndex = 4;
             // 
             // button_tx_send
             // 
-            button_tx_send.Location = new Point(4, 17);
-            button_tx_send.Margin = new Padding(2);
+            button_tx_send.Location = new Point(6, 28);
             button_tx_send.Name = "button_tx_send";
-            button_tx_send.Size = new Size(78, 20);
+            button_tx_send.Size = new Size(111, 33);
             button_tx_send.TabIndex = 4;
             button_tx_send.Text = "Send";
             button_tx_send.UseVisualStyleBackColor = true;
@@ -267,20 +254,19 @@
             gbmotionctrl.Controls.Add(gbyaxis);
             gbmotionctrl.Controls.Add(gbxaxis);
             gbmotionctrl.Font = new Font("맑은 고딕", 16F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            gbmotionctrl.Location = new Point(3, 116);
-            gbmotionctrl.Margin = new Padding(2);
+            gbmotionctrl.Location = new Point(4, 193);
             gbmotionctrl.Name = "gbmotionctrl";
-            gbmotionctrl.Padding = new Padding(2);
-            gbmotionctrl.Size = new Size(746, 529);
+            gbmotionctrl.Size = new Size(1066, 882);
             gbmotionctrl.TabIndex = 4;
             gbmotionctrl.TabStop = false;
             gbmotionctrl.Text = "Motion Control";
             // 
             // AutoCapture_Stop
             // 
-            AutoCapture_Stop.Location = new Point(616, 461);
+            AutoCapture_Stop.Location = new Point(885, 774);
+            AutoCapture_Stop.Margin = new Padding(4, 5, 4, 5);
             AutoCapture_Stop.Name = "AutoCapture_Stop";
-            AutoCapture_Stop.Size = new Size(94, 37);
+            AutoCapture_Stop.Size = new Size(134, 62);
             AutoCapture_Stop.TabIndex = 19;
             AutoCapture_Stop.Text = "Stop";
             AutoCapture_Stop.UseVisualStyleBackColor = true;
@@ -288,9 +274,10 @@
             // 
             // AutoCapture
             // 
-            AutoCapture.Location = new Point(504, 461);
+            AutoCapture.Location = new Point(720, 774);
+            AutoCapture.Margin = new Padding(4, 5, 4, 5);
             AutoCapture.Name = "AutoCapture";
-            AutoCapture.Size = new Size(110, 37);
+            AutoCapture.Size = new Size(157, 62);
             AutoCapture.TabIndex = 18;
             AutoCapture.Text = "Capture";
             AutoCapture.UseVisualStyleBackColor = true;
@@ -298,10 +285,10 @@
             // 
             // btViewer
             // 
-            btViewer.Location = new Point(388, 461);
-            btViewer.Margin = new Padding(2);
+            btViewer.Location = new Point(554, 774);
+            btViewer.Margin = new Padding(4, 5, 4, 5);
             btViewer.Name = "btViewer";
-            btViewer.Size = new Size(94, 37);
+            btViewer.Size = new Size(157, 62);
             btViewer.TabIndex = 17;
             btViewer.Text = "Viewer";
             btViewer.UseVisualStyleBackColor = true;
@@ -312,11 +299,9 @@
             gbxyzaxis.Controls.Add(btHomeXYZ);
             gbxyzaxis.Controls.Add(btMoveXYZasix);
             gbxyzaxis.Font = new Font("맑은 고딕", 14F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            gbxyzaxis.Location = new Point(32, 439);
-            gbxyzaxis.Margin = new Padding(2);
+            gbxyzaxis.Location = new Point(46, 732);
             gbxyzaxis.Name = "gbxyzaxis";
-            gbxyzaxis.Padding = new Padding(2);
-            gbxyzaxis.Size = new Size(333, 71);
+            gbxyzaxis.Size = new Size(476, 118);
             gbxyzaxis.TabIndex = 16;
             gbxyzaxis.TabStop = false;
             gbxyzaxis.Text = "XYZ-axis";
@@ -324,10 +309,9 @@
             // btHomeXYZ
             // 
             btHomeXYZ.BackColor = SystemColors.ButtonFace;
-            btHomeXYZ.Location = new Point(165, 31);
-            btHomeXYZ.Margin = new Padding(2);
+            btHomeXYZ.Location = new Point(236, 52);
             btHomeXYZ.Name = "btHomeXYZ";
-            btHomeXYZ.Size = new Size(155, 32);
+            btHomeXYZ.Size = new Size(221, 53);
             btHomeXYZ.TabIndex = 18;
             btHomeXYZ.Text = "Home XYZ-axis";
             btHomeXYZ.UseVisualStyleBackColor = false;
@@ -336,10 +320,9 @@
             // btMoveXYZasix
             // 
             btMoveXYZasix.BackColor = SystemColors.ButtonFace;
-            btMoveXYZasix.Location = new Point(11, 31);
-            btMoveXYZasix.Margin = new Padding(2);
+            btMoveXYZasix.Location = new Point(16, 52);
             btMoveXYZasix.Name = "btMoveXYZasix";
-            btMoveXYZasix.Size = new Size(150, 32);
+            btMoveXYZasix.Size = new Size(214, 53);
             btMoveXYZasix.TabIndex = 17;
             btMoveXYZasix.Text = "Move XYZ-axis";
             btMoveXYZasix.UseVisualStyleBackColor = false;
@@ -366,11 +349,9 @@
             gbzaxis.Controls.Add(lbcmdspeedz);
             gbzaxis.Controls.Add(lbcmdposz);
             gbzaxis.Font = new Font("맑은 고딕", 14F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            gbzaxis.Location = new Point(499, 37);
-            gbzaxis.Margin = new Padding(2);
+            gbzaxis.Location = new Point(713, 62);
             gbzaxis.Name = "gbzaxis";
-            gbzaxis.Padding = new Padding(2);
-            gbzaxis.Size = new Size(216, 398);
+            gbzaxis.Size = new Size(309, 663);
             gbzaxis.TabIndex = 15;
             gbzaxis.TabStop = false;
             gbzaxis.Text = "Z-axis";
@@ -378,10 +359,9 @@
             // btOffsetZfor
             // 
             btOffsetZfor.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            btOffsetZfor.Location = new Point(153, 191);
-            btOffsetZfor.Margin = new Padding(2);
+            btOffsetZfor.Location = new Point(219, 318);
             btOffsetZfor.Name = "btOffsetZfor";
-            btOffsetZfor.Size = new Size(50, 27);
+            btOffsetZfor.Size = new Size(71, 45);
             btOffsetZfor.TabIndex = 22;
             btOffsetZfor.Text = "Up";
             btOffsetZfor.UseVisualStyleBackColor = true;
@@ -390,11 +370,9 @@
             // gbHomePosZ
             // 
             gbHomePosZ.Controls.Add(btHomeZ);
-            gbHomePosZ.Location = new Point(13, 328);
-            gbHomePosZ.Margin = new Padding(2);
+            gbHomePosZ.Location = new Point(19, 547);
             gbHomePosZ.Name = "gbHomePosZ";
-            gbHomePosZ.Padding = new Padding(2);
-            gbHomePosZ.Size = new Size(182, 67);
+            gbHomePosZ.Size = new Size(260, 112);
             gbHomePosZ.TabIndex = 14;
             gbHomePosZ.TabStop = false;
             gbHomePosZ.Text = "Home Position";
@@ -402,10 +380,9 @@
             // btHomeZ
             // 
             btHomeZ.BackColor = SystemColors.ButtonFace;
-            btHomeZ.Location = new Point(0, 30);
-            btHomeZ.Margin = new Padding(2);
+            btHomeZ.Location = new Point(0, 50);
             btHomeZ.Name = "btHomeZ";
-            btHomeZ.Size = new Size(182, 32);
+            btHomeZ.Size = new Size(260, 53);
             btHomeZ.TabIndex = 0;
             btHomeZ.Text = "Home Z-axis";
             btHomeZ.UseVisualStyleBackColor = false;
@@ -414,10 +391,9 @@
             // btOffsetZback
             // 
             btOffsetZback.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            btOffsetZback.Location = new Point(13, 191);
-            btOffsetZback.Margin = new Padding(2);
+            btOffsetZback.Location = new Point(19, 318);
             btOffsetZback.Name = "btOffsetZback";
-            btOffsetZback.Size = new Size(50, 27);
+            btOffsetZback.Size = new Size(71, 45);
             btOffsetZback.TabIndex = 21;
             btOffsetZback.Text = "Dn";
             btOffsetZback.UseVisualStyleBackColor = true;
@@ -425,11 +401,10 @@
             // 
             // tbOffsetZ
             // 
-            tbOffsetZ.Location = new Point(68, 191);
-            tbOffsetZ.Margin = new Padding(2);
+            tbOffsetZ.Location = new Point(97, 318);
             tbOffsetZ.MaxLength = 6;
             tbOffsetZ.Name = "tbOffsetZ";
-            tbOffsetZ.Size = new Size(82, 32);
+            tbOffsetZ.Size = new Size(115, 45);
             tbOffsetZ.TabIndex = 20;
             tbOffsetZ.Text = "1000";
             tbOffsetZ.TextAlign = HorizontalAlignment.Center;
@@ -438,20 +413,18 @@
             // 
             lbjogspeedlimitz.AutoSize = true;
             lbjogspeedlimitz.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbjogspeedlimitz.Location = new Point(13, 269);
-            lbjogspeedlimitz.Margin = new Padding(2, 0, 2, 0);
+            lbjogspeedlimitz.Location = new Point(19, 448);
             lbjogspeedlimitz.Name = "lbjogspeedlimitz";
-            lbjogspeedlimitz.Size = new Size(65, 15);
+            lbjogspeedlimitz.Size = new Size(95, 25);
             lbjogspeedlimitz.TabIndex = 12;
             lbjogspeedlimitz.Text = "(1~50000)";
             // 
             // tbjogspeedz
             // 
-            tbjogspeedz.Location = new Point(88, 255);
-            tbjogspeedz.Margin = new Padding(2);
+            tbjogspeedz.Location = new Point(126, 425);
             tbjogspeedz.MaxLength = 6;
             tbjogspeedz.Name = "tbjogspeedz";
-            tbjogspeedz.Size = new Size(104, 32);
+            tbjogspeedz.Size = new Size(147, 45);
             tbjogspeedz.TabIndex = 11;
             tbjogspeedz.Text = "10000";
             tbjogspeedz.TextAlign = HorizontalAlignment.Right;
@@ -461,10 +434,9 @@
             // 
             lbjogspeedz.AutoSize = true;
             lbjogspeedz.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbjogspeedz.Location = new Point(41, 251);
-            lbjogspeedz.Margin = new Padding(2, 0, 2, 0);
+            lbjogspeedz.Location = new Point(59, 418);
             lbjogspeedz.Name = "lbjogspeedz";
-            lbjogspeedz.Size = new Size(42, 21);
+            lbjogspeedz.Size = new Size(62, 32);
             lbjogspeedz.TabIndex = 10;
             lbjogspeedz.Text = "속도";
             // 
@@ -472,10 +444,9 @@
             // 
             lbzmaxspeed.AutoSize = true;
             lbzmaxspeed.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbzmaxspeed.Location = new Point(18, 117);
-            lbzmaxspeed.Margin = new Padding(2, 0, 2, 0);
+            lbzmaxspeed.Location = new Point(26, 195);
             lbzmaxspeed.Name = "lbzmaxspeed";
-            lbzmaxspeed.Size = new Size(65, 15);
+            lbzmaxspeed.Size = new Size(95, 25);
             lbzmaxspeed.TabIndex = 9;
             lbzmaxspeed.Text = "(0~50000)";
             // 
@@ -483,10 +454,9 @@
             // 
             lbzmaxdistance.AutoSize = true;
             lbzmaxdistance.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbzmaxdistance.Location = new Point(10, 77);
-            lbzmaxdistance.Margin = new Padding(2, 0, 2, 0);
+            lbzmaxdistance.Location = new Point(14, 128);
             lbzmaxdistance.Name = "lbzmaxdistance";
-            lbzmaxdistance.Size = new Size(65, 15);
+            lbzmaxdistance.Size = new Size(95, 25);
             lbzmaxdistance.TabIndex = 8;
             lbzmaxdistance.Text = "(0~20000)";
             // 
@@ -495,11 +465,9 @@
             gbjogctrlz.Controls.Add(btJogZinc);
             gbjogctrlz.Controls.Add(btJogZdec);
             gbjogctrlz.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            gbjogctrlz.Location = new Point(11, 228);
-            gbjogctrlz.Margin = new Padding(2);
+            gbjogctrlz.Location = new Point(16, 380);
             gbjogctrlz.Name = "gbjogctrlz";
-            gbjogctrlz.Padding = new Padding(2);
-            gbjogctrlz.Size = new Size(182, 90);
+            gbjogctrlz.Size = new Size(260, 150);
             gbjogctrlz.TabIndex = 7;
             gbjogctrlz.TabStop = false;
             gbjogctrlz.Text = "Jog Mode";
@@ -507,10 +475,9 @@
             // btJogZinc
             // 
             btJogZinc.BackColor = SystemColors.ButtonFace;
-            btJogZinc.Location = new Point(108, 60);
-            btJogZinc.Margin = new Padding(2);
+            btJogZinc.Location = new Point(154, 100);
             btJogZinc.Name = "btJogZinc";
-            btJogZinc.Size = new Size(70, 30);
+            btJogZinc.Size = new Size(100, 50);
             btJogZinc.TabIndex = 1;
             btJogZinc.Text = "Jog(+)";
             btJogZinc.UseVisualStyleBackColor = false;
@@ -520,10 +487,9 @@
             // btJogZdec
             // 
             btJogZdec.BackColor = SystemColors.ButtonFace;
-            btJogZdec.Location = new Point(2, 60);
-            btJogZdec.Margin = new Padding(2);
+            btJogZdec.Location = new Point(3, 100);
             btJogZdec.Name = "btJogZdec";
-            btJogZdec.Size = new Size(70, 30);
+            btJogZdec.Size = new Size(100, 50);
             btJogZdec.TabIndex = 0;
             btJogZdec.Text = "Jog(-)";
             btJogZdec.UseVisualStyleBackColor = false;
@@ -533,10 +499,9 @@
             // btMoveZasix
             // 
             btMoveZasix.BackColor = SystemColors.ButtonFace;
-            btMoveZasix.Location = new Point(11, 146);
-            btMoveZasix.Margin = new Padding(2);
+            btMoveZasix.Location = new Point(16, 243);
             btMoveZasix.Name = "btMoveZasix";
-            btMoveZasix.Size = new Size(182, 32);
+            btMoveZasix.Size = new Size(260, 53);
             btMoveZasix.TabIndex = 6;
             btMoveZasix.Text = "Move Z-axis";
             btMoveZasix.UseVisualStyleBackColor = false;
@@ -547,11 +512,10 @@
             lbcurposz.AutoSize = true;
             lbcurposz.BackColor = Color.Transparent;
             lbcurposz.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbcurposz.Location = new Point(119, 32);
-            lbcurposz.Margin = new Padding(2, 0, 2, 0);
+            lbcurposz.Location = new Point(170, 53);
             lbcurposz.Name = "lbcurposz";
             lbcurposz.RightToLeft = RightToLeft.No;
-            lbcurposz.Size = new Size(78, 21);
+            lbcurposz.Size = new Size(117, 32);
             lbcurposz.TabIndex = 5;
             lbcurposz.Text = "Unknown";
             lbcurposz.TextAlign = ContentAlignment.MiddleRight;
@@ -560,31 +524,28 @@
             // 
             lbcurposzaxis.AutoSize = true;
             lbcurposzaxis.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbcurposzaxis.Location = new Point(10, 32);
-            lbcurposzaxis.Margin = new Padding(2, 0, 2, 0);
+            lbcurposzaxis.Location = new Point(14, 53);
             lbcurposzaxis.Name = "lbcurposzaxis";
-            lbcurposzaxis.Size = new Size(74, 21);
+            lbcurposzaxis.Size = new Size(110, 32);
             lbcurposzaxis.TabIndex = 4;
             lbcurposzaxis.Text = "현재위치";
             // 
             // tbcmdspeedz
             // 
-            tbcmdspeedz.Location = new Point(92, 103);
-            tbcmdspeedz.Margin = new Padding(2);
+            tbcmdspeedz.Location = new Point(131, 172);
             tbcmdspeedz.MaxLength = 6;
             tbcmdspeedz.Name = "tbcmdspeedz";
-            tbcmdspeedz.Size = new Size(104, 32);
+            tbcmdspeedz.Size = new Size(147, 45);
             tbcmdspeedz.TabIndex = 3;
             tbcmdspeedz.TextAlign = HorizontalAlignment.Right;
             tbcmdspeedz.KeyPress += tbcmdspeedz_KeyPress;
             // 
             // tbcmdposz
             // 
-            tbcmdposz.Location = new Point(92, 62);
-            tbcmdposz.Margin = new Padding(2);
+            tbcmdposz.Location = new Point(131, 103);
             tbcmdposz.MaxLength = 5;
             tbcmdposz.Name = "tbcmdposz";
-            tbcmdposz.Size = new Size(104, 32);
+            tbcmdposz.Size = new Size(147, 45);
             tbcmdposz.TabIndex = 2;
             tbcmdposz.Text = "7000";
             tbcmdposz.TextAlign = HorizontalAlignment.Right;
@@ -594,10 +555,9 @@
             // 
             lbcmdspeedz.AutoSize = true;
             lbcmdspeedz.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbcmdspeedz.Location = new Point(44, 99);
-            lbcmdspeedz.Margin = new Padding(2, 0, 2, 0);
+            lbcmdspeedz.Location = new Point(63, 165);
             lbcmdspeedz.Name = "lbcmdspeedz";
-            lbcmdspeedz.Size = new Size(42, 21);
+            lbcmdspeedz.Size = new Size(62, 32);
             lbcmdspeedz.TabIndex = 1;
             lbcmdspeedz.Text = "속도";
             // 
@@ -605,10 +565,9 @@
             // 
             lbcmdposz.AutoSize = true;
             lbcmdposz.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbcmdposz.Location = new Point(10, 59);
-            lbcmdposz.Margin = new Padding(2, 0, 2, 0);
+            lbcmdposz.Location = new Point(14, 98);
             lbcmdposz.Name = "lbcmdposz";
-            lbcmdposz.Size = new Size(74, 21);
+            lbcmdposz.Size = new Size(110, 32);
             lbcmdposz.TabIndex = 0;
             lbcmdposz.Text = "설정위치";
             // 
@@ -633,11 +592,9 @@
             gbyaxis.Controls.Add(lbcmdspeedy);
             gbyaxis.Controls.Add(lbcmdposy);
             gbyaxis.Font = new Font("맑은 고딕", 14F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            gbyaxis.Location = new Point(266, 37);
-            gbyaxis.Margin = new Padding(2);
+            gbyaxis.Location = new Point(380, 62);
             gbyaxis.Name = "gbyaxis";
-            gbyaxis.Padding = new Padding(2);
-            gbyaxis.Size = new Size(204, 398);
+            gbyaxis.Size = new Size(291, 663);
             gbyaxis.TabIndex = 13;
             gbyaxis.TabStop = false;
             gbyaxis.Text = "Y-axis";
@@ -645,10 +602,9 @@
             // btOffsetYfor
             // 
             btOffsetYfor.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            btOffsetYfor.Location = new Point(148, 191);
-            btOffsetYfor.Margin = new Padding(2);
+            btOffsetYfor.Location = new Point(211, 318);
             btOffsetYfor.Name = "btOffsetYfor";
-            btOffsetYfor.Size = new Size(50, 27);
+            btOffsetYfor.Size = new Size(71, 45);
             btOffsetYfor.TabIndex = 19;
             btOffsetYfor.Text = "전진";
             btOffsetYfor.UseVisualStyleBackColor = true;
@@ -657,11 +613,9 @@
             // gbHomePosY
             // 
             gbHomePosY.Controls.Add(btHomeY);
-            gbHomePosY.Location = new Point(10, 329);
-            gbHomePosY.Margin = new Padding(2);
+            gbHomePosY.Location = new Point(14, 548);
             gbHomePosY.Name = "gbHomePosY";
-            gbHomePosY.Padding = new Padding(2);
-            gbHomePosY.Size = new Size(182, 67);
+            gbHomePosY.Size = new Size(260, 112);
             gbHomePosY.TabIndex = 14;
             gbHomePosY.TabStop = false;
             gbHomePosY.Text = "Home Position";
@@ -669,10 +623,9 @@
             // btHomeY
             // 
             btHomeY.BackColor = SystemColors.ButtonFace;
-            btHomeY.Location = new Point(0, 30);
-            btHomeY.Margin = new Padding(2);
+            btHomeY.Location = new Point(0, 50);
             btHomeY.Name = "btHomeY";
-            btHomeY.Size = new Size(182, 32);
+            btHomeY.Size = new Size(260, 53);
             btHomeY.TabIndex = 0;
             btHomeY.Text = "Home Y-axis";
             btHomeY.UseVisualStyleBackColor = false;
@@ -681,10 +634,9 @@
             // btOffsetYback
             // 
             btOffsetYback.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            btOffsetYback.Location = new Point(8, 191);
-            btOffsetYback.Margin = new Padding(2);
+            btOffsetYback.Location = new Point(11, 318);
             btOffsetYback.Name = "btOffsetYback";
-            btOffsetYback.Size = new Size(50, 27);
+            btOffsetYback.Size = new Size(71, 45);
             btOffsetYback.TabIndex = 18;
             btOffsetYback.Text = "후진";
             btOffsetYback.UseVisualStyleBackColor = true;
@@ -692,11 +644,10 @@
             // 
             // tbOffsetY
             // 
-            tbOffsetY.Location = new Point(62, 191);
-            tbOffsetY.Margin = new Padding(2);
+            tbOffsetY.Location = new Point(89, 318);
             tbOffsetY.MaxLength = 6;
             tbOffsetY.Name = "tbOffsetY";
-            tbOffsetY.Size = new Size(82, 32);
+            tbOffsetY.Size = new Size(115, 45);
             tbOffsetY.TabIndex = 17;
             tbOffsetY.Text = "1960";
             tbOffsetY.TextAlign = HorizontalAlignment.Center;
@@ -705,20 +656,18 @@
             // 
             lbjogspeedlimity.AutoSize = true;
             lbjogspeedlimity.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbjogspeedlimity.Location = new Point(11, 270);
-            lbjogspeedlimity.Margin = new Padding(2, 0, 2, 0);
+            lbjogspeedlimity.Location = new Point(16, 450);
             lbjogspeedlimity.Name = "lbjogspeedlimity";
-            lbjogspeedlimity.Size = new Size(72, 15);
+            lbjogspeedlimity.Size = new Size(105, 25);
             lbjogspeedlimity.TabIndex = 12;
             lbjogspeedlimity.Text = "(0~100000)";
             // 
             // tbjogspeedy
             // 
-            tbjogspeedy.Location = new Point(86, 256);
-            tbjogspeedy.Margin = new Padding(2);
+            tbjogspeedy.Location = new Point(123, 427);
             tbjogspeedy.MaxLength = 6;
             tbjogspeedy.Name = "tbjogspeedy";
-            tbjogspeedy.Size = new Size(104, 32);
+            tbjogspeedy.Size = new Size(147, 45);
             tbjogspeedy.TabIndex = 11;
             tbjogspeedy.Text = "30000";
             tbjogspeedy.TextAlign = HorizontalAlignment.Right;
@@ -728,10 +677,9 @@
             // 
             lbjogspeedy.AutoSize = true;
             lbjogspeedy.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbjogspeedy.Location = new Point(38, 252);
-            lbjogspeedy.Margin = new Padding(2, 0, 2, 0);
+            lbjogspeedy.Location = new Point(54, 420);
             lbjogspeedy.Name = "lbjogspeedy";
-            lbjogspeedy.Size = new Size(42, 21);
+            lbjogspeedy.Size = new Size(62, 32);
             lbjogspeedy.TabIndex = 10;
             lbjogspeedy.Text = "속도";
             // 
@@ -739,10 +687,9 @@
             // 
             lbymaxspeed.AutoSize = true;
             lbymaxspeed.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbymaxspeed.Location = new Point(18, 117);
-            lbymaxspeed.Margin = new Padding(2, 0, 2, 0);
+            lbymaxspeed.Location = new Point(26, 195);
             lbymaxspeed.Name = "lbymaxspeed";
-            lbymaxspeed.Size = new Size(72, 15);
+            lbymaxspeed.Size = new Size(105, 25);
             lbymaxspeed.TabIndex = 9;
             lbymaxspeed.Text = "(0~100000)";
             // 
@@ -750,10 +697,9 @@
             // 
             lbymaxdistance.AutoSize = true;
             lbymaxdistance.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbymaxdistance.Location = new Point(10, 77);
-            lbymaxdistance.Margin = new Padding(2, 0, 2, 0);
+            lbymaxdistance.Location = new Point(14, 128);
             lbymaxdistance.Name = "lbymaxdistance";
-            lbymaxdistance.Size = new Size(65, 15);
+            lbymaxdistance.Size = new Size(95, 25);
             lbymaxdistance.TabIndex = 8;
             lbymaxdistance.Text = "(0~20000)";
             // 
@@ -762,11 +708,9 @@
             gbjogctrly.Controls.Add(btJogYinc);
             gbjogctrly.Controls.Add(btJogYdec);
             gbjogctrly.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            gbjogctrly.Location = new Point(9, 229);
-            gbjogctrly.Margin = new Padding(2);
+            gbjogctrly.Location = new Point(13, 382);
             gbjogctrly.Name = "gbjogctrly";
-            gbjogctrly.Padding = new Padding(2);
-            gbjogctrly.Size = new Size(182, 90);
+            gbjogctrly.Size = new Size(260, 150);
             gbjogctrly.TabIndex = 7;
             gbjogctrly.TabStop = false;
             gbjogctrly.Text = "Jog Mode";
@@ -774,10 +718,9 @@
             // btJogYinc
             // 
             btJogYinc.BackColor = SystemColors.ButtonFace;
-            btJogYinc.Location = new Point(108, 60);
-            btJogYinc.Margin = new Padding(2);
+            btJogYinc.Location = new Point(154, 100);
             btJogYinc.Name = "btJogYinc";
-            btJogYinc.Size = new Size(70, 30);
+            btJogYinc.Size = new Size(100, 50);
             btJogYinc.TabIndex = 1;
             btJogYinc.Text = "Jog(+)";
             btJogYinc.UseVisualStyleBackColor = false;
@@ -787,10 +730,9 @@
             // btJogYdec
             // 
             btJogYdec.BackColor = SystemColors.ButtonFace;
-            btJogYdec.Location = new Point(2, 60);
-            btJogYdec.Margin = new Padding(2);
+            btJogYdec.Location = new Point(3, 100);
             btJogYdec.Name = "btJogYdec";
-            btJogYdec.Size = new Size(70, 30);
+            btJogYdec.Size = new Size(100, 50);
             btJogYdec.TabIndex = 0;
             btJogYdec.Text = "Jog(-)";
             btJogYdec.UseVisualStyleBackColor = false;
@@ -800,10 +742,9 @@
             // btMoveYasix
             // 
             btMoveYasix.BackColor = SystemColors.ButtonFace;
-            btMoveYasix.Location = new Point(11, 146);
-            btMoveYasix.Margin = new Padding(2);
+            btMoveYasix.Location = new Point(16, 243);
             btMoveYasix.Name = "btMoveYasix";
-            btMoveYasix.Size = new Size(182, 32);
+            btMoveYasix.Size = new Size(260, 53);
             btMoveYasix.TabIndex = 6;
             btMoveYasix.Text = "Move Y-axis";
             btMoveYasix.UseVisualStyleBackColor = false;
@@ -814,11 +755,10 @@
             lbcurposy.AutoSize = true;
             lbcurposy.BackColor = Color.Transparent;
             lbcurposy.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbcurposy.Location = new Point(119, 32);
-            lbcurposy.Margin = new Padding(2, 0, 2, 0);
+            lbcurposy.Location = new Point(170, 53);
             lbcurposy.Name = "lbcurposy";
             lbcurposy.RightToLeft = RightToLeft.No;
-            lbcurposy.Size = new Size(78, 21);
+            lbcurposy.Size = new Size(117, 32);
             lbcurposy.TabIndex = 5;
             lbcurposy.Text = "Unknown";
             lbcurposy.TextAlign = ContentAlignment.MiddleRight;
@@ -827,31 +767,28 @@
             // 
             lbcurposyaxis.AutoSize = true;
             lbcurposyaxis.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbcurposyaxis.Location = new Point(10, 32);
-            lbcurposyaxis.Margin = new Padding(2, 0, 2, 0);
+            lbcurposyaxis.Location = new Point(14, 53);
             lbcurposyaxis.Name = "lbcurposyaxis";
-            lbcurposyaxis.Size = new Size(74, 21);
+            lbcurposyaxis.Size = new Size(110, 32);
             lbcurposyaxis.TabIndex = 4;
             lbcurposyaxis.Text = "현재위치";
             // 
             // tbcmdspeedy
             // 
-            tbcmdspeedy.Location = new Point(92, 103);
-            tbcmdspeedy.Margin = new Padding(2);
+            tbcmdspeedy.Location = new Point(131, 172);
             tbcmdspeedy.MaxLength = 6;
             tbcmdspeedy.Name = "tbcmdspeedy";
-            tbcmdspeedy.Size = new Size(104, 32);
+            tbcmdspeedy.Size = new Size(147, 45);
             tbcmdspeedy.TabIndex = 3;
             tbcmdspeedy.TextAlign = HorizontalAlignment.Right;
             tbcmdspeedy.KeyPress += tbcmdspeedy_KeyPress;
             // 
             // tbcmdposy
             // 
-            tbcmdposy.Location = new Point(92, 62);
-            tbcmdposy.Margin = new Padding(2);
+            tbcmdposy.Location = new Point(131, 103);
             tbcmdposy.MaxLength = 6;
             tbcmdposy.Name = "tbcmdposy";
-            tbcmdposy.Size = new Size(104, 32);
+            tbcmdposy.Size = new Size(147, 45);
             tbcmdposy.TabIndex = 2;
             tbcmdposy.Text = "20000";
             tbcmdposy.TextAlign = HorizontalAlignment.Right;
@@ -861,10 +798,9 @@
             // 
             lbcmdspeedy.AutoSize = true;
             lbcmdspeedy.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbcmdspeedy.Location = new Point(44, 99);
-            lbcmdspeedy.Margin = new Padding(2, 0, 2, 0);
+            lbcmdspeedy.Location = new Point(63, 165);
             lbcmdspeedy.Name = "lbcmdspeedy";
-            lbcmdspeedy.Size = new Size(42, 21);
+            lbcmdspeedy.Size = new Size(62, 32);
             lbcmdspeedy.TabIndex = 1;
             lbcmdspeedy.Text = "속도";
             // 
@@ -872,10 +808,9 @@
             // 
             lbcmdposy.AutoSize = true;
             lbcmdposy.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbcmdposy.Location = new Point(10, 59);
-            lbcmdposy.Margin = new Padding(2, 0, 2, 0);
+            lbcmdposy.Location = new Point(14, 98);
             lbcmdposy.Name = "lbcmdposy";
-            lbcmdposy.Size = new Size(74, 21);
+            lbcmdposy.Size = new Size(110, 32);
             lbcmdposy.TabIndex = 0;
             lbcmdposy.Text = "설정위치";
             // 
@@ -900,11 +835,9 @@
             gbxaxis.Controls.Add(lbcmdspeedx);
             gbxaxis.Controls.Add(lbcmdposx);
             gbxaxis.Font = new Font("맑은 고딕", 14F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            gbxaxis.Location = new Point(32, 37);
-            gbxaxis.Margin = new Padding(2);
+            gbxaxis.Location = new Point(46, 62);
             gbxaxis.Name = "gbxaxis";
-            gbxaxis.Padding = new Padding(2);
-            gbxaxis.Size = new Size(201, 398);
+            gbxaxis.Size = new Size(287, 663);
             gbxaxis.TabIndex = 0;
             gbxaxis.TabStop = false;
             gbxaxis.Text = "X-axis";
@@ -912,10 +845,9 @@
             // btOffsetXfor
             // 
             btOffsetXfor.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            btOffsetXfor.Location = new Point(146, 191);
-            btOffsetXfor.Margin = new Padding(2);
+            btOffsetXfor.Location = new Point(209, 318);
             btOffsetXfor.Name = "btOffsetXfor";
-            btOffsetXfor.Size = new Size(50, 27);
+            btOffsetXfor.Size = new Size(71, 45);
             btOffsetXfor.TabIndex = 16;
             btOffsetXfor.Text = "전진";
             btOffsetXfor.UseVisualStyleBackColor = true;
@@ -924,10 +856,9 @@
             // btOffsetXback
             // 
             btOffsetXback.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            btOffsetXback.Location = new Point(6, 191);
-            btOffsetXback.Margin = new Padding(2);
+            btOffsetXback.Location = new Point(9, 318);
             btOffsetXback.Name = "btOffsetXback";
-            btOffsetXback.Size = new Size(50, 27);
+            btOffsetXback.Size = new Size(71, 45);
             btOffsetXback.TabIndex = 15;
             btOffsetXback.Text = "후진";
             btOffsetXback.UseVisualStyleBackColor = true;
@@ -935,11 +866,10 @@
             // 
             // tbOffsetX
             // 
-            tbOffsetX.Location = new Point(61, 191);
-            tbOffsetX.Margin = new Padding(2);
+            tbOffsetX.Location = new Point(87, 318);
             tbOffsetX.MaxLength = 6;
             tbOffsetX.Name = "tbOffsetX";
-            tbOffsetX.Size = new Size(82, 32);
+            tbOffsetX.Size = new Size(115, 45);
             tbOffsetX.TabIndex = 14;
             tbOffsetX.Text = "1960";
             tbOffsetX.TextAlign = HorizontalAlignment.Center;
@@ -947,11 +877,9 @@
             // gbHomePosX
             // 
             gbHomePosX.Controls.Add(btHomeX);
-            gbHomePosX.Location = new Point(10, 329);
-            gbHomePosX.Margin = new Padding(2);
+            gbHomePosX.Location = new Point(14, 548);
             gbHomePosX.Name = "gbHomePosX";
-            gbHomePosX.Padding = new Padding(2);
-            gbHomePosX.Size = new Size(182, 67);
+            gbHomePosX.Size = new Size(260, 112);
             gbHomePosX.TabIndex = 13;
             gbHomePosX.TabStop = false;
             gbHomePosX.Text = "Home Position";
@@ -959,10 +887,9 @@
             // btHomeX
             // 
             btHomeX.BackColor = SystemColors.ButtonFace;
-            btHomeX.Location = new Point(0, 30);
-            btHomeX.Margin = new Padding(2);
+            btHomeX.Location = new Point(0, 50);
             btHomeX.Name = "btHomeX";
-            btHomeX.Size = new Size(182, 32);
+            btHomeX.Size = new Size(260, 53);
             btHomeX.TabIndex = 0;
             btHomeX.Text = "Home X-axis";
             btHomeX.UseVisualStyleBackColor = false;
@@ -972,20 +899,18 @@
             // 
             lbjogspeedlimitx.AutoSize = true;
             lbjogspeedlimitx.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbjogspeedlimitx.Location = new Point(11, 270);
-            lbjogspeedlimitx.Margin = new Padding(2, 0, 2, 0);
+            lbjogspeedlimitx.Location = new Point(16, 450);
             lbjogspeedlimitx.Name = "lbjogspeedlimitx";
-            lbjogspeedlimitx.Size = new Size(72, 15);
+            lbjogspeedlimitx.Size = new Size(105, 25);
             lbjogspeedlimitx.TabIndex = 12;
             lbjogspeedlimitx.Text = "(0~300000)";
             // 
             // tbjogspeedx
             // 
-            tbjogspeedx.Location = new Point(88, 256);
-            tbjogspeedx.Margin = new Padding(2);
+            tbjogspeedx.Location = new Point(126, 427);
             tbjogspeedx.MaxLength = 6;
             tbjogspeedx.Name = "tbjogspeedx";
-            tbjogspeedx.Size = new Size(104, 32);
+            tbjogspeedx.Size = new Size(147, 45);
             tbjogspeedx.TabIndex = 11;
             tbjogspeedx.Text = "50000";
             tbjogspeedx.TextAlign = HorizontalAlignment.Right;
@@ -995,10 +920,9 @@
             // 
             lbjogspeedx.AutoSize = true;
             lbjogspeedx.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbjogspeedx.Location = new Point(38, 252);
-            lbjogspeedx.Margin = new Padding(2, 0, 2, 0);
+            lbjogspeedx.Location = new Point(54, 420);
             lbjogspeedx.Name = "lbjogspeedx";
-            lbjogspeedx.Size = new Size(42, 21);
+            lbjogspeedx.Size = new Size(62, 32);
             lbjogspeedx.TabIndex = 10;
             lbjogspeedx.Text = "속도";
             // 
@@ -1006,10 +930,9 @@
             // 
             lbxmaxspeed.AutoSize = true;
             lbxmaxspeed.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbxmaxspeed.Location = new Point(18, 117);
-            lbxmaxspeed.Margin = new Padding(2, 0, 2, 0);
+            lbxmaxspeed.Location = new Point(26, 195);
             lbxmaxspeed.Name = "lbxmaxspeed";
-            lbxmaxspeed.Size = new Size(72, 15);
+            lbxmaxspeed.Size = new Size(105, 25);
             lbxmaxspeed.TabIndex = 9;
             lbxmaxspeed.Text = "(0~300000)";
             // 
@@ -1017,10 +940,9 @@
             // 
             lbxmaxdistance.AutoSize = true;
             lbxmaxdistance.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbxmaxdistance.Location = new Point(7, 77);
-            lbxmaxdistance.Margin = new Padding(2, 0, 2, 0);
+            lbxmaxdistance.Location = new Point(10, 128);
             lbxmaxdistance.Name = "lbxmaxdistance";
-            lbxmaxdistance.Size = new Size(72, 15);
+            lbxmaxdistance.Size = new Size(105, 25);
             lbxmaxdistance.TabIndex = 8;
             lbxmaxdistance.Text = "(0~120000)";
             // 
@@ -1029,11 +951,9 @@
             gbjogctrlx.Controls.Add(btJogXinc);
             gbjogctrlx.Controls.Add(btJogXdec);
             gbjogctrlx.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            gbjogctrlx.Location = new Point(9, 229);
-            gbjogctrlx.Margin = new Padding(2);
+            gbjogctrlx.Location = new Point(13, 382);
             gbjogctrlx.Name = "gbjogctrlx";
-            gbjogctrlx.Padding = new Padding(2);
-            gbjogctrlx.Size = new Size(182, 90);
+            gbjogctrlx.Size = new Size(260, 150);
             gbjogctrlx.TabIndex = 7;
             gbjogctrlx.TabStop = false;
             gbjogctrlx.Text = "Jog Mode";
@@ -1041,10 +961,9 @@
             // btJogXinc
             // 
             btJogXinc.BackColor = SystemColors.ButtonFace;
-            btJogXinc.Location = new Point(110, 60);
-            btJogXinc.Margin = new Padding(2);
+            btJogXinc.Location = new Point(157, 100);
             btJogXinc.Name = "btJogXinc";
-            btJogXinc.Size = new Size(70, 30);
+            btJogXinc.Size = new Size(100, 50);
             btJogXinc.TabIndex = 1;
             btJogXinc.Text = "Jog(+)";
             btJogXinc.UseVisualStyleBackColor = false;
@@ -1054,10 +973,9 @@
             // btJogXdec
             // 
             btJogXdec.BackColor = SystemColors.ButtonFace;
-            btJogXdec.Location = new Point(2, 60);
-            btJogXdec.Margin = new Padding(2);
+            btJogXdec.Location = new Point(3, 100);
             btJogXdec.Name = "btJogXdec";
-            btJogXdec.Size = new Size(70, 30);
+            btJogXdec.Size = new Size(100, 50);
             btJogXdec.TabIndex = 0;
             btJogXdec.Text = "Jog(-)";
             btJogXdec.UseVisualStyleBackColor = false;
@@ -1067,10 +985,9 @@
             // btMoveXasix
             // 
             btMoveXasix.BackColor = SystemColors.ButtonFace;
-            btMoveXasix.Location = new Point(11, 146);
-            btMoveXasix.Margin = new Padding(2);
+            btMoveXasix.Location = new Point(16, 243);
             btMoveXasix.Name = "btMoveXasix";
-            btMoveXasix.Size = new Size(182, 32);
+            btMoveXasix.Size = new Size(260, 53);
             btMoveXasix.TabIndex = 6;
             btMoveXasix.Text = "Move X-axis";
             btMoveXasix.UseVisualStyleBackColor = false;
@@ -1081,11 +998,10 @@
             lbcurposx.AutoSize = true;
             lbcurposx.BackColor = Color.Transparent;
             lbcurposx.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbcurposx.Location = new Point(119, 32);
-            lbcurposx.Margin = new Padding(2, 0, 2, 0);
+            lbcurposx.Location = new Point(170, 53);
             lbcurposx.Name = "lbcurposx";
             lbcurposx.RightToLeft = RightToLeft.No;
-            lbcurposx.Size = new Size(78, 21);
+            lbcurposx.Size = new Size(117, 32);
             lbcurposx.TabIndex = 5;
             lbcurposx.Text = "Unknown";
             lbcurposx.TextAlign = ContentAlignment.MiddleRight;
@@ -1094,31 +1010,28 @@
             // 
             lbcurposxaxis.AutoSize = true;
             lbcurposxaxis.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbcurposxaxis.Location = new Point(10, 32);
-            lbcurposxaxis.Margin = new Padding(2, 0, 2, 0);
+            lbcurposxaxis.Location = new Point(14, 53);
             lbcurposxaxis.Name = "lbcurposxaxis";
-            lbcurposxaxis.Size = new Size(74, 21);
+            lbcurposxaxis.Size = new Size(110, 32);
             lbcurposxaxis.TabIndex = 4;
             lbcurposxaxis.Text = "현재위치";
             // 
             // tbcmdspeedx
             // 
-            tbcmdspeedx.Location = new Point(92, 103);
-            tbcmdspeedx.Margin = new Padding(2);
+            tbcmdspeedx.Location = new Point(131, 172);
             tbcmdspeedx.MaxLength = 6;
             tbcmdspeedx.Name = "tbcmdspeedx";
-            tbcmdspeedx.Size = new Size(104, 32);
+            tbcmdspeedx.Size = new Size(147, 45);
             tbcmdspeedx.TabIndex = 3;
             tbcmdspeedx.TextAlign = HorizontalAlignment.Right;
             tbcmdspeedx.KeyPress += tbcmdspeedx_KeyPress;
             // 
             // tbcmdposx
             // 
-            tbcmdposx.Location = new Point(92, 62);
-            tbcmdposx.Margin = new Padding(2);
+            tbcmdposx.Location = new Point(131, 103);
             tbcmdposx.MaxLength = 6;
             tbcmdposx.Name = "tbcmdposx";
-            tbcmdposx.Size = new Size(104, 32);
+            tbcmdposx.Size = new Size(147, 45);
             tbcmdposx.TabIndex = 2;
             tbcmdposx.Text = "26000";
             tbcmdposx.TextAlign = HorizontalAlignment.Right;
@@ -1128,10 +1041,9 @@
             // 
             lbcmdspeedx.AutoSize = true;
             lbcmdspeedx.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbcmdspeedx.Location = new Point(44, 99);
-            lbcmdspeedx.Margin = new Padding(2, 0, 2, 0);
+            lbcmdspeedx.Location = new Point(63, 165);
             lbcmdspeedx.Name = "lbcmdspeedx";
-            lbcmdspeedx.Size = new Size(42, 21);
+            lbcmdspeedx.Size = new Size(62, 32);
             lbcmdspeedx.TabIndex = 1;
             lbcmdspeedx.Text = "속도";
             // 
@@ -1139,24 +1051,22 @@
             // 
             lbcmdposx.AutoSize = true;
             lbcmdposx.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbcmdposx.Location = new Point(10, 59);
-            lbcmdposx.Margin = new Padding(2, 0, 2, 0);
+            lbcmdposx.Location = new Point(14, 98);
             lbcmdposx.Name = "lbcmdposx";
-            lbcmdposx.Size = new Size(74, 21);
+            lbcmdposx.Size = new Size(110, 32);
             lbcmdposx.TabIndex = 0;
             lbcmdposx.Text = "설정위치";
             // 
             // LiveCell
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(747, 630);
+            ClientSize = new Size(1067, 1050);
             Controls.Add(gbmotionctrl);
             Controls.Add(gbTransfer);
             Controls.Add(groupBox_comport);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(2);
             MaximizeBox = false;
             Name = "LiveCell";
             Text = "LiveCell Motion Test";

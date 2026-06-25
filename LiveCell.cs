@@ -117,7 +117,9 @@ namespace LiveCell_Gui
             tbOffsetZ.Text = Convert.ToString(DEFAULT_OFFSET_Z);
 
 #if LIVECELL
-            btViewer.Hide(); AutoCapture.Hide(); AutoCapture_Stop.Hide();
+            btViewer.Text = "Pos1";
+            AutoCapture.Text = "Pos2";
+            AutoCapture_Stop.Hide();
 #endif
 #if CGT
             btViewer.Show(); AutoCapture.Show(); AutoCapture_Stop.Show();

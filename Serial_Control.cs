@@ -52,7 +52,7 @@ namespace LiveCell_Gui
         private byte[] MotorStatus;
 
 #if LIVECELL
-        private const int X_MAX_DIST = 300000;//real 1350000;
+        private const int X_MAX_DIST = 320000;//real 1350000;
         private const int Y_MAX_DIST = 350000;//real 200000;
         private const int Z_MAX_DIST = 14000;//real 125000;
 

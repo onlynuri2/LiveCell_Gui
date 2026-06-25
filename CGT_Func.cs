@@ -62,16 +62,37 @@ namespace LiveCell_Gui
         private void btViewer_Click(object sender, EventArgs e)
         {
             if (opto_serial == null || opto_serial.IsOpen == false) { display_data_RX_textbox("통신연결을 확인해주세요"); return; }
+
+#if LIVECELL
+            string senddata = "movetabs";
+
+            if (MotorLive[0] == 1) senddata += ",x," + "300000" + ',' + tbcmdspeedx.Text;
+            if (MotorLive[1] == 1) senddata += ",y," + "190000" + ',' + tbcmdspeedy.Text;
+            if (MotorLive[2] == 1) senddata += ",z," + "5000" + ',' + tbcmdspeedz.Text;
+
+            _ = opto_serial_write(senddata, false);
+#elif CGT
             if (CGT_Viewer != null) { CGT_Viewer.Close(); }
 
             CGT_Viewer = new CGT_Viewer(this, opto_serial);
             CGT_Viewer.FormClosed += (s, args) => { CGT_Viewer = null; };
             CGT_Viewer.Show();
+#endif
         }
 
         private void AutoCapture_Click(object sender, EventArgs e)
         {
             if (opto_serial == null || opto_serial.IsOpen == false) { display_data_RX_textbox("통신연결을 확인해주세요"); return; }
+
+#if LIVECELL
+            string senddata = "movetabs";
+
+            if (MotorLive[0] == 1) senddata += ",x," + "50000" + ',' + tbcmdspeedx.Text;
+            if (MotorLive[1] == 1) senddata += ",y," + "190000" + ',' + tbcmdspeedy.Text;
+            if (MotorLive[2] == 1) senddata += ",z," + "5000" + ',' + tbcmdspeedz.Text;
+
+            _ = opto_serial_write(senddata, false);
+#elif CGT
             if (MotorStatus[0] != 1 || MotorStatus[1] != 1) { display_data_RX_textbox("모터 정지 후 시작해 주세요"); return; }
 
             //if (MotorStatus[0] != 1 || MotorStatus[1] != 1)
@@ -82,6 +103,7 @@ namespace LiveCell_Gui
             }
 
             AutoCaptureStart();
+#endif
         }
 
         private void AutoCapture_Stop_Click(object sender, EventArgs e)
